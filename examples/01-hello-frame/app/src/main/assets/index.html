@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hello Frame</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    html, body { height: 100%; }
+    body {
+      background: #0f1115;
+      color: #e8e6e3;
+      font-family: system-ui, sans-serif;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding: 32px 48px;
+    }
+    main { display: grid; place-content: center; text-align: center; gap: 8px; }
+    #clock { font-size: 180px; font-weight: 200; letter-spacing: -4px; font-variant-numeric: tabular-nums; }
+    #date { font-size: 36px; color: #9aa0a6; }
+    footer { display: flex; align-items: center; gap: 24px; font-size: 18px; color: #9aa0a6; }
+    #info { flex: 1; }
+    button {
+      font: inherit; color: #e8e6e3; background: #22262e;
+      border: 1px solid #343a45; border-radius: 10px; padding: 12px 20px;
+    }
+    input[type=range] { width: 200px; }
+  </style>
+</head>
+<body>
+  <main>
+    <div id="clock">--:--</div>
+    <div id="date"></div>
+  </main>
+  <footer>
+    <span id="info"></span>
+    <label>☀ <input id="brightness" type="range" min="0.05" max="1" step="0.05" value="1"></label>
+    <button id="hello">Say hi</button>
+    <button id="exit">Exit</button>
+  </footer>
+
+  <script>
+    const bridge = window.Frame; // undefined when opened in a desktop browser
+
+    function tick() {
+      const now = new Date();
+      document.getElementById('clock').textContent =
+        now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('date').textContent =
+        now.toLocaleDateString([], { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    const chrome = navigator.userAgent.match(/Chrome\/([\d.]+)/)?.[1] ?? '?';
+    const device = bridge ? JSON.parse(bridge.deviceInfo()) : { model: 'browser', android: '-' };
+    document.getElementById('info').textContent =
+      `${device.model} · Android ${device.android} · WebView ${chrome} · ${innerWidth}×${innerHeight}`;
+
+    document.getElementById('hello').onclick = () => bridge?.toast('Hello from JavaScript 👋');
+    document.getElementById('brightness').oninput = (e) => bridge?.setBrightness(parseFloat(e.target.value));
+    document.getElementById('exit').onclick = () => bridge?.exit();
+  </script>
+</body>
+</html>
