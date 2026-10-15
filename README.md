@@ -11,6 +11,7 @@ Full command log with outputs: [docs/device-log.md](docs/device-log.md)
 | | |
 |---|---|
 | [`examples/01-hello-frame`](examples/01-hello-frame) | Kotlin app with a full-screen WebView, a clock page and a JS → Kotlin bridge (`window.Frame`) |
+| [`examples/02-launcher`](examples/02-launcher) | Jetpack Compose HOME app: clock, Photos (Frameo) and Hello Frame tiles, hot corner dot as the Home button · [LOG](examples/02-launcher/LOG.md) |
 
 ## Setup
 
@@ -42,12 +43,27 @@ adb shell am start -n dev.framio.hello/.MainActivity
 
 **On the frame:** tap **Exit** to go back to the previous screen.
 
-## Escape hatches
+### Launcher (02)
 
 ```bash
-adb shell am force-stop dev.framio.hello   # close the app
+cd examples/02-launcher
+./gradlew assembleRelease     # R8-minified, debug-signed: ~15 MB RAM vs ~31 MB for assembleDebug
+adb install -r app/build/outputs/apk/release/app-release.apk
+adb shell appops set dev.framio.launcher SYSTEM_ALERT_WINDOW allow   # once: lets the hot corner draw over apps
+adb shell input keyevent KEYCODE_HOME   # "Select a Home app" → Framio → ALWAYS (screenshot to find the taps)
+adb shell dumpsys activity activities | grep -i home   # cmp=dev.framio.launcher/.LauncherActivity
+```
+
+**On the frame:** tap a tile; long-press the dot in the bottom-left corner to come back home from any app.
+
+## Escape hatches
+
+Android 6 has no `pm set-home-activity` and `pm clear` keeps the "Always" choice. Uninstalling the launcher makes Frameo HOME again.
+
+```bash
+adb uninstall dev.framio.launcher          # back to Frameo as HOME (works without a reboot)
+adb shell am force-stop dev.framio.hello   # close Hello Frame
 adb uninstall dev.framio.hello             # remove it completely
-adb reboot
 ```
 
 ## Useful commands
