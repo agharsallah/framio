@@ -31,6 +31,16 @@ Frameo 1.32.12 · ADB enabled via Settings → About → Beta program → ADB ac
 | `adb shell pm list packages -s` | 32 system pkgs | bloat: `com.adups.fota`, `com.adups.fota.sysoper`, `android.rockchip.update.service`, `com.DeviceTest`, `com.android.phasebeam`, `com.android.music`, `com.android.musicfx`, `android.rk.RockVideoPlayer`, `com.android.rk.mediafloat` |
 | `adb shell pm list packages -3` | _(empty)_ | no user apps |
 
+## Security
+
+| Command | Output | Note |
+|---|---|---|
+| `adb shell getprop ro.build.version.security_patch` | `2016-07-05` | unpatched since 2016 (Dirty COW, BlueBorne, KRACK) |
+| `adb shell getprop ro.adb.secure` | `1` | ADB needs RSA key approval |
+| `adb shell su -c "netstat -tln"` | `0.0.0.0:45076 LISTEN` | open on LAN |
+| `adb shell su -c "cat /proc/net/tcp"` | port `B014` (45076) uid `10002` | |
+| `adb shell dumpsys package net.frameo.frame \| grep userId` | `userId=10002` | port 45076 + root user = Frameo |
+
 ## Toolchain (Mac)
 
 | Command | Output | Note |
