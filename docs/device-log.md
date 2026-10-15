@@ -40,6 +40,19 @@ Frameo 1.32.12 · ADB enabled via Settings → About → Beta program → ADB ac
 | `adb shell su -c "netstat -tln"` | `0.0.0.0:45076 LISTEN` | open on LAN |
 | `adb shell su -c "cat /proc/net/tcp"` | port `B014` (45076) uid `10002` | |
 | `adb shell dumpsys package net.frameo.frame \| grep userId` | `userId=10002` | port 45076 + root user = Frameo |
+| `adb shell getprop ro.build.tags` / `ro.build.fingerprint` | `release-keys` / `rockchip/rk312x/rk312x:6.0.1/MXC89K/user.wanghy.20260307…` | built 2026-03-07, patch level 2016 |
+
+## WebView signature
+
+| Command | Output | Note |
+|---|---|---|
+| `adb shell pm path com.google.android.webview` | `/system/app/webview/webview.apk` | system app |
+| `apksigner verify --print-certs webview.apk` | `DOES NOT VERIFY … requires signature scheme v2` | v1-only signed; use keytool |
+| `keytool -printcert -jarfile webview.apk` | `CN=Android, android@android.com` SHA256 `CF:2A:B3:81…85:25` | **not Google's key** |
+| `keytool -printcert -jarfile framework-res.apk` | same DN, SHA256 `2D:37:0C:21…35:22` | platform key |
+| AOSP public certs (testkey/platform/shared/media/networkstack) | no match | vendor-private keys with default DN |
+
+→ Google-signed WebView updates can't install via `adb install -r` (signature mismatch). Only path: replace `/system/app/webview/` as root.
 
 ## Toolchain (Mac)
 
