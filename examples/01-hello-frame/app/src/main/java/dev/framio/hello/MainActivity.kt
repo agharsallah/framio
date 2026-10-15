@@ -2,7 +2,6 @@ package dev.framio.hello
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -32,8 +31,6 @@ class MainActivity : Activity() {
         }
         setContentView(webView)
         webView.loadUrl("file:///android_asset/index.html")
-
-        startService(Intent(this, HotCornerService::class.java))
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -77,7 +74,7 @@ class MainActivity : Activity() {
             window.attributes = window.attributes.apply { screenBrightness = level.coerceIn(0.01f, 1f) }
         }
 
-        /** Escape hatch: closes the app and returns to Frameo. */
+        /** Escape hatch: closes the app and returns to the previous screen (the launcher). */
         @JavascriptInterface
         fun exit() = runOnUiThread { finish() }
     }
