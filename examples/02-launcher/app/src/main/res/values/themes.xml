@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark window background so there is no white flash before Compose draws -->
+    <style name="Theme.Launcher" parent="@android:style/Theme.Material.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowShowWallpaper">false</item>
+    </style>
+
+    <color name="background">#FF0E0F12</color>
+</resources>

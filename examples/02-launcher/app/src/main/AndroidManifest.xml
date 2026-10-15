@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Apps the tiles open (only needed on Android 11+, harmless on 6) -->
+    <queries>
+        <package android:name="net.frameo.frame" />
+        <package android:name="dev.framio.hello" />
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:label="Framio"
+        android:theme="@style/Theme.Launcher">
+
+        <!--
+          HOME makes this a launcher: the system starts it in the foreground at boot
+          and whenever "home" is requested. singleTask + stateNotNeeded is what launchers use.
+        -->
+        <activity
+            android:name=".LauncherActivity"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|density|uiMode"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:resumeWhilePausing="true"
+            android:screenOrientation="landscape"
+            android:stateNotNeeded="true"
+            android:taskAffinity="">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
