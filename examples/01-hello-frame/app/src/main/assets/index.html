@@ -18,7 +18,8 @@
     main { display: grid; place-content: center; text-align: center; gap: 8px; }
     #clock { font-size: 180px; font-weight: 200; letter-spacing: -4px; font-variant-numeric: tabular-nums; }
     #date { font-size: 36px; color: #9aa0a6; }
-    footer { display: flex; align-items: center; gap: 24px; font-size: 18px; color: #9aa0a6; }
+    /* padding-left: keeps the text clear of the launcher's hot corner dot (16–72px) */
+    footer { display: flex; align-items: center; gap: 24px; font-size: 18px; color: #9aa0a6; padding-left: 48px; }
     #info { flex: 1; }
     button {
       font: inherit; color: #e8e6e3; background: #22262e;
