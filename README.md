@@ -56,6 +56,17 @@ adb shell dumpsys activity activities | grep -i home   # cmp=dev.framio.launcher
 
 **On the frame:** tap a tile; long-press the dot in the bottom-left corner to come back home from any app.
 
+## Backup
+
+Read-only full backup (raw partitions + `/data` archive + Frameo files, md5-verified). Keep it **outside the repo**: it contains photos and Frameo's pairing keys.
+
+```bash
+scripts/backup.sh ~/framio-backup/$(date +%F)
+cd ~/framio-backup/<date> && shasum -a 256 -c SHA256SUMS   # verify
+```
+
+Partition table, commands and restore notes: [docs/backup-log.md](docs/backup-log.md) and `RESTORE.md` inside the backup folder.
+
 ## Escape hatches
 
 Android 6 has no `pm set-home-activity` and `pm clear` keeps the "Always" choice. Uninstalling the launcher makes Frameo HOME again.
