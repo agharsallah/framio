@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- The hot corner dot is an overlay window above other apps -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <!-- Apps the tiles open (only needed on Android 11+, harmless on 6) -->
     <queries>
         <package android:name="net.frameo.frame" />
@@ -34,5 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".HotCornerService"
+            android:exported="false" />
     </application>
 </manifest>

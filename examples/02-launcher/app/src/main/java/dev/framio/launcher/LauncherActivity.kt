@@ -1,5 +1,6 @@
 package dev.framio.launcher
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.WindowManager
@@ -40,6 +41,9 @@ class LauncherActivity : ComponentActivity() {
                 onHello = { Apps.openHello(this) },
             )
         }
+
+        // Started from a foreground activity, which the firmware allows (a boot receiver is not)
+        startService(Intent(this, HotCornerService::class.java))
     }
 
     override fun onResume() {
