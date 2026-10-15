@@ -18,10 +18,12 @@ Full command log with outputs: [docs/device-log.md](docs/device-log.md)
 # on the frame: Settings → About → Beta program ON → ADB access ON
 brew install android-platform-tools
 brew install --cask android-commandlinetools
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)   # JDK 17+ required, also by sdkmanager
 yes | sdkmanager --licenses
-sdkmanager "platforms;android-35" "build-tools;35.0.0"
-export JAVA_HOME=$(/usr/libexec/java_home -v 21)   # JDK 17+ required
+sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
 ```
+
+Toolchain: Gradle 9.8.1 · AGP 9.4.1 (built-in Kotlin) · Kotlin 2.4.21 · compileSdk/targetSdk 37 · minSdk 23
 
 Each example needs a `local.properties` (git-ignored):
 

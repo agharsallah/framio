@@ -62,6 +62,19 @@ Env: `export JAVA_HOME=$(/usr/libexec/java_home -v 21)`
 | `adb shell am start -n dev.framio.hello/.MainActivity` | `Starting: Intent { cmp=dev.framio.hello/.MainActivity }` | |
 | `adb exec-out screencap -p > hello.png` | clock + `Frame · Android 6.0.1 · WebView 107.0.5304.36 · 1280×800` | JS bridge works |
 
+### Toolchain upgrade
+
+| Command | Output | Note |
+|---|---|---|
+| `sdkmanager --list` (needs JAVA_HOME 17+) | latest `platforms;android-37.x`, `build-tools;37.0.0`, `platform-tools 37.0.1` | adb already latest |
+| `sdkmanager "platforms;android-37.0" "build-tools;37.0.0"` | installed | |
+| `./gradlew wrapper --gradle-version 9.8.1` then `./gradlew wrapper` | `gradle-9.8.1-bin.zip` | 2nd run refreshes scripts/jar |
+| AGP 8.7.3 → 9.4.1, Kotlin 2.1.0 → 2.4.21, SDK 35 → 37 | `BUILD SUCCESSFUL`, APK 932K | AGP 9 built-in Kotlin: no kotlin-android plugin in app |
+| `./gradlew buildEnvironment \| grep kotlin-gradle-plugin` | `2.2.10 -> 2.4.21` | root pin wins |
+| `--warning-mode all` | `Configuration.setVisible` deprecated | from a plugin, not our scripts |
+| `org.gradle.configuration-cache=true` | build 2s → 560ms | |
+| `adb install -r …` + `am start` + screencap | `Success`, renders same | works on Android 6 |
+
 Escape hatches: on-screen **Exit** button · `adb shell am force-stop dev.framio.hello` · reboot (Frameo is still HOME) · `adb uninstall dev.framio.hello`
 
 ## Summary
