@@ -37,15 +37,18 @@ sdk.dir=/opt/homebrew/share/android-commandlinetools
 cd examples/01-hello-frame
 ./gradlew assembleDebug
 adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb shell appops set dev.framio.hello SYSTEM_ALERT_WINDOW allow   # once: lets the hot corner draw over Frameo
 adb shell am start -n dev.framio.hello/.MainActivity
 ```
+
+**On the frame:** long-press the dot in the bottom-left corner to open the app, tap **Exit** to go back to Frameo. The dot comes back after a reboot.
 
 ## Escape hatches
 
 Frameo stays the HOME app while prototyping, so a reboot always brings it back.
 
 ```bash
-adb shell am force-stop dev.framio.hello   # close the app
+adb shell am force-stop dev.framio.hello   # close the app and remove the dot (until next manual launch)
 adb uninstall dev.framio.hello             # remove it completely
 adb reboot
 ```

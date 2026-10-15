@@ -54,6 +54,15 @@ Frameo 1.32.12 · ADB enabled via Settings → About → Beta program → ADB ac
 
 → Google-signed WebView updates can't install via `adb install -r` (signature mismatch). Only path: replace `/system/app/webview/` as root.
 
+## Launcher / navigation
+
+| Command | Output | Note |
+|---|---|---|
+| `adb shell dumpsys package net.frameo.frame \| grep category.HOME` | _(empty)_ | M doesn't print filters here |
+| `adb shell dumpsys activity activities \| grep -i home` | `cat=[android.intent.category.HOME] cmp=net.frameo.frame/.ui.activities.AWaitForDeferredInitCompleted` | Frameo is HOME, no other launcher |
+| `adb shell getprop qemu.hw.mainkeys` | _(empty)_ | |
+| `adb shell dumpsys window policy` | `mStatusBarLayer=-1`, `mSystem=(0,0)-(1280,800)` | no status bar, no nav bar → no Home/Back |
+
 ## Toolchain (Mac)
 
 | Command | Output | Note |
@@ -87,6 +96,17 @@ Env: `export JAVA_HOME=$(/usr/libexec/java_home -v 21)`
 | `--warning-mode all` | `Configuration.setVisible` deprecated | from a plugin, not our scripts |
 | `org.gradle.configuration-cache=true` | build 2s → 560ms | |
 | `adb install -r …` + `am start` + screencap | `Success`, renders same | works on Android 6 |
+
+### Hot corner (open the app from the frame)
+
+| Command | Output | Note |
+|---|---|---|
+| `adb shell appops set dev.framio.hello SYSTEM_ALERT_WINDOW allow` | `SYSTEM_ALERT_WINDOW: allow` | overlay permission, no Settings UI on frame |
+| `adb shell input keyevent KEYCODE_HOME` + screencap | dot invisible | white dot on white UI, and covers Frameo's X at top-left |
+| `adb shell dumpsys window windows` | `mFrame=[16,16][72,72]` | overlay exists → moved bottom-left, dark fill + light ring |
+| `adb shell input swipe 44 756 44 756 1000` | `mFocusedApp=dev.framio.hello/.MainActivity` | long-press opens the app |
+| `adb shell dumpsys window windows \| grep "Window #"` | `KeyguardScrim`, `dev.framio.hello` (ty=2002), `frameo…AScreenSlidePager` | dot sits above Frameo |
+| `adb logcat -d -b events \| grep framio` | `START … from uid 10024` → `am_finish_activity … app-request` | opened via dot, closed via Exit, no crash |
 
 Escape hatches: on-screen **Exit** button · `adb shell am force-stop dev.framio.hello` · reboot (Frameo is still HOME) · `adb uninstall dev.framio.hello`
 
