@@ -120,6 +120,16 @@ Env: `export JAVA_HOME=$(/usr/libexec/java_home -v 21)`
 
 → Fix: be the HOME app (system starts it in the foreground at boot) and start the hot corner from there.
 
+### Reboot with examples/02-launcher as HOME
+
+| Command | Output | Note |
+|---|---|---|
+| `adb reboot; adb wait-for-device; until boot_completed=1` | ~23s | |
+| `adb shell dumpsys activity activities \| grep -i home` | `cmp=dev.framio.launcher/.LauncherActivity`, focused | launcher starts at boot |
+| `adb shell dumpsys window windows \| grep "Window #"` | `dev.framio.launcher` overlay + `LauncherActivity` | **dot survives reboot** |
+| `adb logcat -d -b all \| grep framio` | `START … LauncherActivity from uid 0`; `Unknown element <queries>`, `unavailable shared library androidx.window.*` | warnings harmless on M |
+| `adb shell ps \| grep frameo` | _(only dev.framio.launcher)_ | **Frameo not running until Photos is tapped** → no photo sync |
+
 Escape hatches: on-screen **Exit** button · `adb shell am force-stop dev.framio.hello` · reboot (Frameo is still HOME) · `adb uninstall dev.framio.hello`
 
 ## Summary
