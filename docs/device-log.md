@@ -108,6 +108,18 @@ Env: `export JAVA_HOME=$(/usr/libexec/java_home -v 21)`
 | `adb shell dumpsys window windows \| grep "Window #"` | `KeyguardScrim`, `dev.framio.hello` (ty=2002), `frameo…AScreenSlidePager` | dot sits above Frameo |
 | `adb logcat -d -b events \| grep framio` | `START … from uid 10024` → `am_finish_activity … app-request` | opened via dot, closed via Exit, no crash |
 
+### Reboot: dot gone
+
+| Command | Output | Note |
+|---|---|---|
+| `adb shell dumpsys activity services dev.framio.hello` | `(nothing)` | service not running |
+| `adb shell dumpsys package dev.framio.hello \| grep stopped=` | `stopped=false` | not in stopped state |
+| `adb logcat -d -b all \| grep framio` | `Unable to launch app dev.framio.hello/10024 for broadcast BOOT_COMPLETED: process is bad` | no crash logged → firmware blocks background start at boot |
+| `adb shell getprop \| grep -iE "rk\.\|boot"` | `ro.rk.soc=rk3126`, `ro.rk.bt_enable=false`, `ro.boot.selinux=permissive` | no BT; SELinux permissive |
+| `adb shell pm \| grep -i home` | _(empty)_ | no `set-home-activity` on M → use "Always" in chooser |
+
+→ Fix: be the HOME app (system starts it in the foreground at boot) and start the hot corner from there.
+
 Escape hatches: on-screen **Exit** button · `adb shell am force-stop dev.framio.hello` · reboot (Frameo is still HOME) · `adb uninstall dev.framio.hello`
 
 ## Summary
