@@ -1,0 +1,34 @@
+#!/bin/bash
+# Stand-in for adb in command tests: replays outputs recorded from the Veidoo F10
+# (../internal/adb/testdata) and appends every call to $FAKE_ADB_LOG.
+# Shell output ends with \r\n and an exit-code marker, like Android 6.
+set -u
+FIX=$(cd "$(dirname "$0")/../internal/adb/testdata" && pwd)
+printf '%s\n' "$*" >> "${FAKE_ADB_LOG:-/dev/null}"
+
+[ "${1:-}" = -s ] && shift 2
+cmd=${1:-}; shift || true
+crlf() { sed 's/\r*$/\r/'; }
+
+case "$cmd" in
+  devices) printf 'List of devices attached\n68384696               device usb:1 product:F10 model:Frame device:F10 transport_id:1\n\n' ;;
+  version) echo "Android Debug Bridge version 1.0.41"; echo "Version 37.0.1-fake" ;;
+  features) ;;
+  shell)
+    script=$1
+    case "$script" in
+      *mCurrentFocus*) cat "$FIX/focus-mawaqit.txt"; echo '::fr-rc=0' | crlf ;;
+      *"uiautomator dump"*) echo 'UI hierchary dumped to: /data/local/tmp/fr-ui.xml' | crlf; echo '::fr-rc=0' | crlf ;;
+      *"ps "*) cat "$FIX/ps-none.txt"; echo '::fr-rc=0' | crlf ;;
+      *"input "*|*"am force-stop"*) echo '::fr-rc=0' | crlf ;;
+      *) sh -c "$script" 2>&1 | crlf ;;   # plain shell scripts (fr sh tests) run on the Mac
+    esac ;;
+  exec-out)
+    case "$1" in
+      *"screencap | gzip"*) cat "$FAKE_SCREEN" ;;
+      *fr-ui.xml*) cat "$FIX/ui-mawaqit.xml" ;;
+      *) echo "fake-adb: unexpected exec-out $1" >&2; exit 1 ;;
+    esac ;;
+  logcat) cat "$FIX/logcat-sample.txt" ;;
+  *) echo "fake-adb: unexpected command $cmd" >&2; exit 1 ;;
+esac

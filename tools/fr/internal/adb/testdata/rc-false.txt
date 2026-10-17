@@ -1,0 +1,2 @@
+hello
+::fr-rc=1

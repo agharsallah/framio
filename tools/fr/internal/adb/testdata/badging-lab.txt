@@ -1,0 +1,6 @@
+package: name='dev.framio.lab' versionCode='1' versionName='0.1' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+targetSdkVersion:'37'
+application-label:'Hardware Lab'
+application: label='Hardware Lab' icon=''
+launchable-activity: name='dev.framio.lab.LabActivity'  label='' icon=''
+native-code: 'arm64-v8a' 'armeabi-v7a' 'x86' 'x86_64'

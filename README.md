@@ -56,6 +56,22 @@ adb shell dumpsys activity activities | grep -i home   # cmp=dev.framio.launcher
 
 **On the frame:** tap a tile; long-press the dot in the bottom-left corner to come back home from any app.
 
+## Capture and control: `fr`
+
+[`tools/fr`](tools/fr) is one Go binary for daily work on the frame: screenshots, recordings, a
+clickable mirror window, build → install → launch → logs, and tap/key control. It wraps adb, scrcpy
+and ffmpeg. [README](tools/fr/README.md) · [PLAN](tools/fr/PLAN.md) · [LOG](tools/fr/LOG.md)
+
+```bash
+brew install go scrcpy ffmpeg && (cd tools/fr && go build -o ~/.local/bin/fr .) && fr doctor
+fr shot                               # captures/<date>/<time>_<app>.png (git-ignored)
+fr rec --time 30s --touches           # mp4; Ctrl-C stops early
+fr mirror                             # live window: click = tap, drop an APK = install
+fr run examples/03-hardware-lab       # build, install, launch, follow its logs
+fr tap "Lab" · fr key home · fr logs dev.framio.lab --since 2m --dump
+export FR_LOCK=/tmp/framio-frame.lock # when several sessions share the frame
+```
+
 ## Backup
 
 Read-only full backup (raw partitions + `/data` archive + Frameo files, md5-verified). Keep it **outside the repo**: it contains photos and Frameo's pairing keys.

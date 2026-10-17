@@ -1,0 +1,41 @@
+{
+  // fr (tools/fr) from the command palette: Tasks: Run Task → fr: …
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "fr: screenshot",
+      "type": "shell",
+      "command": "fr shot --copy --open",
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared" }
+    },
+    {
+      "label": "fr: record 30 s",
+      "type": "shell",
+      "command": "fr rec --time 30s --touches --gif",
+      "problemMatcher": [],
+      "presentation": { "panel": "dedicated" }
+    },
+    {
+      "label": "fr: mirror",
+      "type": "shell",
+      "command": "fr mirror",
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": { "panel": "dedicated" }
+    },
+    {
+      "label": "fr: run current example",
+      "type": "shell",
+      "command": "fr run \"${fileDirname}\"",
+      "problemMatcher": [],
+      "presentation": { "panel": "dedicated", "focus": true }
+    },
+    {
+      "label": "fr: bug report",
+      "type": "shell",
+      "command": "fr bug",
+      "problemMatcher": []
+    }
+  ]
+}

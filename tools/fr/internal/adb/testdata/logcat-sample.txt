@@ -1,0 +1,4 @@
+01-01 01:00:19.161   339   339 I ActivityManager: Start proc 615:dev.framio.launcher/u0a26 for activity dev.framio.launcher/.LauncherActivity
+10-18 00:51:36.971   339   988 I ActivityManager: Start proc 1468:dev.framio.mawaqit/u0a27 for activity dev.framio.mawaqit/.MawaqitActivity
+10-18 00:52:44.618   339   989 I ActivityManager: Start proc 1863:dev.framio.hello/u0a24 for activity dev.framio.hello/.MainActivity
+10-18 00:54:13.149   339   357 I ActivityManager: Start proc 2104:dev.framio.mawaqit/u0a27 for activity dev.framio.mawaqit/.MawaqitActivity

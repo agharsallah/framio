@@ -1,0 +1,3 @@
+List of devices attached
+68384696               device usb:34668544X product:F10 model:Frame device:F10 transport_id:21
+

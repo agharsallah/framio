@@ -1,0 +1,1 @@
+  mCurrentFocus=Window{d207a49 u0 dev.framio.mawaqit/dev.framio.mawaqit.MawaqitActivity}
