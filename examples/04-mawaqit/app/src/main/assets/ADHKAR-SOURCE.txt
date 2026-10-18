@@ -1,0 +1,111 @@
+adhkar.json: where the adhkar come from
+========================================
+
+No Arabic in adhkar.json was typed by hand. Every Arabic string is copied from one of the three openly licensed
+datasets below, all of which take their text from "Hisn al-Muslim" (Fortress of the Muslim) by Sheikh Sa'id ibn
+Wahf al-Qahtani, or (the du'as from the Quran) from the Tanzil Quran text itself. Build it again with:
+
+  python3 -I tools/adhkar_build.py <Seen-Arabic dir> <fitrahive dir> <muslim_db.db> app/src/main/assets/adhkar.json <quran dir>
+  python3 -I tools/adhkar_crosscheck.py app/src/main/assets/adhkar.json <reference dir> app/src/main/java/dev/framio/mawaqit/core/Texts.kt <quran dir>
+
+<quran dir> holds ayah_<sura>_<ayah>.json for the 19 ayat below, each
+  https://api.alquran.cloud/v1/ayah/<sura>:<ayah>/editions/quran-simple,quran-simple-clean,en.pickthall
+
+
+1. Morning (أذكار الصباح) and evening (أذكار المساء): 26 and 24 items, ids "me<order>"
+   Seen-Arabic/Morning-And-Evening-Adhkar-DB, files ar.json + en.json, commit 29d7623fede52eca835a789025dfda866e8cfe44
+   https://github.com/Seen-Arabic/Morning-And-Evening-Adhkar-DB
+   Arabic, count, English translation and transliteration, virtue (fadl, Arabic and English), source (Arabic and
+   English). Its own sources: hisnmuslim.com, sunnah.com, Hisn al-Muslim and its sharh (al-Qahtani), Rawa' al-Atshaa'
+   (al-Muqaddim).
+   License: MIT, Copyright (c) 2024 Seen Arabic
+
+2. After the prayer (الأذكار بعد السلام من الصلاة): 13 of the 15 items, ids "ap<n>"
+   fitrahive/dua-dhikr, data/dua-dhikr/dhikr-after-salah/en.json, commit f42f895f914319a844c3e3c2279483cae060ea19
+   https://github.com/fitrahive/dua-dhikr
+   Arabic, transliteration ("latin"), translation, count (from "notes": "Read 33x"), benefits, source.
+   Also the transliterations of before-sleep / upon-waking items whose Arabic is the same text (daily-dua/en.json).
+   License: MIT, Copyright (c) 2023 Fitrahive
+
+3. Before sleep (أذكار النوم, Hisn chapter 29), upon waking (أذكار الاستيقاظ, chapter 1) and 2 after-prayer items
+   (hm59 "Allahumma a'inni…", hm72 "…yuhyi wa yumit…" ×10): ids "hm<item id>"
+   my-prayers/muslim-data, assets/db/muslim_db_v2.7.0.db (tables azkar_*), muslim-data-flutter commit
+   6df43672a5306ff6e19b1e29dacfe88cf6385ccb
+   https://github.com/my-prayers/muslim-data-flutter
+   Arabic, English translation, reference.
+   License: Apache License 2.0, Copyright 2025 Kosrat Dlshad Ahmed (http://www.apache.org/licenses/LICENSE-2.0)
+
+4. The Quran: the du'as of the "quran" collection (15 items, ids "q<sura>_<first ayah>"): 2:127, 2:201, 3:8, 3:16,
+   3:147, 7:23, 14:40-41, 17:24, 18:10, 20:25-28, 20:114, 23:118, 25:74, 28:24, 59:10
+   Tanzil Quran Text, "quran-simple" (with its vowels and pause marks), https://tanzil.net, through api.alquran.cloud.
+   Tanzil's terms: verbatim copying and distribution allowed, with the source (Tanzil Project, tanzil.net) indicated;
+   the text may not be changed. Nothing is changed: a du'a inside a longer ayah is the ayah's own words from the first
+   word of the du'a ("رَبَّنَا" / "رَبِّ", after "and they said:") to the ayah's end; several ayat are joined by a space.
+   English: Mohammed Marmaduke Pickthall, "The Meaning of the Glorious Koran" (1930), edition "en.pickthall" of the same
+   API: in the public domain (the author died in 1936; in the US, published 1930 + 95 years). Cut from its own
+   "Our Lord!" / "My Lord!" to match the Arabic.
+
+The anytime collections (added with the adhkar display), "daily: false" in the app:
+- Remembrance (dhikr, 8): Hisn chapter 131 "the virtue of tasbih, tahmid, tahlil and takbir", items 274-277, 279, 280,
+  282, 285 (muslim-data). Each is a hadith that carries a dhikr ("…مَنْ قَالَ: سُبْحَانَ اللَّهِ وَبِحَمْدِهِ فِي يَوْمٍ مِائَةَ مَرَّةٍ…"):
+  the dhikr is the dataset's own words at fixed positions of its string (tools/adhkar_build.py prints every cut), the
+  whole hadith stays as the virtue (Arabic and English), the count is the hadith's (100, 10), the English the
+  dataset's quotation of the dhikr inside its translation.
+- Seeking forgiveness (istighfar, 7): Sayyid al-Istighfar (me11) and "astaghfirullah wa atubu ilayh" ×100 (me33), the
+  same items as in the morning adhkar; Hisn items 270 (cut from its hadith, ch. 130), 57 and 58 (before the salam,
+  ch. 24), 216 (the end of a gathering, ch. 86), 283 (cut, ch. 131).
+- Salawat (3): the two forms of the Ibrahimiyya, Hisn items 53 and 54 (ch. 23), with the virtue of items 239 and 241
+  (ch. 108, "the virtue of the prayer upon the Prophet"); the du'a after the adhan, item 25 (ch. 15).
+- Du'as from the Quran (15): above.
+- Hard times (distress, 10): Hisn chapters 35 (anxiety and sorrow: 140, 141), 36 (distress: 142-145), 54 (a calamity:
+  174), 44 (a difficult matter: 159), 42 (debt: 156), 47 (something disliked: 164).
+- Everyday du'as (everyday, 21): fitrahive/dua-dhikr data/dua-dhikr/daily-dua/en.json (MIT, the same commit), with
+  their transliteration and benefit: leaving home (2), the mosque (entering, leaving), wudu (before, after), eating
+  (before, forgetting the basmala, after), breaking the fast, clothes (2), a vehicle, travel, rain (3), wind, the toilet
+  (2); entering home is Hisn item 18 without its last words, an instruction ("ثُمَّ لِيُسَلِّمْ عَلَى أَهْلِهِ", then greet
+  your family); the dataset's note after its translation is the virtue.
+- Each everyday and hard-times du'a has its occasion: English written for the app ("Entering the mosque"), Arabic the
+  name of its Hisn chapter in muslim-data (language "ar"), the tatweel (letter stretching, U+0640) removed.
+- Not taken: the sneezing du'as and the resident's du'as for a traveller (fitrahive), Hisn's Hajj, funeral and
+  sickness chapters, and its narrative items ("he used to…") whose dhikr is not separable without retyping.
+
+Hisn al-Muslim itself: the author permits printing and distributing it free of charge; this app is free.
+
+
+What the build changes (and nothing else)
+------------------------------------------
+- Whitespace trimmed; a trailing citation in the Arabic of the evening item me3 ("[البقرة 285 - 286]") moved out
+  (it is a reference, not part of the dhikr).
+- Before sleep: Hisn's one item "سُبْحَانَ اللَّهِ (ثلاثاً وثلاثين) و الْحَمْدُ لِلَّهِ (ثلاثاً وثلاثين) وَ اللَّهُ أَكْبَر (أربعاً
+  وثلاثين)" is cut at its own count annotations into three counted items (33, 33, 34), the joining "و" dropped.
+- Counts not in a dataset's count field come from the dataset's own text: sleep hm119 ×3 (Bukhari 5017: "he did that
+  three times"; hisnmuslim.com gives 3), hm124 ×3 ("(Three times)"), hm72 ×10 ("Ten times after Maghrib and Fajr").
+- After prayer, following Hisn al-Muslim: the three Quls once after every prayer, three times after Fajr and Maghrib
+  (fitrahive says 3× and repeats the morning/evening virtue, both dropped); hm72 only after Fajr and Maghrib; the
+  dua for beneficial knowledge (ap13) only after Fajr. Order as on Mawaqit's screen (core/Texts.kt): Ayat al-Kursi
+  before the Quls; "Allahumma a'inni" (Hisn: end of the prayer) after "Allahumma anta as-salam", as Mawaqit shows it.
+- English translations of chapter 1/29: a trailing note in parentheses ("(Whoever…)", "(Three times)") becomes the
+  virtue/note field; for 2:285-286 the dataset repeats a second translation after the note: dropped.
+- Short references ("Muslim 2723") extracted from the English source text; the full source is kept ("s", "sa").
+- Tasbih, tahmid, takbir (ap5-7) get the source of the item that completes the hundred (ap8).
+- UI languages other than English and Arabic show the English translation.
+- References: fitrahive's "al-Bukhari" no longer becomes "al-Al-Bukhari"; a reference cut at "Vol." loses that word
+  (the existing items are unchanged: the build checks the old 68 byte for byte).
+- 130 items in all (128 KB, 36 KB gzipped).
+
+
+Cross-check (tools/adhkar_crosscheck.py, letter skeleton: vowels, marks and alef forms ignored)
+-----------------------------------------------------------------------------------------------
+Against the Quran (Tanzil "simple-clean" text via api.alquran.cloud), Sahih al-Bukhari and Sahih Muslim
+(github.com/fawazahmed0/hadith-api, ara-bukhari / ara-muslim) and Mawaqit's own after-prayer screen (core/Texts.kt):
+- Ayat al-Kursi (me2, ap9, hm120) = 2:255; al-Baqara 285-286 (me3, hm121) = 2:285-286; al-Ikhlas, al-Falaq,
+  an-Nas (me4-6, ap10-12) = suras 112-114, whole and exact.
+- me33 in Bukhari 6307; me34, me31, me7/me8 (first sentence), ap4 found in Sahih Muslim; hm125, hm1 in Bukhari 6324.
+- Mawaqit (Texts.azkar): ap1, ap2, hm59, ap3, ap8, ap9 and the Quls found in its text.
+- The anytime collections: hm274, 276, 277, 282, 283, 280, 58, 142, 174, 164 found in Sahih Muslim (by text); Abu
+  Bakr's du'a hm57 too, around a note: Muslim 2705 reads "ظُلْمًا كَبِيرًا - وَقَالَ قُتَيْبَةُ كَثِيرًا -" and Hisn prints
+  Qutayba's "كثيرا", so its two halves are checked in the same hadith. The 15 Quranic du'as are inside their ayat of
+  Tanzil's quran-simple-clean, letter for letter.
+- Known variants, kept as Hisn al-Muslim prints them: Sayyid al-Istighfar (me11) reads "وَأَبُوءُ بِذَنْبِي" in all three
+  datasets, Bukhari 6306 "وَأَبُوءُ لَكَ بِذَنْبِي"; "تَبَارَكْتَ يَا ذَا الْجَلاَلِ" (ap2, also Mawaqit) where Muslim 591 has
+  "تَبَارَكْتَ ذَا الْجَلاَلِ".

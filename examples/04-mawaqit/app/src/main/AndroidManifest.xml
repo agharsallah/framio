@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Mawaqit pages and API, the adhan files, ntfy for remote control, the LAN web panel -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- mDNS advertising of the web panel needs multicast on Wi-Fi -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+
+    <!-- The service keeps the schedule, adhan, web panel and ntfy running behind Frameo -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
+    <!-- Photo-frame mode brings Frameo back between prayers (only needed on Android 11+, harmless on 6) -->
+    <queries>
+        <package android:name="net.frameo.frame" />
+    </queries>
+
+    <uses-feature android:name="android.hardware.wifi" android:required="false" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+
+    <application
+        android:name=".MawaqitApplication"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="Mawaqit"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Mawaqit">
+
+        <!--
+          singleTask: the service and the launcher bring the one display forward (onNewIntent), never a second copy.
+          configChanges: rotating with the stand relayouts in place, no restart (the schedule keeps running anyway).
+        -->
+        <activity
+            android:name=".MawaqitActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|density|uiMode|locale|layoutDirection"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensor">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- How the framio launcher (example 02) draws this app's tile -->
+            <meta-data android:name="dev.framio.tile.subtitle" android:value="Prayer times" />
+            <meta-data android:name="dev.framio.tile.accent" android:value="#6CC79A" />
+            <meta-data android:name="dev.framio.tile.order" android:value="40" />
+        </activity>
+
+        <service
+            android:name=".service.FrameService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Mosque prayer-times display: plays the adhan on time and answers the remote panel" />
+        </service>
+    </application>
+</manifest>

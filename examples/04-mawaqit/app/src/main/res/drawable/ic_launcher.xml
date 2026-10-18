@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A dome and crescent on emerald: the app's icon (vector drawables work as icons from API 21) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path android:fillColor="#0C3D32" android:pathData="M24,0a24,24 0,1 1,0 48a24,24 0,1 1,0 -48z" />
+    <path android:fillColor="#E6B65C" android:pathData="M12,36h24v3H12z" />
+    <path android:fillColor="#E6B65C" android:pathData="M14,36v-6c0,-6 4.5,-9 10,-12c5.5,3 10,6 10,12v6z" />
+    <path android:fillColor="#E6B65C" android:pathData="M23.2,18v-4h1.6v4z" />
+    <path android:fillColor="#E6B65C" android:pathData="M24,7.5a3.6,3.6 0,1 0,2.6 6.2a2.8,2.8 0,1 1,-2.6 -6.2z" />
+</vector>
