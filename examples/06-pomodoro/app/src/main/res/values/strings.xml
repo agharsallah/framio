@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Pomodoro</string>
+    <string name="exit">Exit</string>
+    <string name="settings">Settings</string>
+    <string name="home">Home</string>
+    <string name="close">Close</string>
+    <string name="service_channel">Focus session</string>
+    <string name="service_text">A focus session is running</string>
+
+    <!-- Home -->
+    <string name="today_progress" tools:ignore="PluralsCandidate">%1$d / %2$d today</string>
+    <plurals name="today_description">
+        <item quantity="one">%1$d of %2$d session done today</item>
+        <item quantity="other">%1$d of %2$d sessions done today</item>
+    </plurals>
+    <string name="what_work_on">What will you work on?</string>
+    <string name="what_work_on_required">What will you work on? (needed for this mode)</string>
+    <string name="new_task">+ New</string>
+    <string name="new_task_hint">A task, in a few words</string>
+    <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
+    <string name="last_time">↳ Last time: “%1$s”</string>
+    <string name="begin">Begin</string>
+    <string name="summary_fixed">%1$d min · break %2$d</string>
+    <string name="summary_flow">Counts up · break by length</string>
+    <string name="rhythm_fixed">%1$d / %2$d</string>
+    <string name="rhythm_flow">Counts up</string>
+    <string name="mode_hint_classic">Ring with seconds</string>
+    <string name="mode_hint_deep">Calm, undisturbed</string>
+    <string name="mode_hint_flow">Stop when it flows out</string>
+    <string name="mode_hint_gentle">Just ten minutes</string>
+    <string name="mode_hint_own">Your mode</string>
+    <string name="notice_interrupted">A restart cut the last session short. It was saved as interrupted.</string>
+    <string name="ok">OK</string>
+
+    <!-- Focus -->
+    <string name="focus_label">Focus · %1$s</string>
+    <string name="paused">Paused</string>
+    <string name="pause_long">Paused a while. End here and pick it up later?</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="end">End</string>
+    <string name="plus_five">+5 min</string>
+    <string name="tap_for_controls">Tap for controls</string>
+    <plurals name="focus_left_description">
+        <item quantity="one">%1$d minute left in focus</item>
+        <item quantity="other">%1$d minutes left in focus</item>
+    </plurals>
+    <plurals name="paused_left_description">
+        <item quantity="one">Paused, %1$d minute left</item>
+        <item quantity="other">Paused, %1$d minutes left</item>
+    </plurals>
+
+    <!-- Break -->
+    <string name="break_short">Break</string>
+    <string name="break_long">Long break</string>
+    <plurals name="break_left_description">
+        <item quantity="one">%1$d minute left in the break</item>
+        <item quantity="other">%1$d minutes left in the break</item>
+    </plurals>
+    <string name="prompt_move">Stand up and move</string>
+    <string name="prompt_move_detail">A short walk or a stretch, away from screens.</string>
+    <string name="prompt_window">Look out of the window</string>
+    <string name="prompt_window_detail">Or at something about 6 m away. Green, if you can.</string>
+    <string name="prompt_water">Get some water</string>
+    <string name="prompt_water_detail">Refill your glass on the way.</string>
+    <string name="prompt_eyes">Rest your eyes</string>
+    <string name="prompt_eyes_detail">Look far away and blink slowly a few times.</string>
+    <string name="prompt_messages">Check messages now, if you need to</string>
+    <string name="prompt_messages_detail">Then step away from every screen for the rest of the break.</string>
+    <string name="skip_break">Skip break</string>
+
+    <!-- Wrap-up -->
+    <string name="wrap_question">How did that go?</string>
+    <string name="outcome_done">Done</string>
+    <string name="outcome_partly">Partly</string>
+    <string name="outcome_not_yet">Not yet</string>
+    <string name="wrap_skip">Skip</string>
+
+    <!-- Ready -->
+    <string name="ready_title">Ready for the next one?</string>
+    <string name="ready_start">Start</string>
+    <plurals name="ready_next">
+        <item quantity="one">Next: %1$d minute</item>
+        <item quantity="other">Next: %1$d minutes</item>
+    </plurals>
+    <string name="ready_next_flow">Next: count up</string>
+
+    <!-- Settings -->
+    <string name="cue_volume">Cue volume</string>
+    <string name="cue_volume_note">Chimes play on the alarm stream; the system volume is never changed.</string>
+    <string name="test_cue">Play</string>
+    <string name="theme">Theme</string>
+    <string name="theme_ink">Ink</string>
+    <string name="theme_paper">Paper</string>
+    <string name="theme_forest">Forest</string>
+    <string name="theme_tomato">Tomato</string>
+    <string name="daily_target">Daily target</string>
+    <plurals name="sessions_count">
+        <item quantity="one">%1$d session</item>
+        <item quantity="other">%1$d sessions</item>
+    </plurals>
+    <string name="percent">%1$d%%</string>
+    <string name="less">−</string>
+    <string name="more">+</string>
+
+    <!-- Ritual (Deep) -->
+    <string name="ritual_title">%1$s · before you start</string>
+    <string name="back">Back</string>
+    <string name="if_then_prefix">If I get distracted, I’ll</string>
+    <string name="if_then_hint">note it and come back</string>
+    <string name="check_phone">Phone silenced and out of reach</string>
+    <string name="check_water">Water</string>
+    <string name="check_one_window">One window or tab</string>
+    <string name="screen_calm">Calm screen</string>
+    <string name="screen_blackout">Screen off</string>
+    <string name="skip_ritual_next">Skip this screen next time</string>
+    <string name="open_ritual">Ritual</string>
+    <string name="parked_earlier">Parked earlier</string>
+    <string name="clear">Clear</string>
+
+    <!-- Deep focus -->
+    <string name="hold_to_open">Hold to open</string>
+    <string name="park_thought">Park a thought</string>
+    <string name="deep_locked_description">Deep focus. Hold for a second to open the panel.</string>
+    <plurals name="minutes_left">
+        <item quantity="one">%1$d min left</item>
+        <item quantity="other">%1$d min left</item>
+    </plurals>
+    <plurals name="minutes_short">
+        <item quantity="one">%1$d min</item>
+        <item quantity="other">%1$d min</item>
+    </plurals>
+    <string name="park_title">Park a thought</string>
+    <string name="park_hint">Scribble a word or two. It waits for you at the break.</string>
+    <string name="park_save">Park it</string>
+    <string name="park_pad_description">Handwriting pad</string>
+    <string name="note_title">Next step when you’re back?</string>
+    <string name="keep_going">Keep going</string>
+    <string name="end_session">End session</string>
+
+    <!-- Deep wrap-up -->
+    <string name="block_done">Block done</string>
+    <string name="block_done_task">Block done · %1$s</string>
+    <string name="focus_rating">How focused were you?</string>
+    <string name="next_step">Next step?</string>
+    <string name="parked_thoughts">Parked thoughts</string>
+    <plurals name="start_break">
+        <item quantity="one">Start break · %1$d min</item>
+        <item quantity="other">Start break · %1$d min</item>
+    </plurals>
+
+    <!-- M4: break -->
+    <string name="plus_five_break">+5 min</string>
+    <string name="flow_tier">Worked %1$d min → %2$d min break</string>
+
+    <!-- M4: Flow -->
+    <string name="flow_label">Flow · counting up</string>
+    <plurals name="elapsed_description">
+        <item quantity="one">%1$d minute of focus so far</item>
+        <item quantity="other">%1$d minutes of focus so far</item>
+    </plurals>
+    <plurals name="flow_stop_hint">
+        <item quantity="one">Stop at a natural point: %1$d minute break</item>
+        <item quantity="other">Stop at a natural point: %1$d minute break</item>
+    </plurals>
+    <string name="flow_stop">Stop here</string>
+    <string name="flow_nudge">90 minutes in. A real break helps.</string>
+    <string name="flow_tap_hint">Tap for Stop and Pause</string>
+
+    <!-- M4: Gentle start -->
+    <string name="gentle_ready_title">Ten minutes done. That counts.</string>
+    <string name="gentle_ready_detail">Another 10? Stopping here is fine too.</string>
+    <string name="gentle_another">Another 10</string>
+    <string name="gentle_enough">Done for now</string>
+
+    <!-- M4: Why? -->
+    <string name="why_title">Why? The evidence, honestly</string>
+    <string name="why_open">Why? Show the evidence</string>
+    <string name="why_strong">Strong evidence</string>
+    <string name="why_moderate">Moderate evidence</string>
+    <string name="why_moderate_weak">Moderate to weak evidence</string>
+    <string name="why_weak">Weak evidence</string>
+    <string name="why_strength_note">%1$s · %2$s</string>
+    <string name="why_break_title">A break away from the screen</string>
+    <string name="why_break_evidence">Short breaks reliably left people less tired and more vigorous, but barely changed how much they got done; spending the break on a phone led to fewer problems solved afterwards.</string>
+    <string name="why_break_note">helps how you feel more than output</string>
+    <string name="why_break_source">Albulescu et al. 2022, PLOS ONE (meta-analysis) · Kang &amp; Kurtzberg 2019</string>
+    <string name="why_nature_title">A landscape, and a real window</string>
+    <string name="why_nature_evidence">A 40-second view of a green roof improved attention in one study, and reviews find small to moderate benefits from nature, with real nature doing better than pictures of it.</string>
+    <string name="why_nature_source">Lee et al. 2015 · Stevenson et al. 2018 (review)</string>
+    <string name="why_batching_title">Messages in batches</string>
+    <string name="why_batching_evidence">Checking messages in batches, about three times a day, lowered stress, while turning notifications off entirely raised anxiety.</string>
+    <string name="why_batching_source">Fitz et al. 2019, Computers in Human Behavior</string>
+    <string name="why_intention_title">Saying what you’ll work on</string>
+    <string name="why_intention_evidence">Deciding what you will do, and what you’ll do if distracted (if-then), helped people follow through across hundreds of tests.</string>
+    <string name="why_intention_source">Gollwitzer &amp; Sheeran 2006 · Sheeran et al. 2025 (d ≈ .27–.66)</string>
+    <string name="why_phone_title">The phone, silenced</string>
+    <string name="why_phone_evidence">Notifications pull attention even when you ignore them; the idea that a phone’s mere presence drains you mostly failed to replicate, so this is only a reminder.</string>
+    <string name="why_phone_source">Stothart et al. 2015 · Ruiz Pardo &amp; Minda 2022</string>
+    <string name="why_still_title">A dark, still screen</string>
+    <string name="why_still_evidence">Interruptions of only 3 to 4 seconds doubled to tripled errors, so during focus the screen shows no seconds, no motion and nothing new.</string>
+    <string name="why_still_source">Altmann, Trafton &amp; Hambrick 2014 · Stothart et al. 2015</string>
+    <string name="why_tiers_title">Break length by how long you worked</string>
+    <string name="why_tiers_evidence">Flowtime earns 5 minutes for up to 25 of work, 8 for up to 50 and 10 beyond; studies comparing it with fixed blocks found mostly no difference either way.</string>
+    <string name="why_tiers_note">a useful structure, not a proven method</string>
+    <string name="why_tiers_source">Smits et al. 2025 · Biwer et al. 2023 · Göksu et al. 2026</string>
+</resources>

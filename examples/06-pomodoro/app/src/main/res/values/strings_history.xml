@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PluralsCandidate">
+    <!-- Keyboard -->
+    <string name="done">Done</string>
+    <string name="save">Save</string>
+    <string name="key_shift">Shift</string>
+    <string name="key_delete">Delete</string>
+    <string name="key_switch">Letters or numbers</string>
+    <string name="key_space">space</string>
+
+    <!-- Capture -->
+    <string name="pulled_away">Pulled away?</string>
+    <string name="pulled_away_by">Pulled away by…</string>
+    <string name="logged_reasons">Logged · %1$s</string>
+    <plurals name="distractions_logged">
+        <item quantity="one">%1$d distraction logged</item>
+        <item quantity="other">%1$d distractions logged</item>
+    </plurals>
+    <string name="times_count">×%1$d</string>
+    <string name="more_reasons">More</string>
+    <string name="ending_now">Ending now</string>
+    <plurals name="ending_at">
+        <item quantity="one">Ending at %1$d min</item>
+        <item quantity="other">Ending at %1$d min</item>
+    </plurals>
+    <string name="ending_at_of">Ending at %1$d min of %2$d</string>
+    <string name="why_stop">Why stop now? Optional, pick any</string>
+    <string name="write_it">✎ Write it</string>
+    <string name="type_it">Type it</string>
+    <string name="note_pad_hint">A word or two by hand. It shows when you start again.</string>
+    <string name="last_time_ink">↳ Last time:</string>
+    <string name="add_note">+ Note</string>
+    <string name="add_note_count">+ Note (%1$d)</string>
+    <string name="note_pad_title">A note on this session</string>
+    <string name="note_pad_detail">Write by hand. You’ll find it in History.</string>
+
+    <!-- History -->
+    <string name="history">History</string>
+    <string name="insights">Insights</string>
+    <string name="history_open">History ›</string>
+    <string name="insights_open">Insights ›</string>
+    <string name="duration_hm">%1$d h %2$02d min</string>
+    <string name="outcome_unrated">Unrated</string>
+    <string name="outcome_ended_early">Ended early</string>
+    <string name="outcome_interrupted">Interrupted</string>
+    <string name="date_unknown">Date unknown</string>
+    <string name="day_today">Today · %1$s</string>
+    <string name="day_yesterday">Yesterday · %1$s</string>
+    <string name="undo">Undo</string>
+    <string name="deleted_entry">Deleted</string>
+    <string name="deleted_session">Session deleted</string>
+    <string name="range_all">All time</string>
+    <string name="range_today">Today</string>
+    <string name="range_week">7 days</string>
+    <string name="range_month">28 days</string>
+    <string name="range_quarter">12 weeks</string>
+    <string name="filter_dates">Dates</string>
+    <string name="filter_task">Task</string>
+    <string name="filter_mode">Mode</string>
+    <string name="filter_outcome">Outcome</string>
+    <string name="filter_reason">Reason</string>
+    <string name="filter_count">%1$s · %2$d</string>
+    <string name="filter_notes">✎ With notes</string>
+    <string name="filter_clear">Clear</string>
+    <plurals name="day_summary">
+        <item quantity="one">%1$d session · %2$s</item>
+        <item quantity="other">%1$d sessions · %2$s</item>
+    </plurals>
+    <string name="shown_of">%1$d of %2$d sessions</string>
+    <string name="history_empty">No sessions yet. They appear here as you finish them.</string>
+    <string name="history_none_match">Nothing matches these filters.</string>
+    <string name="loading">Loading…</string>
+    <string name="rating_stars">★%1$d</string>
+    <string name="focused_of">%1$s of %2$s</string>
+    <string name="rating_label">Focus</string>
+    <string name="timeline_after">after</string>
+    <string name="entry_end">Ended: %1$s</string>
+    <string name="entry_distraction_none">Distracted</string>
+    <string name="entry_resume">↳ %1$s</string>
+    <string name="entry_parked">Parked</string>
+    <string name="dealt_with">Dealt with</string>
+    <string name="reopen">Open again</string>
+    <string name="edit">Edit</string>
+    <string name="add_distraction">+ Distraction</string>
+    <string name="delete_session">Delete session</string>
+    <string name="legacy_parked">%1$d parked (only counted by an older version)</string>
+    <string name="change_reasons">Change reasons</string>
+    <string name="history_task_none">No tasks yet</string>
+
+    <!-- Insights -->
+    <string name="range_week_short">Week</string>
+    <string name="today_of">%1$d / %2$d today</string>
+    <string name="week_of">%1$d / %2$d this week</string>
+    <string name="active_7">%1$d of the last 7 days</string>
+    <string name="active_28">%1$d of the last 28</string>
+    <string name="range_totals">%1$d finished · %2$s</string>
+    <string name="range_started">%1$d started, on %2$d days</string>
+    <string name="focus_per_day">Focus per day (finished sessions)</string>
+    <string name="focus_per_week">Focus per week (finished sessions)</string>
+    <string name="focus_per_month">Focus per month (finished sessions)</string>
+    <string name="target_line">line: target %1$d</string>
+    <string name="outcomes_title">How sessions ended</string>
+    <string name="n_equals">n = %1$d</string>
+    <string name="legend_count">%1$s %2$d</string>
+    <string name="reasons_title">What pulled you away</string>
+    <string name="reasons_rate">%1$d logged in %2$s of focus (%3$s an hour)</string>
+    <string name="reasons_plain">%1$d logged · a rate shows from 5 h of focus</string>
+    <string name="reasons_none">Nothing logged in this period.</string>
+    <string name="trend_up">↑ from %1$d</string>
+    <string name="trend_down">↓ from %1$d</string>
+    <string name="trend_same">about the same</string>
+    <string name="trend_weeks">Last 8 weeks</string>
+    <string name="hours_title">When you get pulled away</string>
+    <string name="hours_caption">Distractions by hour of the day; the strip beneath is focus time. %1$d recalled afterwards are not placed.</string>
+    <string name="rating_title">Focus rating by hour</string>
+    <string name="rating_needed">%1$d of 20 rated sessions so far. This appears at 20.</string>
+    <string name="rating_caption">Mean rating by starting hour, fuller colour = higher. Hours with fewer than 3 sessions stay empty. n = %1$d</string>
+    <string name="estimates_title">Estimate vs actual</string>
+    <string name="estimates_none">No task has an estimate yet.</string>
+    <string name="estimate_line">%1$d → %2$d</string>
+    <string name="tasks_title">Tasks</string>
+    <string name="tasks_other">Other tasks</string>
+    <string name="modes_title">Modes</string>
+    <string name="flow_typical">Typical Flow block: %1$s (%2$s–%3$s), n = %4$d</string>
+    <string name="insights_from_cache">from the saved summary</string>
+
+    <!-- Settings: reasons -->
+    <string name="reasons">Reasons</string>
+    <string name="edit_reasons">Edit reasons</string>
+    <string name="reasons_note">The chips for “Pulled away?” and ending early. Your order stays put.</string>
+    <string name="add_reason">+ Add reason</string>
+    <string name="new_reason">A new reason</string>
+    <string name="rename_reason">Rename “%1$s”</string>
+    <string name="used_times">used %1$d×</string>
+    <string name="rename">Rename</string>
+    <string name="hide">Hide</string>
+    <string name="show">Show</string>
+    <string name="move_up">Move up</string>
+    <string name="move_down">Move down</string>
+    <string name="change_colour">Change colour of %1$s</string>
+    <string name="change_glyph">Change symbol of %1$s</string>
+    <string name="section_end_only">Only when ending early</string>
+    <string name="section_hidden">Hidden</string>
+    <string name="sort_by_use">Sort by use</string>
+    <string name="restore_defaults">Restore defaults</string>
+    <string name="reasons_restored">Defaults restored</string>
+    <string name="reasons_sorted">Sorted by use</string>
+</resources>

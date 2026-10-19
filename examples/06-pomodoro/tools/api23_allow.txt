@@ -1,0 +1,7 @@
+# Platform members the API 23 guard may skip, one per line (class or class.member), each with the reason.
+# Only for calls that can't run on Android 6, because of an SDK_INT check or a type check in front of them.
+
+# D8's AutoCloseable desugaring: close() on something that is an ExecutorService forwards to a helper that
+# compares it with ForkJoinPool.commonPool() (API 24). Only reached when an ExecutorService is closed
+# through AutoCloseable, which Pomodoro never does.
+java.util.concurrent.ForkJoinPool.commonPool

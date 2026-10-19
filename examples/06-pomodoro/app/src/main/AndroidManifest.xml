@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- FocusService keeps the process at foreground priority while a session runs, so the deadline cue plays and
+         the app comes back to the front on time. The firmware never restarts a killed process (03 LOG). -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+
+    <!-- DataExtractionRules: Android 12+ only; the frame runs 6 and nothing is ever backed up -->
+    <application
+        android:name=".PomodoroApp"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Pomodoro"
+        tools:ignore="DataExtractionRules">
+
+        <!--
+          singleTask: the service and the launcher bring the one timer forward (onNewIntent), never a second copy.
+          configChanges: rotating the frame relayouts in place; a running session never restarts the activity.
+          screenOrientation sensor: the frame follows its stand (landscape or portrait); Android 16's warning doesn't apply on 6.
+          adjustNothing: the IME (410 px in landscape) covers the bottom instead of shrinking the window, which would
+          scale the whole fitted layout down (FitToDesign); the text field sits at the top.
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|navigation|density|uiMode|locale|layoutDirection"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:screenOrientation="sensor"
+            android:windowSoftInputMode="adjustNothing"
+            tools:ignore="DiscouragedApi">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- How the framio launcher (example 02) draws this app's tile -->
+            <meta-data android:name="dev.framio.tile.subtitle" android:value="Focus timer" />
+            <meta-data android:name="dev.framio.tile.accent" android:value="#E5735C" />
+            <meta-data android:name="dev.framio.tile.order" android:value="60" />
+        </activity>
+
+        <service
+            android:name=".platform.FocusService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Focus timer on a desk photo frame: keeps a running focus session alive so its end cue plays on time" />
+        </service>
+    </application>
+</manifest>

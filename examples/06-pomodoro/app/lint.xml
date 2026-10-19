@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- The design system's tokens, the fitted orientation, and two Appearance settings (timer size, keyboard) are the only CompositionLocals (compose-lints) -->
+    <issue id="ComposeCompositionLocalUsage">
+        <option name="allowed-composition-locals" value="LocalQuietColors,LocalQuietType,LocalQuietSpacing,LocalQuietMotion,LocalLandscape,LocalTimerScale,LocalSystemKeyboard" />
+    </issue>
+</lint>
