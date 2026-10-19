@@ -1,0 +1,163 @@
+# Shared lines: praise, gentle retries, endings, greetings, gates. Warm and short.
+praise_1	Well done!
+praise_2	Yes! That's it!
+praise_3	Wonderful!
+praise_4	You did it!
+praise_5	Great job!
+praise_6	Super!
+praise_7	Lovely!
+praise_8	That's right!
+try_1	Hmm, let's try again.
+try_2	Almost! Try another one.
+try_3	Let's look again, together.
+try_4	Not quite. You can do it!
+end_1	Hooray! You finished!
+end_2	That was so much fun!
+end_3	Wow, you did all of them!
+sticker_new	Here is a new sticker for your book!
+end_again	Shall we play again?
+
+home_hello	Hello, my friend!
+home_morning	Good morning!
+home_afternoon	Good afternoon!
+home_evening	Good evening!
+home_night	It's nearly bedtime. Let's be cozy and quiet.
+home_what	What shall we play today?
+home_asleep	Shh. Everyone is sleeping now. Let's go to the Quiet Tree.
+knock_knock	Knock knock! Who's there? It's me, Pip!
+
+world_numbers	Let's play with numbers in Pip's nest!
+world_colors	Welcome to Tuka's studio! Colors and shapes!
+world_words	Hello! Let's play with words and sounds.
+world_music	Let's make some music!
+world_habits	Welcome to Moss's garden. Let's learn good habits.
+world_puzzles	Let's solve some puzzles!
+world_quiet	Welcome to the Quiet Tree. Let's take it slow.
+
+rest_locked	Pip is resting now. Let's play something else. See you later!
+rest_limit	That's all the playing for today. Let's go and play outside! See you tomorrow!
+rest_tap	Shh. I'm having a little rest.
+wiggle_start	Time for a wiggle break! Stand up, everybody!
+wiggle_tree	Stretch up tall, like a tree. Reach for the sky!
+wiggle_frog	Now hop like a little frog. Hop, hop, hop!
+wiggle_shake	Shake your hands, like twinkly stars!
+wiggle_turn	Turn around, slowly, slowly.
+wiggle_breathe	Smell the flower. Mmm. Now blow out the candle. Whoo.
+wiggle_water	Let's have a sip of water. Glug, glug!
+wiggle_done	Great wiggling! Now let's play some more.
+star_from_afar	Look! Someone who loves you sent you a star!
+stickers_hello	Look at all your stickers!
+stickers_empty	Your sticker book is waiting. Finish a game to get a sticker!
+mail_hello	You have messages! Tap one to see it.
+mail_empty	There are no messages yet.
+
+pip_hello	Hi! I'm Pip!
+pip_giggle_1	Hee hee! That tickles!
+pip_giggle_2	Tweet tweet! Hello!
+pip_giggle_3	I'm so happy you're here!
+tuka_hello	Hi! I'm Tuka!
+tuka_giggle_1	Hee hee! Let's make something!
+tuka_giggle_2	I love colors!
+tuka_giggle_3	Hello, friend!
+bo_hello	Hello! I'm Bo!
+bo_giggle_1	Toot toot! Hello!
+bo_giggle_2	I love music and words!
+bo_giggle_3	Hee hee! Hello!
+moss_hello	Hello. I'm Moss. Nice and slow.
+moss_giggle_1	Hello, little friend.
+moss_giggle_2	Slow and steady.
+moss_giggle_3	Hee hee. That tickles.
+luma_hello	Hoo hoo. I'm Luma.
+luma_giggle_1	Hoo hoo. Hello, sleepy friend.
+luma_giggle_2	The stars are twinkling.
+luma_giggle_3	Shh. Let's be quiet together.
+
+count_tap	Let's count! Tap each one.
+play_count	Count with me!
+
+# numbers
+num_1	One!
+num_2	Two!
+num_3	Three!
+num_4	Four!
+num_5	Five!
+num_6	Six!
+num_7	Seven!
+num_8	Eight!
+num_9	Nine!
+num_10	Ten!
+num_11	Eleven!
+num_12	Twelve!
+num_13	Thirteen!
+num_14	Fourteen!
+num_15	Fifteen!
+num_16	Sixteen!
+num_17	Seventeen!
+num_18	Eighteen!
+num_19	Nineteen!
+num_20	Twenty!
+thats_1	That's one!
+thats_2	That's two!
+thats_3	That's three!
+thats_4	That's four!
+thats_5	That's five!
+thats_6	That's six!
+thats_7	That's seven!
+thats_8	That's eight!
+thats_9	That's nine!
+thats_10	That's ten!
+
+# names of shared objects (sticker book, words)
+name_apple	Apple!
+name_pear	Pear!
+name_banana	Banana!
+name_orange	Orange!
+name_lemon	Lemon!
+name_strawberry	Strawberry!
+name_cherry	Cherries!
+name_grapes	Grapes!
+name_blueberry	Blueberry!
+name_carrot	Carrot!
+name_broccoli	Broccoli!
+name_tomato	Tomato!
+name_cupcake	Cupcake!
+name_cookie	Cookie!
+name_egg	Egg!
+name_watermelon	Watermelon!
+name_icecream	Ice cream!
+name_bread	Bread!
+name_cheese	Cheese!
+name_milk	Milk!
+name_flower	Flower!
+name_leaf	Leaf!
+name_mushroom	Mushroom!
+name_sun	Sun!
+name_moon	Moon!
+name_cloud	Cloud!
+name_rainbow	Rainbow!
+name_star	Star!
+name_heart	Heart!
+name_tree	Tree!
+name_snail	Snail!
+name_butterfly	Butterfly!
+name_ball	Ball!
+name_balloon	Balloon!
+name_block	Block!
+name_teddy	Teddy bear!
+name_car	Car!
+name_boat	Boat!
+name_kite	Kite!
+name_drum	Drum!
+name_rocket	Rocket!
+name_duck	Duck!
+name_fish	Fish!
+name_cup	Cup!
+name_book	Book!
+name_hat	Hat!
+name_umbrella	Umbrella!
+name_bell	Bell!
+name_gift	Present!
+name_crown	Crown!
+name_sock	Sock!
+name_toothbrush	Toothbrush!
+name_soap	Soap!

@@ -1,0 +1,135 @@
+# Luma's Quiet Tree: soft, slow, safe. Short sentences.
+play_breathe	Breathe with Luma.
+play_feelings	Feelings.
+play_stories	Stories.
+play_nightlight	Night light.
+
+# ---- breathe
+breathe_intro	Hoo hoo. Let's breathe slowly, together.
+breathe_pick	Pick a picture.
+breathe_name_flower	Smell the flower, blow the candle.
+breathe_name_balloon	Balloon belly.
+breathe_name_hand	Starfish hand.
+breathe_flower_start	Let's smell the flower, and blow out the candle. Nice and slow.
+breathe_balloon_start	Put your hands on your belly. Your belly is a balloon.
+breathe_hand_start	Spread your hand wide, like a starfish. Let's trace your fingers, one by one.
+breathe_flower_in	Smell the flower. Mmm.
+breathe_flower_out	Now blow out the candle. Whooo.
+breathe_balloon_in	Breathe in, and fill your balloon belly.
+breathe_balloon_out	Breathe out, and let it go, slowly.
+breathe_hand_in	Slide up your finger, and breathe in.
+breathe_hand_out	Slide down, and breathe out.
+breathe_in	In.
+breathe_out	Out.
+breathe_end	How do you feel now? Nice and calm.
+
+# ---- feelings
+feelings_intro	Hoo hoo. Let's talk about feelings. Everybody has them.
+feelings_explore	Tap a face to see a feeling.
+feelings_ready	All feelings are okay. Now let's play a feelings game!
+feelings_whathelps	What can help?
+feelings_about_happy	Happy! When I feel happy, I smile, and I want to share it.
+feelings_about_sad	Sad. When I feel sad, a hug helps. I can tell someone.
+feelings_about_angry	Angry. Grrr. When I feel angry, I stop, and take a big breath.
+feelings_about_scared	Scared. When I feel scared, I go to a grown-up I love. A hug helps.
+feelings_about_surprised	Surprised! Oh! My eyes go big and round.
+feelings_about_sleepy	Sleepy. Yawn. When I feel sleepy, it's time to rest.
+feelings_about_proud	Proud! When I do something hard, I feel proud of me.
+feelings_about_calm	Calm. Slow and soft, like a quiet breath.
+feelings_name_happy	Happy.
+feelings_name_sad	Sad.
+feelings_name_angry	Angry.
+feelings_name_scared	Scared.
+feelings_name_surprised	Surprised.
+feelings_name_sleepy	Sleepy.
+feelings_name_proud	Proud.
+feelings_name_calm	Calm.
+feelings_yes_happy	Yes, happy! Happy feels bright and warm.
+feelings_yes_sad	Yes, sad. It's okay to feel sad.
+feelings_yes_angry	Yes, angry. It's okay to feel angry. We can be angry, and still be kind.
+feelings_yes_scared	Yes, scared. It's okay to feel scared.
+feelings_yes_surprised	Yes, surprised! Oh, wow!
+feelings_yes_sleepy	Yes, sleepy. Sleepy is okay too.
+feelings_yes_proud	Yes, proud! Proud feels big and warm inside.
+feelings_yes_calm	Yes, calm. Calm feels soft and slow.
+feelings_share_happy	Happy feelings are lovely to share. Let's smile together!
+feelings_share_surprised	Surprises make our eyes go big. What a surprise!
+feelings_share_proud	You can be proud of you, too, when you try something hard.
+feelings_share_calm	Ahh. Let's be calm together, for a moment.
+feelings_help_hug	A big, warm hug.
+feelings_help_talk	Talk to someone you love.
+feelings_help_breathe	Breathe slowly. In, and out.
+feelings_help_rest	A little rest.
+feelings_help_play	Play together with a friend.
+feelings_better_pip	That helps. Now Pip feels better.
+feelings_better_tuka	That helps. Now Tuka feels better.
+feelings_better_bo	That helps. Now Bo feels better.
+feelings_better_moss	That helps. Now Moss feels better.
+feelings_s_icecream	Oh no! Tuka dropped her ice cream on the grass. How does Tuka feel?
+feelings_s_balloon	Bo's balloon floated away, up, up into the sky. How does Bo feel?
+feelings_s_gift	Pip got a present from a friend. How does Pip feel?
+feelings_s_ball	Moss's friends came to play ball with him. How does Moss feel?
+feelings_s_tower	Bo built a tall tower, and someone knocked it over. How does Bo feel?
+feelings_s_wait	Pip wanted a turn on the drum, but he had to wait, and wait. How does Pip feel?
+feelings_s_noise	It's dark, and Moss hears a big, loud noise. How does Moss feel?
+feelings_s_thunder	Boom! Thunder rumbles in the sky. How does Tuka feel?
+feelings_s_butterfly	A butterfly landed right on Bo's trunk! How does Bo feel?
+feelings_s_party	Pip opened the door, and all his friends called out: Surprise! How does Pip feel?
+feelings_s_yawn	Tuka played all day long. Now her eyes feel heavy. How does Tuka feel?
+feelings_s_busy	Bo had a long, busy day. He gives a great big yawn. How does Bo feel?
+feelings_s_built	Moss built a tall tower, all by himself! How does Moss feel?
+feelings_s_clouds	Pip lies in the grass, and watches the clouds drift by, slowly. How does Pip feel?
+
+# ---- stories
+stories_intro	Hoo hoo. It's story time.
+stories_pick	Which story shall we read? Tap a book.
+stories_end	The end. Sweet dreams.
+stories_title_pip_sleep	Pip Can't Sleep.
+stories_title_tuka_share	Tuka Shares Her Berries.
+stories_title_moss_slow	Moss Takes His Time.
+stories_title_bo_rain	Bo's Big Rain.
+stories_pip_sleep_1	It was night in the meadow. The moon was up, and the stars were twinkling. But Pip could not sleep.
+stories_pip_sleep_2	Pip wiggled. Pip giggled. Pip turned this way, and that way. "I'm not sleepy!" said Pip.
+stories_pip_sleep_3	Hoo hoo. Luma the owl flew down. "Can't sleep, little Pip? Let's get ready for bed, together."
+stories_pip_sleep_4	First, a warm drink. Moss brought a cup of warm milk. Sip, sip. Mmm. Cozy.
+stories_pip_sleep_5	Next, brush your teeth. Bo showed Pip how. Scrub, scrub, up and down. All clean and shiny!
+stories_pip_sleep_6	Then, a story. Tuka read a book about the moon. Pip snuggled up close, and listened.
+stories_pip_sleep_7	"Now let's breathe slowly," said Luma. "In, and out. In, and out."
+stories_pip_sleep_8	Pip's eyes felt heavy. Pip gave a big, big yawn. Yaaawn.
+stories_pip_sleep_9	Pip snuggled into his cozy nest. Goodnight, Pip. Goodnight, friends.
+stories_tuka_share_1	One sunny morning, Tuka went to the big berry bush.
+stories_tuka_share_2	She picked one berry, two berries, lots and lots of berries! Soon her basket was full.
+stories_tuka_share_3	"Yum!" said Tuka. "All mine!"
+stories_tuka_share_4	Then Tuka saw Bo. Bo's tummy rumbled. Bo looked a little sad.
+stories_tuka_share_5	Tuka looked at her basket. Then she looked at Bo. Hmm. What could she do?
+stories_tuka_share_6	"Here, Bo," said Tuka. "Would you like some berries?" Bo smiled a big smile. "Thank you, Tuka!"
+stories_tuka_share_7	Pip and Moss came too. Tuka shared with everyone. One for you, and one for you, and one for you!
+stories_tuka_share_8	Everyone was happy. And Tuka felt warm and happy, right inside. Sharing feels good.
+stories_moss_slow_1	This is Moss. Moss is a turtle, and he does everything slowly. Step, by step, by step.
+stories_moss_slow_2	"Come on, Moss!" called Pip. "Let's go up the big hill, and watch the sunset!"
+stories_moss_slow_3	Pip flew. Tuka ran. Bo trotted. Off they went, very fast!
+stories_moss_slow_4	Moss went slowly. On the way, he met a little snail. "Hello, snail. You are slow, too!"
+stories_moss_slow_5	He saw a butterfly with purple wings, and a flower that smelled so sweet. Mmm.
+stories_moss_slow_6	At the top of the hill, the friends looked around. "Where is Moss?"
+stories_moss_slow_7	And here came Moss, step by step. "I'm here!" he smiled. "I took my time."
+stories_moss_slow_8	Moss told them about the snail, the butterfly, and the sweet flower. "Wow!" said Tuka. "We were too fast to see them!"
+stories_moss_slow_9	Then they watched the sunset, together. Fast or slow, that's okay. We all get there in our own time.
+stories_bo_rain_1	Bo was playing ball in the meadow. Then the sky turned grey, and big clouds came rolling in.
+stories_bo_rain_2	Pitter, patter. The rain began to fall. Then, rumble, rumble, went the thunder.
+stories_bo_rain_3	Bo felt scared. His tummy felt wobbly, and he wanted to hide.
+stories_bo_rain_4	Luma came close. "You feel scared, Bo. That's okay. Thunder is loud, but we are safe here, under the big tree."
+stories_bo_rain_5	"Let's breathe together," said Luma. "Smell the flower, and blow out the candle." In, and out.
+stories_bo_rain_6	Bo breathed in. Bo breathed out. Slowly, his tummy felt less wobbly.
+stories_bo_rain_7	"You can hold my wing," said Luma. So Bo and Luma watched the rain together, side by side.
+stories_bo_rain_8	Little by little, the rain got softer. The thunder went far away. And the sun peeked out.
+stories_bo_rain_9	Look, a rainbow! "I was scared," said Bo, "but now I feel better." And he gave Luma a big hug.
+
+# ---- night light
+nightlight_hello	Hoo hoo. It's sleepy time. Let's say goodnight to our friends.
+nightlight_gn_pip	Goodnight, Pip.
+nightlight_gn_tuka	Goodnight, Tuka.
+nightlight_gn_bo	Goodnight, Bo.
+nightlight_gn_moss	Goodnight, Moss.
+nightlight_gn_you	And goodnight, little one. Sleep tight.
+nightlight_shh	Shh. Sleep tight.
+nightlight_shh_2	Shh. The stars are watching over you.

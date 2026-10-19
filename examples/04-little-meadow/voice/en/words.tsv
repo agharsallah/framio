@@ -1,0 +1,164 @@
+# Bo's Word Room: ABC garden, Trace, First sounds, Animal friends
+play_abc	ABC garden!
+play_trace	Let's trace!
+play_firstsound	First sounds!
+play_animals	Animal friends!
+
+# ABC garden
+abc_intro	Welcome to my ABC garden! Every letter grows something.
+abc_tap	Tap a letter, and see what grows!
+abc_more	Look how the garden grows! Let's find more letters.
+abc_find	Can you find the letter
+abc_again	We know that one! Let's try a new letter.
+abc_a	“A”… “A” is for apple!
+abc_b	“B”… “B” is for ball!
+abc_c	“C”… “C” is for cat!
+abc_d	“D”… “D” is for duck!
+abc_e	“E”… “E” is for egg!
+abc_f	“F”… “F” is for fish!
+abc_g	“G”… “G” is for grapes!
+abc_h	“H”… “H” is for hat!
+abc_i	“I”… “I” is for ice cream!
+abc_j	“J”… “J” is for jam!
+abc_k	“K”… “K” is for kite!
+abc_l	“L”… “L” is for lemon!
+abc_m	“M”… “M” is for moon!
+abc_n	“N”… “N” is for nest!
+abc_o	“O”… “O” is for orange!
+abc_p	“P”… “P” is for pear!
+abc_q	“Q”… “Q” is for quilt!
+abc_r	“R”… “R” is for rainbow!
+abc_s	“S”… “S” is for sun!
+abc_t	“T”… “T” is for teddy!
+abc_u	“U”… “U” is for umbrella!
+abc_v	“V”… “V” is for van!
+abc_w	“W”… “W” is for watermelon!
+abc_x	“X”… “X” is for xylophone!
+abc_y	“Y”… “Y” is for yo-yo!
+abc_z	“Z”… “Z” is for zebra!
+letter_a	“A”!
+letter_b	“B”!
+letter_c	“C”!
+letter_d	“D”!
+letter_e	“E”!
+letter_f	“F”!
+letter_g	“G”!
+letter_h	“H”!
+letter_i	“I”!
+letter_j	“J”!
+letter_k	“K”!
+letter_l	“L”!
+letter_m	“M”!
+letter_n	“N”!
+letter_o	“O”!
+letter_p	“P”!
+letter_q	“Q”!
+letter_r	“R”!
+letter_s	“S”!
+letter_t	“T”!
+letter_u	“U”!
+letter_v	“V”!
+letter_w	“W”!
+letter_x	“X”!
+letter_y	“Y”!
+letter_z	“Z”!
+
+# Trace
+trace_intro	Let's draw with our finger! Start at the green dot.
+trace_down	Draw a line down, like falling rain.
+trace_across	Draw a line across, like a little road.
+trace_circle	Draw a big round circle, like a ball.
+trace_zigzag	Zig and zag, up and down, like a crown.
+trace_wave	Draw a wavy line, like the sea.
+trace_done_down	Drip, drop! Lovely rain!
+trace_done_across	Brrm, brrm! A road for the car!
+trace_done_circle	Round and round! A ball!
+trace_done_zigzag	Zig-zag! A crown for you!
+trace_done_wave	Swish, swoosh! Waves for the boat!
+trace_letter	Let's write the letter
+trace_next	Now the next line!
+trace_wrote	Wow, you wrote it!
+
+# First sounds
+firstsound_intro	Let's listen for the very first sound!
+firstsound_q_a	Which one starts with “A”… like ant?
+firstsound_q_b	Which one starts with “B”… like Bo?
+firstsound_q_c	Which one starts with “C”… like cookie?
+firstsound_q_d	Which one starts with “D”… like dog?
+firstsound_q_e	Which one starts with “E”… like elephant?
+firstsound_q_f	Which one starts with “F”… like frog?
+firstsound_q_g	Which one starts with “G”… like goat?
+firstsound_q_h	Which one starts with “H”… like house?
+firstsound_q_i	Which one starts with “I”… like island?
+firstsound_q_j	Which one starts with “J”… like jelly?
+firstsound_q_k	Which one starts with “K”… like kangaroo?
+firstsound_q_l	Which one starts with “L”… like lion?
+firstsound_q_m	Which one starts with “M”… like mouse?
+firstsound_q_n	Which one starts with “N”… like nose?
+firstsound_q_o	Which one starts with “O”… like octopus?
+firstsound_q_p	Which one starts with “P”… like panda?
+firstsound_q_q	Which one starts with “Q”… like queen?
+firstsound_q_r	Which one starts with “R”… like rabbit?
+firstsound_q_s	Which one starts with “S”… like snake?
+firstsound_q_t	Which one starts with “T”… like tiger?
+firstsound_q_u	Which one starts with “U”… like up?
+firstsound_q_v	Which one starts with “V”… like violin?
+firstsound_q_w	Which one starts with “W”… like whale?
+firstsound_q_x	Which one starts with “X”… like x-ray?
+firstsound_q_y	Which one starts with “Y”… like yellow?
+firstsound_q_z	Which one starts with “Z”… like zoo?
+
+# Animal friends
+animals_intro	Welcome to the farm! Tap the animals to say hello.
+animals_tap	Tap an animal to say hello!
+animals_quiz	Now a little game. Listen carefully!
+animals_says_cow	The cow says moo! Moooo!
+animals_says_pig	The pig says oink! Oink, oink!
+animals_says_sheep	The sheep says baa! Baaaa!
+animals_says_horse	The horse says neigh! Neigh-hey-hey!
+animals_says_hen	The hen says cluck! Cluck, cluck, cluck!
+animals_says_dog	The dog says woof! Woof, woof!
+animals_says_cat	The cat says meow! Meeeow!
+animals_says_frog	The frog says ribbit! Ribbit, ribbit!
+animals_says_mouse	The mouse says squeak! Squeak, squeak!
+animals_says_duck	The duck says quack! Quack, quack!
+animals_says_bee	The bee says buzz! Bzzzzz!
+animals_who_cow	Who says moo?
+animals_who_pig	Who says oink?
+animals_who_sheep	Who says baa?
+animals_who_horse	Who says neigh?
+animals_who_hen	Who says cluck?
+animals_who_dog	Who says woof?
+animals_who_cat	Who says meow?
+animals_who_frog	Who says ribbit?
+animals_who_mouse	Who says squeak?
+animals_who_duck	Who says quack?
+animals_who_bee	Who says buzz?
+
+# names of new things (ABC garden, first sounds, animals)
+name_cat	Cat!
+name_jam	Jam!
+name_nest	Nest!
+name_quilt	Quilt!
+name_van	Van!
+name_xylophone	Xylophone!
+name_yoyo	Yo-yo!
+name_zebra	Zebra!
+name_clown	Clown!
+name_dino	Dino!
+name_hedgehog	Hedgehog!
+name_jacket	Jacket!
+name_lion	Lion!
+name_jellyfish	Jellyfish!
+name_clock	Clock!
+name_bird	Bird!
+name_yak	Yak!
+name_cow	Cow!
+name_pig	Pig!
+name_sheep	Sheep!
+name_horse	Horse!
+name_hen	Hen!
+name_dog	Dog!
+name_frog	Frog!
+name_mouse	Mouse!
+name_bee	Bee!

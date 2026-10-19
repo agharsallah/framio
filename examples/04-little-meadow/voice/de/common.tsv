@@ -1,0 +1,163 @@
+# Gemeinsame Sätze: Lob, sanftes Nochmal, Enden, Begrüßungen. Warm und kurz.
+praise_1	Gut gemacht!
+praise_2	Ja! Genau!
+praise_3	Wunderbar!
+praise_4	Du hast es geschafft!
+praise_5	Super gemacht!
+praise_6	Toll!
+praise_7	Prima!
+praise_8	Richtig!
+try_1	Hmm, versuchen wir es nochmal.
+try_2	Fast! Probier ein anderes.
+try_3	Schauen wir nochmal zusammen.
+try_4	Noch nicht ganz. Du schaffst das!
+end_1	Hurra! Fertig!
+end_2	Das hat so viel Spaß gemacht!
+end_3	Wow, du hast alle geschafft!
+sticker_new	Hier ist ein neuer Sticker für dein Heft!
+end_again	Wollen wir nochmal spielen?
+
+home_hello	Hallo, mein Freund!
+home_morning	Guten Morgen!
+home_afternoon	Guten Tag!
+home_evening	Guten Abend!
+home_night	Bald ist Schlafenszeit. Machen wir es uns gemütlich und leise.
+home_what	Was wollen wir heute spielen?
+home_asleep	Psst. Alle schlafen jetzt. Gehen wir zum Stillen Baum.
+knock_knock	Klopf, klopf! Wer ist da? Ich bin's, Pip!
+
+world_numbers	Lass uns in Pips Nest mit Zahlen spielen!
+world_colors	Willkommen in Tukas Atelier! Farben und Formen!
+world_words	Hallo! Spielen wir mit Wörtern und Lauten.
+world_music	Lass uns Musik machen!
+world_habits	Willkommen in Moos' Garten. Lernen wir gute Gewohnheiten.
+world_puzzles	Lass uns Rätsel lösen!
+world_quiet	Willkommen am Stillen Baum. Ganz langsam.
+
+rest_locked	Pip ruht sich jetzt aus. Spiel doch etwas anderes. Bis später!
+rest_limit	Das war's für heute mit dem Spielen. Lass uns draußen spielen! Bis morgen!
+rest_tap	Psst. Ich ruhe mich ein bisschen aus.
+wiggle_start	Zeit für eine Bewegungspause! Alle aufstehen!
+wiggle_tree	Streck dich ganz groß, wie ein Baum. Bis zum Himmel!
+wiggle_frog	Und jetzt hüpf wie ein kleiner Frosch. Hüpf, hüpf, hüpf!
+wiggle_shake	Schüttel deine Hände, wie funkelnde Sterne!
+wiggle_turn	Dreh dich um, ganz langsam.
+wiggle_breathe	Riech an der Blume. Mmm. Und jetzt puste die Kerze aus. Fuuu.
+wiggle_water	Jetzt einen Schluck Wasser. Gluck, gluck!
+wiggle_done	Toll bewegt! Jetzt spielen wir weiter.
+star_from_afar	Schau! Jemand, der dich lieb hat, schickt dir einen Stern!
+stickers_hello	Schau mal, all deine Sticker!
+stickers_empty	Dein Stickerheft wartet. Spiel ein Spiel zu Ende, dann gibt es einen Sticker!
+mail_hello	Du hast Nachrichten! Tipp eine an.
+mail_empty	Noch keine Nachrichten.
+
+pip_hello	Hallo! Ich bin Pip!
+pip_giggle_1	Hihi! Das kitzelt!
+pip_giggle_2	Piep piep! Hallo!
+pip_giggle_3	Schön, dass du da bist!
+tuka_hello	Hallo! Ich bin Tuka!
+tuka_giggle_1	Hihi! Lass uns etwas basteln!
+tuka_giggle_2	Ich liebe Farben!
+tuka_giggle_3	Hallo, mein Freund!
+bo_hello	Hallo! Ich bin Bo!
+bo_giggle_1	Töröö! Hallo!
+bo_giggle_2	Ich liebe Musik und Wörter!
+bo_giggle_3	Hihi! Hallo!
+moss_hello	Hallo. Ich bin Moos. Schön langsam.
+moss_giggle_1	Hallo, kleiner Freund.
+moss_giggle_2	Langsam und ruhig.
+moss_giggle_3	Hihi. Das kitzelt.
+luma_hello	Huhu. Ich bin Luma.
+luma_giggle_1	Huhu. Hallo, du kleine Schlafmütze.
+luma_giggle_2	Die Sterne funkeln.
+luma_giggle_3	Psst. Lass uns zusammen leise sein.
+
+count_tap	Lass uns zählen! Tipp jedes an.
+play_count	Zähl mit mir!
+
+# Zahlen
+num_1	Eins!
+num_2	Zwei!
+num_3	Drei!
+num_4	Vier!
+num_5	Fünf!
+num_6	Sechs!
+num_7	Sieben!
+num_8	Acht!
+num_9	Neun!
+num_10	Zehn!
+num_11	Elf!
+num_12	Zwölf!
+num_13	Dreizehn!
+num_14	Vierzehn!
+num_15	Fünfzehn!
+num_16	Sechzehn!
+num_17	Siebzehn!
+num_18	Achtzehn!
+num_19	Neunzehn!
+num_20	Zwanzig!
+thats_1	Das ist eins!
+thats_2	Das sind zwei!
+thats_3	Das sind drei!
+thats_4	Das sind vier!
+thats_5	Das sind fünf!
+thats_6	Das sind sechs!
+thats_7	Das sind sieben!
+thats_8	Das sind acht!
+thats_9	Das sind neun!
+thats_10	Das sind zehn!
+
+# Namen der Dinge
+name_apple	Apfel!
+name_pear	Birne!
+name_banana	Banane!
+name_orange	Orange!
+name_lemon	Zitrone!
+name_strawberry	Erdbeere!
+name_cherry	Kirschen!
+name_grapes	Trauben!
+name_blueberry	Heidelbeere!
+name_carrot	Karotte!
+name_broccoli	Brokkoli!
+name_tomato	Tomate!
+name_cupcake	Törtchen!
+name_cookie	Keks!
+name_egg	Ei!
+name_watermelon	Wassermelone!
+name_icecream	Eis!
+name_bread	Brot!
+name_cheese	Käse!
+name_milk	Milch!
+name_flower	Blume!
+name_leaf	Blatt!
+name_mushroom	Pilz!
+name_sun	Sonne!
+name_moon	Mond!
+name_cloud	Wolke!
+name_rainbow	Regenbogen!
+name_star	Stern!
+name_heart	Herz!
+name_tree	Baum!
+name_snail	Schnecke!
+name_butterfly	Schmetterling!
+name_ball	Ball!
+name_balloon	Luftballon!
+name_block	Bauklotz!
+name_teddy	Teddybär!
+name_car	Auto!
+name_boat	Boot!
+name_kite	Drachen!
+name_drum	Trommel!
+name_rocket	Rakete!
+name_duck	Ente!
+name_fish	Fisch!
+name_cup	Becher!
+name_book	Buch!
+name_hat	Hut!
+name_umbrella	Regenschirm!
+name_bell	Glocke!
+name_gift	Geschenk!
+name_crown	Krone!
+name_sock	Socke!
+name_toothbrush	Zahnbürste!
+name_soap	Seife!

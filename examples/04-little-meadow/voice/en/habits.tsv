@@ -1,0 +1,148 @@
+# Moss's Garden (habits). Moss is slow and kind: short, warm lines, never preachy.
+play_brush	Brush teeth with Moss!
+play_wash	Wash hands!
+play_routine	My day!
+play_plate	Healthy plate!
+play_tidy	Tidy up time!
+play_weather	Dress for the weather!
+
+# brushing teeth
+brush_intro	Let's brush our teeth together! Put a little toothpaste on your brush. Just a tiny dot, like a pea.
+brush_ready	Ready? Tap the toothbrush, and we'll start!
+brush_top_a	Let's start with the top teeth on this side. Little circles!
+brush_top_b	Now the top teeth on the other side. Round and round.
+brush_bottom_a	Now the bottom teeth on this side. Little circles!
+brush_bottom_b	And the bottom teeth on the other side.
+brush_front	Now the front teeth. Show me a big smile, and brush, brush, brush!
+brush_tongue	And the tongue too! Gently, very gently.
+brush_mid_1	Little circles, nice and gentle.
+brush_mid_2	Don't forget the teeth at the back!
+brush_mid_3	You're doing so well. Keep going!
+brush_mid_4	Slow and steady, just like me.
+brush_bye_bugs	Bye bye, sugar bugs!
+brush_end	Sparkly clean! Now spit, rinse, and show me your big smile!
+
+# washing hands
+wash_intro	Let's wash our hands, just like at the sink!
+wash_wet	First, wet your hands with water.
+wash_soap	Now take some soap. Lots of bubbles!
+wash_palms	Rub your palms together. Let's count!
+wash_backs	Now the backs of your hands.
+wash_between	In between your fingers, like a little hug.
+wash_thumbs	Now wash each thumb. Round and round.
+wash_nails	And scrub your fingertips on your palm. Scritch, scratch!
+wash_rinse	Rinse off all the bubbles.
+wash_dry	Now dry your hands with a towel. Pat, pat, pat.
+wash_done	Clean hands! Fresh and ready. Well done!
+
+# my day: routines
+routine_morning_intro	Good morning! Let's do our morning steps together.
+routine_evening_intro	Good evening. Let's get ready for bed, one step at a time.
+routine_tap	When you've done it, tap the picture and it gets a gold star.
+routine_wake	Time to wake up! Give a big stretch, up to the sky.
+routine_wake_done	Good morning, sunshine!
+routine_toilet	Time to use the toilet.
+routine_toilet_done	Well done! And remember to wash your hands.
+routine_wash	Let's wash your hands and face.
+routine_wash_done	All fresh and clean!
+routine_dress	Time to get dressed.
+routine_dress_done	You look lovely today!
+routine_breakfast	Time for breakfast! Yum.
+routine_breakfast_done	A good breakfast makes you strong!
+routine_brush	Time to brush your teeth.
+routine_brush_done	Well done, teeth are shiny!
+routine_hair	Let's brush your hair.
+routine_hair_done	So neat and tidy!
+routine_shoes	Shoes and jacket on.
+routine_shoes_done	All ready to go outside!
+routine_water	Let's drink some water.
+routine_water_done	Glug, glug! That was good.
+routine_tidy	Time to tidy up the toys.
+routine_tidy_done	Every toy is home. Thank you!
+routine_dinner	Time for dinner.
+routine_dinner_done	Yum! What a tasty dinner.
+routine_bath	Bath time! Splish, splash.
+routine_bath_done	All clean and cozy!
+routine_pyjamas	Let's put on your pyjamas.
+routine_pyjamas_done	Soft and snuggly pyjamas!
+routine_story	Time for a story.
+routine_story_done	What a lovely story.
+routine_hug	A big goodnight hug!
+routine_hug_done	Mmm. Hugs are the best.
+routine_sleep	Lights off. Time to sleep.
+routine_sleep_done	Sleep tight, little one.
+routine_all_morning	All done! You're ready for a lovely day!
+routine_all_evening	All done. Sweet dreams, little friend.
+
+# healthy plate
+plate_intro	Some foods we eat every day. They help us grow big and strong. Some foods are treats, just for special days.
+plate_sort	Everyday foods go in the basket with the leaf. Treats go in the basket with the star.
+plate_yes_every	Yes! An everyday food.
+plate_yes_some	Yes! A treat, for special days.
+plate_hmm_every	Hmm, that one is an everyday food! It goes in the leaf basket.
+plate_hmm_some	That one is a treat. Treats go in the star basket.
+plate_rainbow_intro	Now let's make a rainbow plate for me! Lots of colors are good for us.
+plate_find_red	Can you find something red?
+plate_find_orange	Now something orange!
+plate_find_yellow	Can you find something yellow?
+plate_find_green	Now something green!
+plate_find_purple	And something purple!
+plate_rainbow_done	A rainbow plate! So many colors. Yum, yum, thank you!
+name_corn	Corn!
+name_eggplant	Eggplant!
+name_peas	Peas!
+name_candy	Candy!
+name_chips	Chips!
+name_lollipop	Lollipop!
+
+# tidy up
+tidy_start	Oh, what a mess! Let's tidy up. Every toy has a home.
+tidy_again	Oops, the toys are out again. Let's tidy up!
+tidy_teddy	Let's put the teddy in the toy box!
+tidy_ball	The ball goes in the toy box.
+tidy_block	The block goes in the toy box.
+tidy_car	Brrm, brrm! The car goes in the toy box.
+tidy_drum	The drum goes in the toy box.
+tidy_book	The book goes on the bookshelf.
+tidy_book_red	The red book goes on the bookshelf.
+tidy_book_blue	The blue book goes on the bookshelf.
+tidy_duck	Quack! The duck goes in the bath basket.
+tidy_boat	The boat goes in the bath basket.
+tidy_fish	The fish goes in the bath basket.
+tidy_done_1	Ahh. So nice and tidy. It feels cozy now.
+tidy_done_2	Everything is home. Now there's lots of room to play!
+tidy_done_3	What a tidy room! Thank you for helping.
+
+# dress for the weather
+weather_intro	Tuka wants to go outside! Let's look out of the window and help her get dressed.
+weather_sunny	It's sunny and warm today! What should Tuka wear?
+weather_rainy	It's raining! Pitter patter. What does Tuka need?
+weather_snowy	Look, it's snowing! Brr. What will keep Tuka warm?
+weather_windy	Whoosh! It's very windy. What should Tuka wear?
+weather_on_raincoat	A raincoat keeps you dry!
+weather_on_boots	Boots on! Ready for puddles.
+weather_on_umbrella	An umbrella! Drip, drop, no rain on your head.
+weather_on_sunhat	A sun hat, for shade from the sun.
+weather_on_sunglasses	Sunglasses! So cool.
+weather_on_tshirt	A light t-shirt for a warm day.
+weather_on_woollyhat	A woolly hat keeps your ears warm.
+weather_on_scarf	A cozy scarf for your neck.
+weather_on_mittens	Mittens for warm paws!
+weather_on_jacket	A warm jacket, zipped up tight.
+weather_done_sunny	Tuka is ready for the sunshine!
+weather_done_rainy	Tuka is ready to splash in the rain!
+weather_done_snowy	Tuka is warm and ready for the snow!
+weather_done_windy	Tuka is ready for the wind. Whoosh!
+weather_no_sunny_woollyhat	It's hot and sunny! A woolly hat would be much too warm.
+weather_no_sunny_mittens	Mittens are for cold days. Today is warm!
+weather_no_sunny_raincoat	No rain today! A raincoat would be too hot.
+weather_no_sunny_scarf	It's warm today. No scarf needed!
+weather_no_rainy_sunglasses	It's grey and rainy. Sunglasses won't keep you dry.
+weather_no_rainy_sunhat	A sun hat would get all soggy! What keeps the rain off?
+weather_no_rainy_tshirt	A t-shirt would get wet. What keeps you dry?
+weather_no_snowy_sunhat	Brr, it's snowy! A sun hat won't keep you warm.
+weather_no_snowy_tshirt	Brr! A t-shirt is too chilly for snow.
+weather_no_snowy_umbrella	An umbrella won't keep you warm. What keeps your ears and paws cozy?
+weather_no_windy_umbrella	Whoosh! The wind would blow the umbrella away!
+weather_no_windy_sunhat	Whoosh! The wind would blow that hat away!
+weather_no_windy_tshirt	It's windy and chilly. A t-shirt is not warm enough.

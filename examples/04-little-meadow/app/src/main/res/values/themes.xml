@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Cream window background, the meadow's paper colour, so there is no flash before Compose draws -->
+    <style name="Theme.Meadow" parent="@android:style/Theme.Material.Light.NoActionBar.Fullscreen">
+        <item name="android:windowBackground">@color/paper</item>
+        <item name="android:windowShowWallpaper">false</item>
+        <item name="android:colorAccent">@color/honey</item>
+    </style>
+
+    <color name="paper">#FFF6EFE4</color>
+    <color name="honey">#FFE7B05A</color>
+</resources>

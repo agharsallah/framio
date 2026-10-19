@@ -1,0 +1,45 @@
+# Pips Nest: Wie viele?, Füttere Pip, Mehr oder weniger (Zähl mit mir steht in common.tsv)
+play_howmany	Wie viele?
+howmany_intro	Schau genau hin und zähl mit!
+howmany_ask_duck	Wie viele Enten siehst du?
+howmany_ask_apple	Wie viele Äpfel siehst du?
+howmany_ask_star	Wie viele Sterne siehst du?
+howmany_ask_flower	Wie viele Blumen siehst du?
+howmany_ask_butterfly	Wie viele Schmetterlinge siehst du?
+howmany_ask_mushroom	Wie viele Pilze siehst du?
+howmany_together	Lass sie uns zusammen zählen!
+
+play_feed	Füttere Pip!
+feed_intro	Ich hab so einen Hunger! Gibst du mir ein paar Beeren?
+feed_how	Leg die Beeren in mein Nest.
+feed_want_1	Ich hätte gern eine Beere, bitte!
+feed_want_2	Ich hätte gern zwei Beeren, bitte!
+feed_want_3	Ich hätte gern drei Beeren, bitte!
+feed_want_4	Ich hätte gern vier Beeren, bitte!
+feed_want_5	Ich hätte gern fünf Beeren, bitte!
+feed_want_6	Ich hätte gern sechs Beeren, bitte!
+feed_want_7	Ich hätte gern sieben Beeren, bitte!
+feed_want_8	Ich hätte gern acht Beeren, bitte!
+feed_want_9	Ich hätte gern neun Beeren, bitte!
+feed_want_10	Ich hätte gern zehn Beeren, bitte!
+feed_too_many	Hoppla, das sind zu viele! Tipp eine an, dann kommt sie zurück.
+feed_yum_1	Mmh, lecker! Danke schön!
+feed_yum_2	Mmmh, köstlich! Danke!
+feed_yum_3	Lecker in meinem Bauch! Danke schön!
+
+play_more	Mehr oder weniger
+more_intro	Schau dir die Körbe an!
+more_more_apple	In welchem Korb sind mehr Äpfel?
+more_more_strawberry	In welchem Korb sind mehr Erdbeeren?
+more_more_orange	In welchem Korb sind mehr Orangen?
+more_more_egg	In welchem Korb sind mehr Eier?
+more_more_cookie	In welchem Korb sind mehr Kekse?
+more_more_pear	In welchem Korb sind mehr Birnen?
+more_fewer_apple	In welchem Korb sind weniger Äpfel?
+more_fewer_strawberry	In welchem Korb sind weniger Erdbeeren?
+more_fewer_orange	In welchem Korb sind weniger Orangen?
+more_fewer_egg	In welchem Korb sind weniger Eier?
+more_fewer_cookie	In welchem Korb sind weniger Kekse?
+more_fewer_pear	In welchem Korb sind weniger Birnen?
+more_this_more	In diesem Korb sind mehr!
+more_this_fewer	In diesem Korb sind weniger!

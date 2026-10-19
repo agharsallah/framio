@@ -1,0 +1,45 @@
+# Pip's Nest: How many?, Feed Pip, More or fewer (count is in common.tsv)
+play_howmany	How many?
+howmany_intro	Let's look closely and count!
+howmany_ask_duck	How many ducks can you see?
+howmany_ask_apple	How many apples can you see?
+howmany_ask_star	How many stars can you see?
+howmany_ask_flower	How many flowers can you see?
+howmany_ask_butterfly	How many butterflies can you see?
+howmany_ask_mushroom	How many mushrooms can you see?
+howmany_together	Let's count them together!
+
+play_feed	Feed Pip!
+feed_intro	I'm so hungry! Will you feed me some berries?
+feed_how	Put the berries in my nest.
+feed_want_1	I'd like one berry, please!
+feed_want_2	I'd like two berries, please!
+feed_want_3	I'd like three berries, please!
+feed_want_4	I'd like four berries, please!
+feed_want_5	I'd like five berries, please!
+feed_want_6	I'd like six berries, please!
+feed_want_7	I'd like seven berries, please!
+feed_want_8	I'd like eight berries, please!
+feed_want_9	I'd like nine berries, please!
+feed_want_10	I'd like ten berries, please!
+feed_too_many	Oops, that's too many! Tap one to take it back.
+feed_yum_1	Yum! Thank you!
+feed_yum_2	Mmm, delicious! Thank you!
+feed_yum_3	Yummy in my tummy! Thank you!
+
+play_more	More or fewer
+more_intro	Let's look at the baskets!
+more_more_apple	Which basket has more apples?
+more_more_strawberry	Which basket has more strawberries?
+more_more_orange	Which basket has more oranges?
+more_more_egg	Which basket has more eggs?
+more_more_cookie	Which basket has more cookies?
+more_more_pear	Which basket has more pears?
+more_fewer_apple	Which basket has fewer apples?
+more_fewer_strawberry	Which basket has fewer strawberries?
+more_fewer_orange	Which basket has fewer oranges?
+more_fewer_egg	Which basket has fewer eggs?
+more_fewer_cookie	Which basket has fewer cookies?
+more_fewer_pear	Which basket has fewer pears?
+more_this_more	This basket has more!
+more_this_fewer	This basket has fewer!

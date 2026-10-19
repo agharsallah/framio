@@ -1,0 +1,112 @@
+# Tuka's Studio: colours, shapes, mixing, painting, colouring. Tuka is curious and playful.
+
+# names
+colors_red	Red!
+colors_orange	Orange!
+colors_yellow	Yellow!
+colors_green	Green!
+colors_blue	Blue!
+colors_purple	Purple!
+colors_pink	Pink!
+colors_brown	Brown!
+colors_white	White!
+colors_black	Black!
+colors_grey	Grey!
+colors_lightblue	Light blue!
+colors_shape_circle	Circle!
+colors_shape_square	Square!
+colors_shape_triangle	Triangle!
+colors_shape_star	Star!
+colors_shape_heart	Heart!
+colors_shape_rect	Rectangle!
+colors_shape_oval	Oval!
+colors_shape_diamond	Diamond!
+colors_shape_hexagon	Hexagon!
+
+# titles (said when a card is tapped)
+play_colorhunt	Color hunt!
+play_sorter	Shape sorter!
+play_mix	Mixing colors!
+play_paint	Finger paint!
+play_coloring	Coloring pages!
+
+# Color hunt
+colorhunt_intro	Tuka loves colors! Let's find them together.
+colorhunt_find_red	Find the red balloon!
+colorhunt_find_orange	Find the orange balloon!
+colorhunt_find_yellow	Find the yellow balloon!
+colorhunt_find_green	Find the green balloon!
+colorhunt_find_blue	Find the blue balloon!
+colorhunt_find_purple	Find the purple balloon!
+colorhunt_find_pink	Find the pink balloon!
+colorhunt_find_brown	Find the brown balloon!
+colorhunt_find_white	Find the white balloon!
+colorhunt_find_black	Find the black balloon!
+colorhunt_one_red	Can you find something red?
+colorhunt_one_orange	Can you find something orange?
+colorhunt_one_yellow	Can you find something yellow?
+colorhunt_one_green	Can you find something green?
+colorhunt_one_blue	Can you find something blue?
+colorhunt_one_purple	Can you find something purple?
+colorhunt_one_pink	Can you find something pink?
+colorhunt_one_brown	Can you find something brown?
+colorhunt_one_white	Can you find something white?
+colorhunt_one_black	Can you find something black?
+
+# Shape sorter
+sorter_intro	Every shape has a home in Tuka's box.
+sorter_go	Put each shape into its home!
+sorter_all	All the shapes are home!
+sorter_thats_circle	That's the circle.
+sorter_thats_square	That's the square.
+sorter_thats_triangle	That's the triangle.
+sorter_thats_star	That's the star.
+sorter_thats_heart	That's the heart.
+sorter_thats_rect	That's the rectangle.
+sorter_thats_oval	That's the oval.
+sorter_thats_diamond	That's the diamond.
+sorter_thats_hexagon	That's the hexagon.
+sorter_where_circle	Where's the circle's home?
+sorter_where_square	Where's the square's home?
+sorter_where_triangle	Where's the triangle's home?
+sorter_where_star	Where's the star's home?
+sorter_where_heart	Where's the heart's home?
+sorter_where_rect	Where's the rectangle's home?
+sorter_where_oval	Where's the oval's home?
+sorter_where_diamond	Where's the diamond's home?
+sorter_where_hexagon	Where's the hexagon's home?
+
+# Mixing colors
+mix_intro	Let's mix paint, like real painters!
+mix_pick	Tap two paint pots to mix them!
+mix_more	And one more pot!
+mix_paint	Now tap the picture to paint it!
+mix_new	Let's try a new mix!
+mix_red_yellow	Red and yellow make orange!
+mix_red_blue	Red and blue make purple!
+mix_yellow_blue	Yellow and blue make green!
+mix_red_white	Red and white make pink!
+mix_yellow_white	Yellow and white make light yellow!
+mix_blue_white	Blue and white make light blue!
+mix_white_black	White and black make grey!
+mix_red_black	Red and black make dark red!
+mix_yellow_black	Yellow and black make olive green!
+mix_blue_black	Blue and black make dark blue!
+
+# Finger paint
+paint_intro	Pick a color and paint with your finger!
+paint_stamps	Tap the paper to stamp!
+paint_hold	Hold the button to start a new page.
+paint_new	A fresh new page!
+paint_done	What a lovely painting! I'll keep it safe.
+
+# Coloring pages
+coloring_pick	Which picture do you want to color?
+coloring_go	Pick a color, then tap to fill!
+coloring_done	What a beautiful picture!
+coloring_page_pip	Pip the bird!
+coloring_page_flowerpot	A flower in a pot!
+coloring_page_house	A little house!
+coloring_page_fish	A happy fish!
+coloring_page_moss	Moss and the rainbow!
+coloring_page_bo	Bo and the balloon!

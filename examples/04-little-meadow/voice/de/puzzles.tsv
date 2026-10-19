@@ -1,0 +1,38 @@
+# Pips Rätselweg: Memory, Puzzle, Schatten, Muster, 3D-Formen
+play_memory	Memory!
+memory_intro	Komm, wir spielen Memory! Unter den Karten verstecken sich Bilder.
+memory_prompt	Dreh zwei Karten um. Findest du zwei gleiche?
+
+play_jigsaw	Puzzle!
+jigsaw_intro	Schau mal, dieses Bild! Daraus machen wir ein Puzzle.
+jigsaw_prompt	Leg die Teile zurück ins Bild.
+jigsaw_pic_nest	Das ist Pip, gemütlich im Nest!
+jigsaw_pic_paint	Tuka malt einen Regenbogen!
+jigsaw_pic_balloons	Bo hat ganz viele Luftballons!
+jigsaw_pic_garden	Moos ist im Garten!
+jigsaw_pic_moon	Luma schaut den Mond an!
+
+play_shadows	Schattenspiel!
+shadows_intro	Schau mal, lauter Schatten!
+shadows_prompt	Wessen Schatten ist das? Schieb jedes Ding auf seinen Schatten.
+
+play_patterns	Was kommt als Nächstes?
+patterns_intro	Da kommt der kleine Zug!
+patterns_prompt	Was kommt als Nächstes in den Zug?
+patterns_toot	Tut tut!
+
+play_shapes3d	Formen drehen!
+shapes3d_intro	Komm, wir spielen mit Formen!
+shapes3d_try	Dreh sie mit dem Finger! Oder tipp sie an und schau, was sie macht. Dann tipp auf den Pfeil.
+shapes3d_meet_sphere	Das ist eine Kugel. Ein Ball ist eine Kugel!
+shapes3d_meet_cube	Das ist ein Würfel. Ein Bauklotz ist ein Würfel!
+shapes3d_meet_cylinder	Das ist ein Zylinder. Ein Becher ist ein Zylinder!
+shapes3d_meet_cone	Das ist ein Kegel. Eine Eistüte ist ein Kegel!
+shapes3d_meet_pyramid	Das ist eine Pyramide. Ein Zelt kann eine Pyramide sein!
+shapes3d_meet_torus	Das ist ein Ring. Ein Donut ist ein Ring!
+shapes3d_which_sphere	Welche ist die Kugel?
+shapes3d_which_cube	Welcher ist der Würfel?
+shapes3d_which_cylinder	Welcher ist der Zylinder?
+shapes3d_which_cone	Welcher ist der Kegel?
+shapes3d_which_pyramid	Welche ist die Pyramide?
+shapes3d_which_torus	Welcher ist der Ring, die Donut-Form?

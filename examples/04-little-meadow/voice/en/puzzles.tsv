@@ -1,0 +1,38 @@
+# Pip's Puzzle Path: memory, jigsaw, shadows, patterns, 3D shapes
+play_memory	Memory match!
+memory_intro	Let's play memory! The cards are hiding pictures.
+memory_prompt	Turn over two cards. Can you find two that are the same?
+
+play_jigsaw	Jigsaw puzzle!
+jigsaw_intro	Look at this picture! Let's make it into a puzzle.
+jigsaw_prompt	Put the pieces back into the picture.
+jigsaw_pic_nest	It's Pip, cozy in the nest!
+jigsaw_pic_paint	Tuka is painting a rainbow!
+jigsaw_pic_balloons	Bo has lots of balloons!
+jigsaw_pic_garden	Moss is in the garden!
+jigsaw_pic_moon	Luma is watching the moon!
+
+play_shadows	Shadow match!
+shadows_intro	Look at all these shadows!
+shadows_prompt	Whose shadow is it? Move each one onto its shadow.
+
+play_patterns	What comes next?
+patterns_intro	Here comes the little train!
+patterns_prompt	What comes next on the train?
+patterns_toot	Toot toot!
+
+play_shapes3d	Spin the shapes!
+shapes3d_intro	Let's play with shapes!
+shapes3d_try	Spin it with your finger! Or tap it and see what it does. Then tap the arrow.
+shapes3d_meet_sphere	This is a sphere. A ball is a sphere!
+shapes3d_meet_cube	This is a cube. A block is a cube!
+shapes3d_meet_cylinder	This is a cylinder. A cup is a cylinder!
+shapes3d_meet_cone	This is a cone. An ice cream cone is a cone!
+shapes3d_meet_pyramid	This is a pyramid. A tent can be a pyramid!
+shapes3d_meet_torus	This is a torus. A donut is a torus!
+shapes3d_which_sphere	Which one is the sphere?
+shapes3d_which_cube	Which one is the cube?
+shapes3d_which_cylinder	Which one is the cylinder?
+shapes3d_which_cone	Which one is the cone?
+shapes3d_which_pyramid	Which one is the pyramid?
+shapes3d_which_torus	Which one is the torus, the donut shape?

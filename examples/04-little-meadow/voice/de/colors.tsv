@@ -1,0 +1,112 @@
+# Tuka's Studio: colours, shapes, mixing, painting, colouring. Tuka is curious and playful.
+
+# names
+colors_red	Rot!
+colors_orange	Orange!
+colors_yellow	Gelb!
+colors_green	Grün!
+colors_blue	Blau!
+colors_purple	Lila!
+colors_pink	Rosa!
+colors_brown	Braun!
+colors_white	Weiß!
+colors_black	Schwarz!
+colors_grey	Grau!
+colors_lightblue	Hellblau!
+colors_shape_circle	Kreis!
+colors_shape_square	Quadrat!
+colors_shape_triangle	Dreieck!
+colors_shape_star	Stern!
+colors_shape_heart	Herz!
+colors_shape_rect	Rechteck!
+colors_shape_oval	Oval!
+colors_shape_diamond	Raute!
+colors_shape_hexagon	Sechseck!
+
+# titles (said when a card is tapped)
+play_colorhunt	Farbensuche!
+play_sorter	Formen-Box!
+play_mix	Farben mischen!
+play_paint	Fingermalen!
+play_coloring	Ausmalbilder!
+
+# Color hunt
+colorhunt_intro	Tuka liebt Farben! Komm, wir suchen sie zusammen.
+colorhunt_find_red	Finde den roten Ballon!
+colorhunt_find_orange	Finde den orangen Ballon!
+colorhunt_find_yellow	Finde den gelben Ballon!
+colorhunt_find_green	Finde den grünen Ballon!
+colorhunt_find_blue	Finde den blauen Ballon!
+colorhunt_find_purple	Finde den lila Ballon!
+colorhunt_find_pink	Finde den rosa Ballon!
+colorhunt_find_brown	Finde den braunen Ballon!
+colorhunt_find_white	Finde den weißen Ballon!
+colorhunt_find_black	Finde den schwarzen Ballon!
+colorhunt_one_red	Findest du etwas, das rot ist?
+colorhunt_one_orange	Findest du etwas, das orange ist?
+colorhunt_one_yellow	Findest du etwas, das gelb ist?
+colorhunt_one_green	Findest du etwas, das grün ist?
+colorhunt_one_blue	Findest du etwas, das blau ist?
+colorhunt_one_purple	Findest du etwas, das lila ist?
+colorhunt_one_pink	Findest du etwas, das rosa ist?
+colorhunt_one_brown	Findest du etwas, das braun ist?
+colorhunt_one_white	Findest du etwas, das weiß ist?
+colorhunt_one_black	Findest du etwas, das schwarz ist?
+
+# Shape sorter
+sorter_intro	Jede Form hat ein Zuhause in Tukas Box.
+sorter_go	Bring jede Form in ihr Zuhause!
+sorter_all	Alle Formen sind zu Hause!
+sorter_thats_circle	Das ist der Kreis.
+sorter_thats_square	Das ist das Quadrat.
+sorter_thats_triangle	Das ist das Dreieck.
+sorter_thats_star	Das ist der Stern.
+sorter_thats_heart	Das ist das Herz.
+sorter_thats_rect	Das ist das Rechteck.
+sorter_thats_oval	Das ist das Oval.
+sorter_thats_diamond	Das ist die Raute.
+sorter_thats_hexagon	Das ist das Sechseck.
+sorter_where_circle	Wo wohnt der Kreis?
+sorter_where_square	Wo wohnt das Quadrat?
+sorter_where_triangle	Wo wohnt das Dreieck?
+sorter_where_star	Wo wohnt der Stern?
+sorter_where_heart	Wo wohnt das Herz?
+sorter_where_rect	Wo wohnt das Rechteck?
+sorter_where_oval	Wo wohnt das Oval?
+sorter_where_diamond	Wo wohnt die Raute?
+sorter_where_hexagon	Wo wohnt das Sechseck?
+
+# Mixing colors
+mix_intro	Komm, wir mischen Farben, wie echte Maler!
+mix_pick	Tippe auf zwei Farbtöpfe und misch sie!
+mix_more	Und noch ein Topf!
+mix_paint	Jetzt tipp auf das Bild und mal es an!
+mix_new	Probieren wir eine neue Mischung!
+mix_red_yellow	Rot und Gelb machen Orange!
+mix_red_blue	Rot und Blau machen Lila!
+mix_yellow_blue	Gelb und Blau machen Grün!
+mix_red_white	Rot und Weiß machen Rosa!
+mix_yellow_white	Gelb und Weiß machen Hellgelb!
+mix_blue_white	Blau und Weiß machen Hellblau!
+mix_white_black	Weiß und Schwarz machen Grau!
+mix_red_black	Rot und Schwarz machen Dunkelrot!
+mix_yellow_black	Gelb und Schwarz machen Olivgrün!
+mix_blue_black	Blau und Schwarz machen Dunkelblau!
+
+# Finger paint
+paint_intro	Such dir eine Farbe aus und mal mit dem Finger!
+paint_stamps	Tipp aufs Papier zum Stempeln!
+paint_hold	Halte den Knopf gedrückt für ein neues Blatt.
+paint_new	Ein frisches neues Blatt!
+paint_done	Was für ein schönes Bild! Ich heb es gut auf.
+
+# Coloring pages
+coloring_pick	Welches Bild möchtest du ausmalen?
+coloring_go	Such dir eine Farbe aus und tipp zum Ausmalen!
+coloring_done	Was für ein wunderschönes Bild!
+coloring_page_pip	Pip, der Vogel!
+coloring_page_flowerpot	Eine Blume im Topf!
+coloring_page_house	Ein kleines Haus!
+coloring_page_fish	Ein fröhlicher Fisch!
+coloring_page_moss	Moss und der Regenbogen!
+coloring_page_bo	Bo und der Luftballon!

@@ -1,0 +1,22 @@
+# Bos Musikecke: Xylofon, Blasenmusik, Echo-Trommeln
+play_xylo	Xylofon!
+xylo_intro	Schau mal, mein Xylofon! Lass uns Musik machen!
+xylo_free	Tipp auf die Stäbe. Oder such dir ein Lied aus!
+xylo_follow	Folge dem leuchtenden Stab!
+xylo_song_twinkle	Funkel, funkel, kleiner Stern!
+xylo_song_mary	Mary hat ein kleines Lamm!
+xylo_song_row	Ruder, ruder, ruder dein Boot!
+xylo_song_jacques	Bruder Jakob!
+xylo_song_buns	Heiße Brötchen!
+xylo_listen	Du hast das ganze Lied gespielt! Hör mal!
+xylo_another	Such dir noch ein Lied aus, oder spiel deine eigene Musik!
+
+play_bubbles	Blasenmusik
+bubbles_intro	Schau mal, Seifenblasen! Jede Blase singt ein kleines Lied.
+bubbles_pop	Bring die Blasen zum Platzen!
+
+play_echo	Echo-Trommeln
+echo_intro	Lass uns zusammen trommeln! Ich spiele vor, dann spielst du.
+echo_listen	Hör gut zu!
+echo_your_turn	Jetzt du!
+echo_again	Hören wir noch mal zu.

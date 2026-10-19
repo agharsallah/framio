@@ -1,0 +1,164 @@
+# Bo's Word Room: ABC garden, Trace, First sounds, Animal friends
+play_abc	ABC-Garten!
+play_trace	Nachspuren!
+play_firstsound	Erste Laute!
+play_animals	Tierfreunde!
+
+# ABC garden
+abc_intro	Willkommen in meinem ABC-Garten! Aus jedem Buchstaben wächst etwas.
+abc_tap	Tipp auf einen Buchstaben und schau, was wächst!
+abc_more	Schau, wie der Garten wächst! Komm, wir suchen noch mehr Buchstaben.
+abc_find	Findest du den Buchstaben
+abc_again	Den kennen wir schon! Probier mal einen neuen Buchstaben.
+abc_a	„A“… „A“ wie Apfel!
+abc_b	„B“… „B“ wie Ball!
+abc_c	„C“… „C“ wie Clown!
+abc_d	„D“… „D“ wie Dino!
+abc_e	„E“… „E“ wie Ente!
+abc_f	„F“… „F“ wie Fisch!
+abc_g	„G“… „G“ wie Geschenk!
+abc_h	„H“… „H“ wie Hut!
+abc_i	„I“… „I“ wie Igel!
+abc_j	„J“… „J“ wie Jacke!
+abc_k	„K“… „K“ wie Käse!
+abc_l	„L“… „L“ wie Löwe!
+abc_m	„M“… „M“ wie Mond!
+abc_n	„N“… „N“ wie Nest!
+abc_o	„O“… „O“ wie Orange!
+abc_p	„P“… „P“ wie Pilz!
+abc_q	„Q“… „Q“ wie Qualle!
+abc_r	„R“… „R“ wie Rakete!
+abc_s	„S“… „S“ wie Sonne!
+abc_t	„T“… „T“ wie Tomate!
+abc_u	„U“… „U“ wie Uhr!
+abc_v	„V“… „V“ wie Vogel!
+abc_w	„W“… „W“ wie Wolke!
+abc_x	„X“… „X“ wie Xylophon!
+abc_y	Ypsilon… Ypsilon wie Yak!
+abc_z	„Z“… „Z“ wie Zitrone!
+letter_a	„A“!
+letter_b	„B“!
+letter_c	„C“!
+letter_d	„D“!
+letter_e	„E“!
+letter_f	„F“!
+letter_g	„G“!
+letter_h	„H“!
+letter_i	„I“!
+letter_j	„J“!
+letter_k	„K“!
+letter_l	„L“!
+letter_m	„M“!
+letter_n	„N“!
+letter_o	„O“!
+letter_p	„P“!
+letter_q	„Q“!
+letter_r	„R“!
+letter_s	„S“!
+letter_t	„T“!
+letter_u	„U“!
+letter_v	„V“!
+letter_w	„W“!
+letter_x	„X“!
+letter_y	Ypsilon!
+letter_z	„Z“!
+
+# Trace
+trace_intro	Wir malen mit dem Finger! Fang beim grünen Punkt an.
+trace_down	Mal eine Linie nach unten, wie Regentropfen.
+trace_across	Mal eine Linie quer, wie eine kleine Straße.
+trace_circle	Mal einen runden Kreis, wie einen Ball.
+trace_zigzag	Zick und zack, hoch und runter, wie eine Krone.
+trace_wave	Mal eine Welle, wie das Meer.
+trace_done_down	Tropf, tropf! Schöner Regen!
+trace_done_across	Brumm, brumm! Eine Straße für das Auto!
+trace_done_circle	Rund herum! Ein Ball!
+trace_done_zigzag	Zickzack! Eine Krone für dich!
+trace_done_wave	Wusch, wusch! Wellen für das Boot!
+trace_letter	Wir schreiben den Buchstaben
+trace_next	Jetzt die nächste Linie!
+trace_wrote	Toll, du hast ihn geschrieben!
+
+# First sounds
+firstsound_intro	Wir hören auf den allerersten Laut!
+firstsound_q_a	Was fängt mit „A“ an… wie Affe?
+firstsound_q_b	Was fängt mit „B“ an… wie Bo?
+firstsound_q_c	Was fängt mit „C“ an… wie Computer?
+firstsound_q_d	Was fängt mit „D“ an… wie Dach?
+firstsound_q_e	Was fängt mit „E“ an… wie Elefant?
+firstsound_q_f	Was fängt mit „F“ an… wie Fuchs?
+firstsound_q_g	Was fängt mit „G“ an… wie Gans?
+firstsound_q_h	Was fängt mit „H“ an… wie Hase?
+firstsound_q_i	Was fängt mit „I“ an… wie Insel?
+firstsound_q_j	Was fängt mit „J“ an… wie Junge?
+firstsound_q_k	Was fängt mit „K“ an… wie Katze?
+firstsound_q_l	Was fängt mit „L“ an… wie Laterne?
+firstsound_q_m	Was fängt mit „M“ an… wie Maus?
+firstsound_q_n	Was fängt mit „N“ an… wie Nase?
+firstsound_q_o	Was fängt mit „O“ an… wie Opa?
+firstsound_q_p	Was fängt mit „P“ an… wie Papa?
+firstsound_q_q	Was fängt mit „Q“ an… wie Quark?
+firstsound_q_r	Was fängt mit „R“ an… wie Regen?
+firstsound_q_s	Was fängt mit „S“ an… wie Sofa?
+firstsound_q_t	Was fängt mit „T“ an… wie Tiger?
+firstsound_q_u	Was fängt mit „U“ an… wie Uhu?
+firstsound_q_v	Was fängt mit „V“ an… wie Vater?
+firstsound_q_w	Was fängt mit „W“ an… wie Wal?
+firstsound_q_x	Was fängt mit „X“ an… wie Xaver?
+firstsound_q_y	Was fängt mit Ypsilon an… wie Yeti?
+firstsound_q_z	Was fängt mit „Z“ an… wie Zebra?
+
+# Animal friends
+animals_intro	Willkommen auf dem Bauernhof! Tipp die Tiere an und sag Hallo.
+animals_tap	Tipp ein Tier an und sag Hallo!
+animals_quiz	Jetzt ein kleines Spiel. Hör gut zu!
+animals_says_cow	Die Kuh macht muh! Muuuh!
+animals_says_pig	Das Schwein macht grunz! Grunz, grunz!
+animals_says_sheep	Das Schaf macht mäh! Määäh!
+animals_says_horse	Das Pferd wiehert! Hihihiii!
+animals_says_hen	Das Huhn macht gack! Gack, gack, gack!
+animals_says_dog	Der Hund macht wau! Wau, wau!
+animals_says_cat	Die Katze macht miau! Miiiau!
+animals_says_frog	Der Frosch macht quak! Quak, quak!
+animals_says_mouse	Die Maus macht piep! Piep, piep!
+animals_says_duck	Die Ente macht quak! Quak, quak!
+animals_says_bee	Die Biene macht summ! Summ, summ!
+animals_who_cow	Wer macht muh?
+animals_who_pig	Wer macht grunz?
+animals_who_sheep	Wer macht mäh?
+animals_who_horse	Wer wiehert?
+animals_who_hen	Wer macht gack, gack?
+animals_who_dog	Wer macht wau, wau?
+animals_who_cat	Wer macht miau?
+animals_who_frog	Wer macht quak?
+animals_who_mouse	Wer macht piep?
+animals_who_duck	Wer macht quak?
+animals_who_bee	Wer macht summ?
+
+# names of new things (ABC garden, first sounds, animals)
+name_cat	Katze!
+name_jam	Marmelade!
+name_nest	Nest!
+name_quilt	Decke!
+name_van	Bus!
+name_xylophone	Xylophon!
+name_yoyo	Jo-Jo!
+name_zebra	Zebra!
+name_clown	Clown!
+name_dino	Dino!
+name_hedgehog	Igel!
+name_jacket	Jacke!
+name_lion	Löwe!
+name_jellyfish	Qualle!
+name_clock	Uhr!
+name_bird	Vogel!
+name_yak	Yak!
+name_cow	Kuh!
+name_pig	Schwein!
+name_sheep	Schaf!
+name_horse	Pferd!
+name_hen	Huhn!
+name_dog	Hund!
+name_frog	Frosch!
+name_mouse	Maus!
+name_bee	Biene!

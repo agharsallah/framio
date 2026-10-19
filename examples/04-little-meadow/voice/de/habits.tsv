@@ -1,0 +1,148 @@
+# Moos' Garten (Gewohnheiten). Moos ist langsam und lieb: kurze, warme Sätze, nie belehrend.
+play_brush	Zähneputzen mit Moos!
+play_wash	Hände waschen!
+play_routine	Mein Tag!
+play_plate	Gesunder Teller!
+play_tidy	Aufräumzeit!
+play_weather	Anziehen fürs Wetter!
+
+# Zähneputzen
+brush_intro	Komm, wir putzen zusammen Zähne! Tu ein bisschen Zahnpasta auf deine Bürste. Nur ein kleiner Klecks, so groß wie eine Erbse.
+brush_ready	Bereit? Tipp auf die Zahnbürste, dann geht's los!
+brush_top_a	Wir fangen oben an, auf dieser Seite. Kleine Kreise!
+brush_top_b	Jetzt oben auf der anderen Seite. Rundherum.
+brush_bottom_a	Jetzt unten, auf dieser Seite. Kleine Kreise!
+brush_bottom_b	Und unten auf der anderen Seite.
+brush_front	Jetzt die vorderen Zähne. Zeig mir ein großes Lächeln, und putz, putz, putz!
+brush_tongue	Und die Zunge auch! Ganz sanft.
+brush_mid_1	Kleine Kreise, schön sanft.
+brush_mid_2	Vergiss die Zähne ganz hinten nicht!
+brush_mid_3	Das machst du toll. Weiter so!
+brush_mid_4	Langsam und gemütlich, so wie ich.
+brush_bye_bugs	Tschüss, Zuckerkäfer!
+brush_end	Blitzblank! Jetzt ausspucken, ausspülen, und zeig mir dein großes Lächeln!
+
+# Händewaschen
+wash_intro	Komm, wir waschen uns die Hände, wie am Waschbecken!
+wash_wet	Zuerst machst du deine Hände nass.
+wash_soap	Jetzt nimm etwas Seife. Ganz viel Schaum!
+wash_palms	Reib die Handflächen aneinander. Wir zählen mit!
+wash_backs	Jetzt die Handrücken.
+wash_between	Zwischen den Fingern, wie eine kleine Umarmung.
+wash_thumbs	Jetzt jeden Daumen waschen. Rundherum.
+wash_nails	Und die Fingerspitzen auf der Handfläche reiben. Kritz, kratz!
+wash_rinse	Spül den ganzen Schaum ab.
+wash_dry	Jetzt die Hände mit dem Handtuch abtrocknen. Tupf, tupf, tupf.
+wash_done	Saubere Hände! Frisch und fertig. Toll gemacht!
+
+# Mein Tag
+routine_morning_intro	Guten Morgen! Wir machen zusammen unsere Morgenschritte.
+routine_evening_intro	Guten Abend. Wir machen uns bettfertig, Schritt für Schritt.
+routine_tap	Wenn du es gemacht hast, tipp auf das Bild, dann bekommt es einen goldenen Stern.
+routine_wake	Aufwachen! Streck dich ganz groß, bis zum Himmel.
+routine_wake_done	Guten Morgen, Sonnenschein!
+routine_toilet	Jetzt aufs Klo gehen.
+routine_toilet_done	Toll! Und danach Hände waschen.
+routine_wash	Wir waschen Hände und Gesicht.
+routine_wash_done	Ganz frisch und sauber!
+routine_dress	Jetzt anziehen.
+routine_dress_done	Du siehst heute schön aus!
+routine_breakfast	Zeit fürs Frühstück! Lecker.
+routine_breakfast_done	Ein gutes Frühstück macht stark!
+routine_brush	Jetzt Zähne putzen.
+routine_brush_done	Toll gemacht, die Zähne glänzen!
+routine_hair	Wir kämmen deine Haare.
+routine_hair_done	So ordentlich!
+routine_shoes	Schuhe und Jacke an.
+routine_shoes_done	Fertig zum Rausgehen!
+routine_water	Wir trinken etwas Wasser.
+routine_water_done	Gluck, gluck! Das tat gut.
+routine_tidy	Zeit, das Spielzeug aufzuräumen.
+routine_tidy_done	Alles ist an seinem Platz. Danke!
+routine_dinner	Zeit fürs Abendessen.
+routine_dinner_done	Mmm! Was für ein leckeres Abendessen.
+routine_bath	Badezeit! Plitsch, platsch.
+routine_bath_done	Ganz sauber und kuschelig!
+routine_pyjamas	Wir ziehen den Schlafanzug an.
+routine_pyjamas_done	Ein weicher, kuscheliger Schlafanzug!
+routine_story	Zeit für eine Geschichte.
+routine_story_done	Was für eine schöne Geschichte.
+routine_hug	Eine dicke Gute-Nacht-Umarmung!
+routine_hug_done	Mmm. Kuscheln ist das Schönste.
+routine_sleep	Licht aus. Jetzt wird geschlafen.
+routine_sleep_done	Schlaf gut, mein Kleines.
+routine_all_morning	Alles geschafft! Jetzt bist du bereit für einen schönen Tag!
+routine_all_evening	Alles geschafft. Süße Träume, kleiner Freund.
+
+# Gesunder Teller
+plate_intro	Manches essen wir jeden Tag. Das macht uns groß und stark. Und manches ist eine Leckerei, nur für besondere Tage.
+plate_sort	Alltagsessen kommt in den Korb mit dem Blatt. Leckereien kommen in den Korb mit dem Stern.
+plate_yes_every	Ja! Das essen wir jeden Tag.
+plate_yes_some	Ja! Eine Leckerei, für besondere Tage.
+plate_hmm_every	Hm, das essen wir jeden Tag! Das kommt in den Korb mit dem Blatt.
+plate_hmm_some	Das ist eine Leckerei. Leckereien kommen in den Korb mit dem Stern.
+plate_rainbow_intro	Jetzt machen wir mir einen Regenbogenteller! Viele Farben tun uns gut.
+plate_find_red	Findest du etwas Rotes?
+plate_find_orange	Jetzt etwas Oranges!
+plate_find_yellow	Findest du etwas Gelbes?
+plate_find_green	Jetzt etwas Grünes!
+plate_find_purple	Und etwas Lilanes!
+plate_rainbow_done	Ein Regenbogenteller! So viele Farben. Mmm, danke schön!
+name_corn	Mais!
+name_eggplant	Aubergine!
+name_peas	Erbsen!
+name_candy	Bonbon!
+name_chips	Chips!
+name_lollipop	Lutscher!
+
+# Aufräumen
+tidy_start	Oh, was für eine Unordnung! Komm, wir räumen auf. Jedes Spielzeug hat ein Zuhause.
+tidy_again	Huch, die Spielsachen liegen wieder herum. Wir räumen auf!
+tidy_teddy	Wir legen den Teddy in die Spielkiste!
+tidy_ball	Der Ball kommt in die Spielkiste.
+tidy_block	Der Würfel kommt in die Spielkiste.
+tidy_car	Brumm, brumm! Das Auto kommt in die Spielkiste.
+tidy_drum	Die Trommel kommt in die Spielkiste.
+tidy_book	Das Buch kommt ins Bücherregal.
+tidy_book_red	Das rote Buch kommt ins Bücherregal.
+tidy_book_blue	Das blaue Buch kommt ins Bücherregal.
+tidy_duck	Quak! Die Ente kommt in den Badekorb.
+tidy_boat	Das Boot kommt in den Badekorb.
+tidy_fish	Der Fisch kommt in den Badekorb.
+tidy_done_1	Ahh. Schön ordentlich. Jetzt ist es gemütlich.
+tidy_done_2	Alles ist zu Hause. Jetzt ist ganz viel Platz zum Spielen!
+tidy_done_3	Was für ein ordentliches Zimmer! Danke fürs Helfen.
+
+# Anziehen fürs Wetter
+weather_intro	Tuka möchte rausgehen! Wir schauen aus dem Fenster und helfen ihr beim Anziehen.
+weather_sunny	Heute ist es sonnig und warm! Was soll Tuka anziehen?
+weather_rainy	Es regnet! Pitsch, patsch. Was braucht Tuka?
+weather_snowy	Schau, es schneit! Brr. Was hält Tuka warm?
+weather_windy	Huiii! Es ist sehr windig. Was soll Tuka anziehen?
+weather_on_raincoat	Eine Regenjacke hält dich trocken!
+weather_on_boots	Gummistiefel an! Bereit für Pfützen.
+weather_on_umbrella	Ein Regenschirm! Tropf, tropf, kein Regen auf dem Kopf.
+weather_on_sunhat	Ein Sonnenhut, für Schatten.
+weather_on_sunglasses	Eine Sonnenbrille! So cool.
+weather_on_tshirt	Ein leichtes T-Shirt für einen warmen Tag.
+weather_on_woollyhat	Eine Wollmütze hält die Ohren warm.
+weather_on_scarf	Ein kuscheliger Schal für den Hals.
+weather_on_mittens	Fäustlinge für warme Pfoten!
+weather_on_jacket	Eine warme Jacke, gut zugemacht.
+weather_done_sunny	Tuka ist bereit für den Sonnenschein!
+weather_done_rainy	Tuka ist bereit, im Regen zu planschen!
+weather_done_snowy	Tuka ist warm eingepackt für den Schnee!
+weather_done_windy	Tuka ist bereit für den Wind. Huiii!
+weather_no_sunny_woollyhat	Es ist heiß und sonnig! Eine Wollmütze wäre viel zu warm.
+weather_no_sunny_mittens	Fäustlinge sind für kalte Tage. Heute ist es warm!
+weather_no_sunny_raincoat	Heute regnet es nicht! Eine Regenjacke wäre zu warm.
+weather_no_sunny_scarf	Heute ist es warm. Kein Schal nötig!
+weather_no_rainy_sunglasses	Es ist grau und regnet. Eine Sonnenbrille hält dich nicht trocken.
+weather_no_rainy_sunhat	Ein Sonnenhut würde ganz nass werden! Was hält den Regen ab?
+weather_no_rainy_tshirt	Ein T-Shirt würde nass werden. Was hält dich trocken?
+weather_no_snowy_sunhat	Brr, es schneit! Ein Sonnenhut hält dich nicht warm.
+weather_no_snowy_tshirt	Brr! Ein T-Shirt ist zu kalt für Schnee.
+weather_no_snowy_umbrella	Ein Regenschirm hält nicht warm. Was hält Ohren und Pfoten kuschelig?
+weather_no_windy_umbrella	Huiii! Der Wind würde den Regenschirm wegpusten!
+weather_no_windy_sunhat	Huiii! Der Wind würde den Hut wegpusten!
+weather_no_windy_tshirt	Es ist windig und kühl. Ein T-Shirt ist nicht warm genug.

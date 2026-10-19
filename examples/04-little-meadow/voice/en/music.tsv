@@ -1,0 +1,22 @@
+# Bo's Music Corner: Xylophone, Bubble notes, Echo drums
+play_xylo	Xylophone!
+xylo_intro	Look, my xylophone! Let's make music!
+xylo_free	Tap the bars to play. Or pick a song!
+xylo_follow	Follow the glowing bar!
+xylo_song_twinkle	Twinkle, Twinkle, Little Star!
+xylo_song_mary	Mary Had a Little Lamb!
+xylo_song_row	Row, Row, Row Your Boat!
+xylo_song_jacques	Frère Jacques!
+xylo_song_buns	Hot Cross Buns!
+xylo_listen	You played the whole song! Listen!
+xylo_another	Pick another song, or play your own music!
+
+play_bubbles	Bubble notes
+bubbles_intro	Look, bubbles! Every bubble sings a little song.
+bubbles_pop	Pop the bubbles!
+
+play_echo	Echo drums
+echo_intro	Let's play the drums together! I play, then you play.
+echo_listen	Listen!
+echo_your_turn	Your turn!
+echo_again	Let's listen again.

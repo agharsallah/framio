@@ -1,0 +1,1478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F6EFE4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E1F38" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Little Meadow">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" type="image/webp" href="/sprites/ch_pip_idle.webp">
+<title>Little Meadow</title>
+<style>
+@font-face { font-family: "Nunito"; src: url(/nunito_600.ttf) format("truetype"); font-weight: 400 700; font-display: swap; }
+@font-face { font-family: "Nunito"; src: url(/nunito_800.ttf) format("truetype"); font-weight: 800 900; font-display: swap; }
+
+:root {
+  --paper: #F6EFE4; --paper-deep: #EDE3D3; --card: #FFFCF7; --card-2: #FBF6EE;
+  --ink: #3E3346; --ink-soft: #6F6375; --ink-faint: #9A8F9E; --line: rgba(62, 51, 70, .11);
+  --honey: #E7B05A; --honey-soft: #F1D29E; --terra: #DC8B62; --sky: #8FAFD3; --sage: #8DB48A;
+  --lavender: #9D97D2; --rose: #E9A3A0; --mint: #9FD3C1;
+  --tint-honey: #F8E7C8; --tint-sage: #DFEBDB; --tint-sky: #DEE8F3; --tint-lav: #E5E3F4; --tint-rose: #F8E0DE; --tint-terra: #F6DED1;
+  --on-accent: #3E3346; --danger: #B5544E;
+  --shadow: 0 1px 2px rgba(62, 51, 70, .05), 0 8px 24px rgba(62, 51, 70, .06);
+  --radius: 22px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #1E1F38; --card: #2A2B4A; --card-2: #313255;
+    --ink: #F3E7C9; --ink-soft: #C3BBCF; --ink-faint: #8D88A3; --line: rgba(243, 231, 201, .12);
+    --honey-soft: #8A6E46; --paper-deep: #3A3B62;
+    --tint-honey: #4A3F3A; --tint-sage: #34443F; --tint-sky: #323D57; --tint-lav: #3A3960; --tint-rose: #4A3747; --tint-terra: #4A3A3E;
+    --danger: #F0A39D;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .2), 0 8px 24px rgba(0, 0, 0, .18);
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 600 16px/1.4 "Nunito", ui-rounded, system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+  min-height: 100vh; min-height: 100dvh;
+}
+button, input, select { font: inherit; color: inherit; }
+h1, h2, h3 { font-weight: 800; margin: 0; letter-spacing: -.01em; }
+h2 { font-size: 19px; }
+h3 { font-size: 16px; }
+p { margin: 0; }
+img { -webkit-user-drag: none; user-select: none; }
+[hidden] { display: none !important; }
+.soft { color: var(--ink-soft); }
+.faint { color: var(--ink-faint); }
+.small { font-size: 13.5px; }
+.row { display: flex; align-items: center; gap: 12px; }
+.grow { flex: 1; min-width: 0; }
+.stack > * + * { margin-top: 14px; }
+.ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- shell */
+.app { max-width: 760px; margin: 0 auto; padding: calc(10px + env(safe-area-inset-top)) 16px calc(104px + env(safe-area-inset-bottom)); }
+.top { display: flex; align-items: center; gap: 10px; padding: 6px 2px 14px; }
+.top .pip { width: 46px; height: 46px; object-fit: contain; margin: -4px -2px -4px -6px; }
+.brand { font-size: 20px; font-weight: 800; line-height: 1.1; }
+.brand-sub { font-size: 13px; color: var(--ink-soft); }
+.live { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-soft); padding: 6px 10px; border-radius: 99px; background: var(--card); box-shadow: var(--shadow); }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); }
+.live.off .dot { background: var(--rose); }
+.banner { display: flex; gap: 10px; align-items: center; background: var(--tint-rose); border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; font-size: 14.5px; }
+
+.tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: flex; justify-content: center; gap: 2px;
+  padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  -webkit-backdrop-filter: saturate(1.2) blur(14px); backdrop-filter: saturate(1.2) blur(14px);
+  border-top: 1px solid var(--line);
+}
+@supports not (background: color-mix(in srgb, red 50%, blue)) { .tabs { background: var(--paper); } }
+.tab {
+  flex: 1; max-width: 120px; border: 0; background: none; padding: 2px 0; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 800; color: var(--ink-soft);
+}
+.tab .pill { width: 56px; height: 32px; border-radius: 99px; display: grid; place-items: center; transition: background .3s ease; }
+.tab svg { width: 22px; height: 22px; }
+.tab[aria-selected="true"] { color: var(--ink); }
+.tab[aria-selected="true"] .pill { background: var(--tint-honey); }
+
+@media (min-width: 900px) {
+  .app { padding-left: 132px; max-width: 900px; }
+  .tabs { top: 0; right: auto; width: 108px; flex-direction: column; justify-content: center; border-top: 0; border-right: 1px solid var(--line); gap: 14px; padding: 16px 0; }
+  .tab { flex: 0; max-width: none; }
+}
+
+/* ---------- cards & controls */
+.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; }
+.card + .card, .card + .group, .group + .card, .group + .group { margin-top: 14px; }
+.card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.section-title { font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); margin: 24px 4px 10px; }
+.section-title:first-child { margin-top: 4px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 18px;
+  border-radius: 99px; border: 0; background: var(--paper-deep); font-weight: 800; font-size: 15px; cursor: pointer;
+  transition: transform .15s ease, background .2s ease; text-decoration: none; color: var(--ink);
+}
+.btn:active { transform: scale(.97); }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.btn.primary { background: var(--honey); color: #3E3346; }
+.btn.ghost { background: transparent; box-shadow: inset 0 0 0 1.5px var(--line); }
+.btn.danger { color: var(--danger); }
+.btn.small { min-height: 36px; padding: 6px 14px; font-size: 14px; }
+.btn.icon { width: 40px; min-height: 40px; padding: 0; }
+.btn[disabled] { opacity: .45; pointer-events: none; }
+
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 99px; background: var(--paper-deep); font-size: 13.5px; font-weight: 800; }
+.chip.honey { background: var(--tint-honey); } .chip.sage { background: var(--tint-sage); } .chip.lav { background: var(--tint-lav); }
+.chip.sky { background: var(--tint-sky); } .chip.rose { background: var(--tint-rose); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.seg { display: flex; background: var(--paper-deep); border-radius: 99px; padding: 4px; gap: 4px; }
+.seg button { flex: 1; border: 0; background: none; border-radius: 99px; min-height: 38px; padding: 6px 12px; font-weight: 800; font-size: 15px; cursor: pointer; color: var(--ink-soft); transition: background .25s ease, color .25s ease; }
+.seg button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(62, 51, 70, .12); }
+
+.switch { appearance: none; -webkit-appearance: none; width: 52px; height: 32px; border-radius: 99px; background: var(--paper-deep); position: relative; cursor: pointer; flex: none; margin: 0; transition: background .25s ease; box-shadow: inset 0 0 0 1px var(--line); }
+.switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 26px; height: 26px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .18); transition: transform .25s ease; }
+.switch:checked { background: var(--sage); }
+.switch:checked::after { transform: translateX(20px); }
+.switch:focus-visible, .btn:focus-visible, .seg button:focus-visible, .tab:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 32px; margin: 0; background: transparent; cursor: pointer; --p: 50%; }
+input[type="range"]::-webkit-slider-runnable-track { height: 8px; border-radius: 99px; background: linear-gradient(to right, var(--honey) var(--p), var(--paper-deep) var(--p)); }
+input[type="range"]::-moz-range-track { height: 8px; border-radius: 99px; background: var(--paper-deep); }
+input[type="range"]::-moz-range-progress { height: 8px; border-radius: 99px; background: var(--honey); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -10px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 1px 4px rgba(62, 51, 70, .3), inset 0 0 0 1px rgba(62, 51, 70, .06); }
+input[type="range"]::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 1px 4px rgba(62, 51, 70, .3); }
+input[type="range"]:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; border-radius: 99px; }
+.field { width: 100%; min-height: 46px; padding: 10px 14px; border-radius: 14px; border: 1.5px solid var(--line); background: var(--card-2); font-weight: 700; font-size: 16px; }
+.field:focus { outline: none; border-color: var(--honey); }
+input[type="time"].field { width: auto; min-width: 120px; text-align: center; }
+
+.group { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.group-title { padding: 14px 18px 4px; font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+.set { display: flex; align-items: center; gap: 14px; padding: 13px 18px; min-height: 60px; }
+.set + .set { border-top: 1px solid var(--line); }
+.set.col { flex-direction: column; align-items: stretch; gap: 8px; }
+.set .label { flex: 1; min-width: 0; }
+.set .label b { display: block; font-weight: 800; }
+.set .label span { display: block; font-size: 13.5px; color: var(--ink-soft); }
+.set .value { font-weight: 800; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+
+.bar { height: 12px; border-radius: 99px; background: var(--paper-deep); overflow: hidden; }
+.bar > i { display: block; height: 100%; border-radius: 99px; background: var(--sage); transition: width .6s ease; }
+.bar.full > i { background: var(--honey); }
+
+.sprite { position: relative; display: inline-grid; place-items: center; flex: none; }
+.sprite img { width: 100%; height: 100%; object-fit: contain; }
+.sprite.broken img { display: none; }
+.sprite.broken::after { content: attr(data-fallback); width: 78%; height: 78%; border-radius: 50%; background: var(--tint-sage); display: grid; place-items: center; font-weight: 800; color: var(--ink-soft); }
+
+/* ---------- now */
+.hero { display: flex; gap: 16px; align-items: center; }
+.hero .bubble { width: 92px; height: 92px; border-radius: 30px; display: grid; place-items: center; background: var(--tint-honey); flex: none; }
+.hero .bubble .sprite { width: 84px; height: 84px; }
+.hero .eyebrow { font-size: 13px; font-weight: 800; color: var(--ink-soft); }
+.hero h2 { font-size: 22px; line-height: 1.2; margin: 2px 0 4px; }
+.today-box { margin-top: 16px; }
+.today-box .row { justify-content: space-between; margin-bottom: 8px; font-size: 14.5px; }
+
+.shot { position: relative; display: block; width: 100%; aspect-ratio: 16 / 10; border-radius: 16px; overflow: hidden; background: var(--paper-deep); border: 0; padding: 0; cursor: pointer; }
+.shot img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity .4s ease; }
+.shot .hint { position: absolute; left: 10px; bottom: 10px; padding: 5px 11px; border-radius: 99px; background: rgba(30, 31, 56, .62); color: #FBF6EE; font-size: 12.5px; font-weight: 800; display: inline-flex; gap: 6px; align-items: center; }
+.shot .hint svg { width: 15px; height: 15px; }
+.shot .wait { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-soft); font-size: 14px; }
+.shot.loading img { opacity: .55; }
+
+.actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 520px) { .actions { grid-template-columns: repeat(3, 1fr); } }
+.action { border: 0; border-radius: 18px; padding: 14px; min-height: 92px; text-align: left; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; gap: 8px; transition: transform .15s ease; }
+.action:active { transform: scale(.97); }
+.action .ic { width: 36px; height: 36px; border-radius: 12px; background: rgba(255, 255, 255, .55); display: grid; place-items: center; }
+@media (prefers-color-scheme: dark) { .action .ic { background: rgba(255, 255, 255, .08); } }
+.action svg { width: 21px; height: 21px; }
+.action b { font-weight: 800; font-size: 15px; line-height: 1.2; display: block; }
+.action span { font-size: 12.5px; color: var(--ink-soft); display: block; }
+.t-honey { background: var(--tint-honey); } .t-sage { background: var(--tint-sage); } .t-sky { background: var(--tint-sky); }
+.t-lav { background: var(--tint-lav); } .t-rose { background: var(--tint-rose); } .t-terra { background: var(--tint-terra); }
+
+.calls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 520px) { .calls { grid-template-columns: repeat(3, 1fr); } }
+.call { border: 0; border-radius: 18px; min-height: 64px; padding: 6px 12px 6px 6px; display: flex; align-items: center; gap: 6px; font-weight: 800; font-size: 14.5px; text-align: left; cursor: pointer; line-height: 1.2; transition: transform .15s ease; }
+.call:active { transform: scale(.97); }
+.call .sprite { width: 52px; height: 52px; }
+.mail { flex-wrap: wrap; }
+.mail .sprite { width: 56px; height: 56px; }
+.mail .grow { min-width: 170px; }
+.mail .btn { margin-left: auto; }
+
+/* ---------- progress */
+.big-num { font-size: 34px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.chart { position: relative; height: 132px; display: flex; align-items: flex-end; gap: 4px; padding-top: 8px; }
+.chart .col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; cursor: pointer; position: relative; }
+.chart .col i { display: block; border-radius: 4px 4px 0 0; background: var(--honey-soft); min-height: 3px; transition: height .6s ease; }
+.chart .col.zero i { background: var(--line); }
+.chart .col.today i { background: var(--honey); }
+.chart .col.sel i { box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--honey); }
+.chart .limit { position: absolute; left: 0; right: 0; border-top: 2px dashed var(--ink-faint); opacity: .55; pointer-events: none; }
+.chart .limit span { position: absolute; right: 0; top: -20px; font-size: 11.5px; color: var(--ink-soft); background: var(--card); padding: 0 4px; }
+.days { display: flex; gap: 4px; margin-top: 6px; }
+.days span { flex: 1; min-width: 0; text-align: center; font-size: 10.5px; color: var(--ink-faint); white-space: nowrap; letter-spacing: -.02em; }
+.days span.today { color: var(--ink); font-weight: 800; }
+.chart-cap { min-height: 22px; font-size: 14px; color: var(--ink-soft); margin-top: 8px; }
+
+.list-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+.list-row + .list-row { border-top: 1px solid var(--line); }
+.list-row .sprite { width: 52px; height: 52px; }
+.list-row .title { font-weight: 800; }
+.list-row .sub { font-size: 13.5px; color: var(--ink-soft); }
+.levels { display: inline-flex; gap: 3px; vertical-align: middle; }
+.levels i { width: 7px; height: 7px; border-radius: 50%; background: var(--line); }
+.levels i.on { background: var(--sage); }
+
+.skill-hero { display: flex; align-items: center; gap: 14px; background: var(--tint-honey); border-radius: 18px; padding: 12px 16px; margin-bottom: 14px; }
+.skill { margin-top: 12px; }
+.skill h3 { margin-bottom: 8px; font-size: 15px; }
+.swatch { width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .1); }
+.count { font-size: 12px; color: var(--ink-soft); font-weight: 700; }
+.stickers { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 6px; }
+.stickers .sprite { width: 100%; aspect-ratio: 1; }
+.events li { padding: 8px 0; display: flex; justify-content: space-between; gap: 12px; font-size: 14.5px; }
+.events li + li { border-top: 1px solid var(--line); }
+.events { list-style: none; margin: 0; padding: 0; }
+
+/* ---------- family */
+.drop { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; border: 2px dashed var(--line); border-radius: 18px; padding: 18px; cursor: pointer; min-height: 120px; transition: background .2s ease; }
+.drop:active { background: var(--card-2); }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.drop .ic { width: 52px; height: 52px; border-radius: 18px; display: grid; place-items: center; }
+.drop .ic svg { width: 26px; height: 26px; }
+.preview { display: flex; flex-direction: column; gap: 12px; }
+.preview img { max-width: 100%; max-height: 260px; border-radius: 14px; align-self: center; }
+.preview audio, .msg audio { width: 100%; height: 40px; }
+.progress { height: 6px; border-radius: 99px; background: var(--paper-deep); overflow: hidden; }
+.progress i { display: block; height: 100%; width: 0; background: var(--honey); transition: width .2s linear; }
+.msg { display: flex; gap: 12px; padding: 12px 0; align-items: flex-start; }
+.msg + .msg { border-top: 1px solid var(--line); }
+.msg .thumb { width: 64px; height: 64px; border-radius: 14px; object-fit: cover; flex: none; background: var(--paper-deep); }
+.msg .thumb.voice { display: grid; place-items: center; background: var(--tint-sky); }
+.msg .thumb.voice svg { width: 26px; height: 26px; }
+.msg .btns { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.new { background: var(--tint-honey); font-size: 12px; padding: 2px 8px; border-radius: 99px; font-weight: 800; margin-left: 6px; vertical-align: 1px; }
+
+/* ---------- gallery */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 600px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+.painting { border: 0; padding: 0; background: var(--card); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); cursor: pointer; text-align: left; }
+.painting img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; background: #fff; }
+.painting span { display: block; padding: 8px 12px 10px; font-size: 13px; color: var(--ink-soft); }
+.lightbox { position: fixed; inset: 0; z-index: 50; background: rgba(30, 31, 56, .9); display: flex; flex-direction: column; padding: calc(14px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom)); gap: 14px; }
+.lightbox img { flex: 1; min-height: 0; width: 100%; object-fit: contain; border-radius: 12px; }
+.lightbox .row { justify-content: center; flex-wrap: wrap; }
+.lightbox .btn { background: rgba(251, 246, 238, .14); color: #FBF6EE; }
+
+.empty { text-align: center; padding: 26px 12px; color: var(--ink-soft); }
+.empty .sprite { width: 120px; height: 120px; margin-bottom: 6px; }
+
+/* ---------- activities & routines */
+.world-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.world-head .sprite { width: 56px; height: 56px; margin: -6px 0; }
+.world-band { width: 10px; height: 10px; border-radius: 50%; }
+.play-row { display: flex; align-items: center; gap: 12px; padding: 11px 0; }
+.play-row + .play-row { border-top: 1px solid var(--line); }
+.play-row .sprite { width: 54px; height: 54px; }
+.play-row.off .sprite, .play-row.off .ptitle { opacity: .45; }
+.ptitle { font-weight: 800; }
+.pabout { font-size: 13.5px; color: var(--ink-soft); }
+.tags { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+.tags:empty { display: none; }
+.tag { font-size: 11.5px; font-weight: 800; padding: 2px 8px; border-radius: 99px; background: var(--paper-deep); color: var(--ink-soft); }
+.step { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+.step + .step { border-top: 1px solid var(--line); }
+.step .n { width: 24px; text-align: center; font-weight: 800; color: var(--ink-faint); }
+.step .sprite { width: 48px; height: 48px; }
+.step { gap: 8px; }
+.step .title { flex: 1; min-width: 0; font-weight: 800; line-height: 1.2; }
+.step .btn.icon { width: 36px; min-height: 36px; background: var(--paper-deep); }
+.step .btn.icon svg { width: 18px; height: 18px; }
+.add-steps { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.add-step { border: 0; display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px 4px 4px; border-radius: 99px; background: var(--paper-deep); font-weight: 800; font-size: 14px; cursor: pointer; min-height: 44px; }
+.add-step .sprite { width: 36px; height: 36px; }
+
+/* ---------- login */
+.login { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px 20px; gap: 10px; }
+.login .friend { width: 168px; height: 168px; object-fit: contain; animation: float 5s ease-in-out infinite; }
+.login h1 { font-size: 30px; }
+.login p { max-width: 340px; color: var(--ink-soft); }
+.pin { margin-top: 14px; width: 232px; height: 70px; text-align: center; font-size: 36px; font-weight: 800; letter-spacing: .5em; padding-left: .5em; border-radius: 20px; border: 2px solid var(--line); background: var(--card); font-variant-numeric: tabular-nums; }
+.pin:focus { outline: none; border-color: var(--honey); }
+.login .err { min-height: 24px; color: var(--danger); font-weight: 800; }
+.login details { max-width: 340px; font-size: 14px; color: var(--ink-soft); margin-top: 6px; }
+.login summary { cursor: pointer; font-weight: 800; color: var(--ink); padding: 8px; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+.toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom)); transform: translate(-50%, 12px); opacity: 0; z-index: 60;
+  background: #3E3346; color: #FBF6EE; padding: 11px 18px; border-radius: 16px; font-weight: 800; font-size: 14.5px; box-shadow: 0 8px 30px rgba(0, 0, 0, .2);
+  transition: opacity .3s ease, transform .3s ease; pointer-events: none; max-width: calc(100% - 32px); text-align: center; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast.err { background: #8E4A47; }
+@media (min-width: 900px) { .toast { bottom: 28px; } }
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-now" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="12.5" rx="3"/><path d="M8.5 20.5h7"/><path d="M10.5 8.5v5l4-2.5z" fill="currentColor"/></symbol>
+    <symbol id="i-progress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V12"/><path d="M12 20V6"/><path d="M19 20v-9"/></symbol>
+    <symbol id="i-family" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
+    <symbol id="i-gallery" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.3 0 1.8-.9 1.8-1.8 0-1.4-1.2-1.6-1.2-2.9 0-1 .8-1.6 1.8-1.6h2.1a3.9 3.9 0 0 0 4-3.9C20.5 6.6 16.7 3.5 12 3.5z"/><circle cx="7.6" cy="11" r="1.1" fill="currentColor"/><circle cx="10.5" cy="7.4" r="1.1" fill="currentColor"/><circle cx="15" cy="7.6" r="1.1" fill="currentColor"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9"/><path d="M17 7h3"/><circle cx="15" cy="7" r="2"/><path d="M4 17h3"/><path d="M11 17h9"/><circle cx="9" cy="17" r="2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 6.6-1.6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v8M8 12h8"/></symbol>
+    <symbol id="i-wiggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.8" r="1.8"/><path d="M5 9.5l7 1.5 7-1.5"/><path d="M12 11v4l-3.5 5.5"/><path d="M12 15l3.5 5.5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6-5-2.6-5 2.6.9-5.6-4-3.9 5.6-.8z"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-6.5 8 6.5"/><path d="M6.5 9.5V19a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V9.5"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4h-4"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0"/><path d="M12 18v2.5"/></symbol>
+    <symbol id="i-photo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M20.5 15.5l-5-4.5-8.5 8"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.5 7V5h5v2"/><path d="M6.5 7l1 12.5h9l1-12.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14.5l6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9.5l6 6 6-6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M7 7l10 10M17 7L7 17"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l15-8-5 15-2.5-6z"/></symbol>
+    <symbol id="i-down-load" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11"/><path d="M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19.5h14"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9.5a12 12 0 0 1 17 0"/><path d="M6.5 12.8a7.5 7.5 0 0 1 11 0"/><path d="M9.5 16a3.2 3.2 0 0 1 5 0"/><circle cx="12" cy="19" r=".9" fill="currentColor"/></symbol>
+  </defs>
+</svg>
+
+<!-- ======================= sign in -->
+<main id="login" class="login" hidden>
+  <img class="friend" src="/sprites/ch_pip_wave.webp" alt="">
+  <h1 data-t="helloTitle">Hello!</h1>
+  <p data-t="pinAsk">Type the PIN that the frame shows on its grown-ups screen.</p>
+  <input id="pin" class="pin" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" aria-label="PIN" placeholder="····">
+  <p class="err" id="pin-err" role="alert"></p>
+  <details>
+    <summary data-t="pinWhereQ">Where do I find the PIN?</summary>
+    <p data-t="pinWhereA">On the frame's home screen, hold the little gear in the top corner for two seconds and answer the question. The PIN is on the "For grown-ups" screen.</p>
+  </details>
+</main>
+
+<!-- ======================= the dashboard -->
+<div id="app" class="app" hidden>
+  <header class="top">
+    <img class="pip" src="/sprites/ch_pip_idle.webp" alt="">
+    <div class="grow">
+      <div class="brand">Little Meadow</div>
+      <div class="brand-sub" id="brand-sub"></div>
+    </div>
+    <div class="live" id="live"><span class="dot"></span><span id="live-text"></span></div>
+  </header>
+  <div class="banner" id="offline" hidden><svg width="22" height="22"><use href="#i-wifi"/></svg><span data-t="offline">Can't reach the frame. Is it switched on and on the same Wi-Fi? Trying again…</span></div>
+
+  <!-- now -->
+  <section id="v-now" data-view="now">
+    <div class="card">
+      <div id="now-status"></div>
+      <div class="today-box" id="now-today"></div>
+    </div>
+
+    <div class="section-title" data-t="onScreen">On the screen</div>
+    <div class="card">
+      <button class="shot" id="shot" type="button" aria-label="Refresh">
+        <img id="shot-img" alt="" hidden>
+        <span class="wait" id="shot-wait" data-t="shotLoading">Looking at the frame…</span>
+        <span class="hint"><svg><use href="#i-refresh"/></svg><span id="shot-time" data-t="tapRefresh">Tap to refresh</span></span>
+      </button>
+    </div>
+
+    <div class="section-title" data-t="quick">Quick actions</div>
+    <div class="actions" id="actions"></div>
+
+    <div class="section-title" data-t="callsTitle">Call from a friend</div>
+    <div class="card">
+      <p class="soft small" style="margin-bottom:12px" data-t="callsAbout">Tap and a friend says it out loud on the frame.</p>
+      <div class="calls" id="calls"></div>
+    </div>
+    <div id="now-mail"></div>
+  </section>
+
+  <!-- progress -->
+  <section id="v-progress" data-view="progress" hidden>
+    <div id="progress-body"><div class="empty" data-t="loading">Loading…</div></div>
+  </section>
+
+  <!-- family -->
+  <section id="v-family" data-view="family" hidden>
+    <div class="section-title" data-t="sendVoice">Send a voice message</div>
+    <div class="card stack" id="voice-card">
+      <div class="row"><label class="grow"><span class="soft small" data-t="fromLabel">From</span>
+        <input class="field" id="from" maxlength="30" autocomplete="nickname" data-ph="fromPh" placeholder="Grandma"></label></div>
+      <label class="drop" id="voice-drop">
+        <input type="file" accept="audio/*" capture id="voice-file">
+        <span class="ic t-sky"><svg><use href="#i-mic"/></svg></span>
+        <b data-t="recordVoice">Record or choose a recording</b>
+        <span class="soft small" data-t="recordVoiceHint">"Goodnight, sleep tight!" A few seconds is perfect.</span>
+      </label>
+      <div class="preview" id="voice-preview" hidden></div>
+    </div>
+
+    <div class="section-title" data-t="sendPhoto">Send a photo</div>
+    <div class="card stack" id="photo-card">
+      <label class="drop">
+        <input type="file" accept="image/*" id="photo-file">
+        <span class="ic t-honey"><svg><use href="#i-photo"/></svg></span>
+        <b data-t="choosePhoto">Take or choose a photo</b>
+        <span class="soft small" data-t="choosePhotoHint">Family faces show up in the mailbox and the family game.</span>
+      </label>
+      <div class="preview" id="photo-preview" hidden></div>
+    </div>
+
+    <div class="section-title" data-t="nameTitle">Your child's name</div>
+    <div class="card stack" id="name-card"></div>
+
+    <div class="section-title" data-t="sent">Sent to the frame</div>
+    <div class="card" id="family-list"><div class="empty" data-t="loading">Loading…</div></div>
+  </section>
+
+  <!-- gallery -->
+  <section id="v-gallery" data-view="gallery" hidden>
+    <div class="section-title" data-t="paintings">Paintings</div>
+    <div id="gallery-body"><div class="empty" data-t="loading">Loading…</div></div>
+  </section>
+
+  <!-- settings -->
+  <section id="v-settings" data-view="settings" hidden>
+    <div class="seg" id="subtabs" role="tablist" style="margin-bottom:16px">
+      <button type="button" data-sub="frame" aria-pressed="true" data-t="subFrame">Frame</button>
+      <button type="button" data-sub="activities" aria-pressed="false" data-t="subActivities">Activities</button>
+      <button type="button" data-sub="routines" aria-pressed="false" data-t="subRoutines">Routines</button>
+    </div>
+    <div id="sub-frame"></div>
+    <div id="sub-activities" hidden></div>
+    <div id="sub-routines" hidden></div>
+  </section>
+</div>
+
+<nav class="tabs" id="tabs" role="tablist" hidden>
+  <button class="tab" type="button" data-tab="now" aria-selected="true"><span class="pill"><svg><use href="#i-now"/></svg></span><span data-t="tabNow">Now</span></button>
+  <button class="tab" type="button" data-tab="progress" aria-selected="false"><span class="pill"><svg><use href="#i-progress"/></svg></span><span data-t="tabProgress">Progress</span></button>
+  <button class="tab" type="button" data-tab="family" aria-selected="false"><span class="pill"><svg><use href="#i-family"/></svg></span><span data-t="tabFamily">Family</span></button>
+  <button class="tab" type="button" data-tab="gallery" aria-selected="false"><span class="pill"><svg><use href="#i-gallery"/></svg></span><span data-t="tabGallery">Gallery</span></button>
+  <button class="tab" type="button" data-tab="settings" aria-selected="false"><span class="pill"><svg><use href="#i-settings"/></svg></span><span data-t="tabSettings">Settings</span></button>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+// ============================================================ words
+const WORDS = {
+  en: {
+    helloTitle: "Hello!", pinAsk: "Type the PIN that the frame shows on its grown-ups screen.",
+    pinWhereQ: "Where do I find the PIN?",
+    pinWhereA: "On the frame's home screen, hold the little gear in the top corner for two seconds and answer the question. The PIN is on the \"For grown-ups\" screen.",
+    pinWrong: "That's not it. {n} more tries.", pinWrong1: "That's not it. One more try.", pinLocked: "Too many tries. Please wait {n} s.",
+    offline: "Can't reach the frame. Is it switched on and on the same Wi-Fi? Trying again…",
+    live: "Live", off: "Offline", framesOf: "{name}'s frame", framePlain: "The meadow frame",
+    tabNow: "Now", tabProgress: "Progress", tabFamily: "Family", tabGallery: "Gallery", tabSettings: "Settings",
+    onScreen: "On the screen", shotLoading: "Looking at the frame…", tapRefresh: "Tap to refresh", shotAt: "{t} · tap to refresh", shotFail: "Couldn't see the screen. Tap to try again.",
+    quick: "Quick actions", callsTitle: "Call from a friend", callsAbout: "Tap and a friend says it out loud on the frame.",
+    loading: "Loading…",
+    nowEyebrow: "On the frame now",
+    sHome: "On the home screen", sWorld: "In {w}", sPlay: "Playing {p}", sStickers: "Looking at the sticker book", sMailbox: "Opening the mailbox",
+    sParent: "A grown-up is in the settings", sRest: "Pip is resting", sBreak: "Wiggle break", sDaily: "Play time is over for today", sUnknown: "On the frame",
+    gLocked: "Locked", gNight: "Bedtime: quiet corner only", gBreak: "Wiggle break", gDaily: "Daily time used up",
+    withFriend: "with {f}",
+    todayOf: "{m} of {l} min today", todayNoLimit: "{m} min today", left: "{n} min left", noLimit: "No daily limit",
+    clockWait: "The frame's clock isn't set yet (it needs Wi-Fi), so today's minutes start counting soon.",
+    aLock: "Pip is resting", aLockSub: "Pause the frame", aUnlock: "Wake Pip up", aUnlockSub: "Unlock the frame",
+    aBonus: "+15 minutes", aBonusSub: "Extra play today", aWiggle: "Wiggle break", aWiggleSub: "Move and stretch now",
+    aNight: "Night light", aNightSub: "Soft glow, then dark", aStar: "Send a star", aStarSub: "A sticker from you",
+    aHome: "Home screen", aHomeSub: "Back to the meadow", aWake: "Wake the screen", aWakeSub: "Backlight on",
+    callDinner: "Dinner time!", callTidy: "Time to tidy up!", callBath: "Bath time!", callBed: "Time for bed!", callOutside: "Let's go outside!", callLove: "I love you!",
+    sentOk: "Sent to the frame", saidOk: "{f} is saying it now", newMail: "{n} new in the mailbox", newMail1: "Something new is waiting in the mailbox",
+    openMailbox: "Open the mailbox",
+    pToday: "Today", pFortnight: "The last two weeks", pPlayed: "What was played", pSkills: "Skills", pStickers: "Stickers", pRecent: "Recently",
+    pTotals: "{t} in total · {d} days played · about {a} min a day", pTotals1: "{t} in total · 1 day played", pNone: "Nothing played yet. When {name} plays, it shows up here.",
+    pOpened: "Opened {o}× · finished {f}× · {m} min", pLevel: "Level {n} of 5", pHighest: "Highest number counted", pNoSkills: "Skills appear as {name} plays.",
+    pStickerCount: "{n} of {t} collected", pNoStickers: "Finishing an activity earns a sticker.",
+    gCount: "Counting", gLetter: "Letters", gColor: "Colours", gShape: "Shapes", gWord: "Words", gNote: "Music", gFeeling: "Feelings", gHabit: "Habits", gOther: "Other",
+    minutesOn: "{d}: {m} min", hm: "{h} h {m} min", min: "{m} min",
+    today: "today", yesterday: "yesterday", daysAgo: "{n} days ago", justNow: "just now", minAgo: "{n} min ago", hAgo: "{n} h ago",
+    sendVoice: "Send a voice message", fromLabel: "From", fromPh: "Grandma",
+    recordVoice: "Record or choose a recording", recordVoiceHint: "\"Goodnight, sleep tight!\" A few seconds is perfect.",
+    sendPhoto: "Send a photo", choosePhoto: "Take or choose a photo", choosePhotoHint: "Family faces show up in the mailbox and the family game.",
+    nameTitle: "Your child's name", nameAbout: "Record yourself saying {name}'s name. The friends use it when they say hello.",
+    nameAboutNoName: "Record yourself saying your child's name. The friends use it when they say hello.",
+    recordName: "Record the name", nameHave: "The friends know the name", replace: "Record again",
+    sent: "Sent to the frame", send: "Send to the frame", cancel: "Cancel", sending: "Sending…",
+    tooBig: "That file is larger than 10 MB. A shorter recording or a smaller photo works.",
+    voiceSent: "Sent! It's waiting in the mailbox.", photoSent: "Sent! It's in the mailbox now.", nameSent: "Saved. The friends will say it.",
+    playNow: "Play it now", showNow: "Show on the frame", remove: "Delete", removeQ: "Delete this from the frame?", removed: "Deleted",
+    famEmpty: "Nothing sent yet. Voice messages and photos you send appear here.", unseenTag: "new",
+    voiceFrom: "Voice message from {f}", photoFrom: "Photo from {f}",
+    paintings: "Paintings", galEmpty: "No paintings yet. When {name} paints with Tuka, the pictures land here.", download: "Save", close: "Close", paintingQ: "Delete this painting?",
+    subFrame: "Frame", subActivities: "Activities", subRoutines: "Routines",
+    stChild: "Child", stName: "Name", stNamePh: "Your child's name", stAge: "Age", stAgeSub: "Sets where activities start; they adapt as they go",
+    stLang: "Language", stLangSub: "What the friends speak",
+    stSound: "Sound and screen", stVolume: "Volume", stMusic: "Music", stMusicSub: "Soft background tunes",
+    stBright: "Brightness", stCalm: "Calmer motion", stCalmSub: "No hops, slower fades",
+    stCaptions: "Show what's said", stCaptionsSub: "The friends' words on screen, lit up as they speak",
+    stTime: "Play time", stLimit: "Daily play time", stLimitSub: "About an hour a day suits ages 2 to 5", stNoLimit: "No limit",
+    stBreak: "Wiggle break", stBreakSub: "A movement break after this long", stNever: "Never", stEvery: "every {n} min",
+    stBed: "Bedtime", stBedMode: "Bedtime mode", stBedModeSub: "Only the quiet corner, dimmer and warmer",
+    stBedtime: "Bedtime", stWake: "Wake-up", stNightLight: "Night light", stNightLightSub: "Then the screen fades to dark",
+    stBacklight: "Backlight off at night", stBacklightSub: "Fully dark when the night light ends",
+    stKnock: "Knock to wake", stKnockSub: "Knock on the frame to wake it up",
+    stDash: "This dashboard", stDashLang: "Dashboard language", stDashLangFrame: "Like the frame", stAddr: "Open it on", stVersion: "App version",
+    signOut: "Sign out", saved: "Saved",
+    actOn: "{n} of {t} on", fromAge: "Age {n}+", hiddenAge: "Shows from age {n}", quietTag: "Bedtime too", noScreenTime: "Not counted as screen time", playIt: "Play now",
+    rMorning: "Morning routine", rEvening: "Evening routine", rAdd: "Add a step", rFull: "That's plenty: up to 10 steps.", rAbout: "The picture steps Moss walks through with {name}.",
+    rEmpty: "No steps yet. Add some below.", rUp: "Move up", rDown: "Move down", rRemove: "Remove",
+    err: "Something went wrong. Please try again.", errOffline: "The frame didn't answer. Check the Wi-Fi.", errType: "That kind of file doesn't work here.",
+  },
+  de: {
+    helloTitle: "Hallo!", pinAsk: "Gib die PIN ein, die der Rahmen auf seiner Erwachsenen-Seite zeigt.",
+    pinWhereQ: "Wo finde ich die PIN?",
+    pinWhereA: "Halte auf dem Startbildschirm des Rahmens das kleine Zahnrad oben in der Ecke zwei Sekunden lang und beantworte die Frage. Die PIN steht auf der Seite „Für Erwachsene“.",
+    pinWrong: "Das war's nicht. Noch {n} Versuche.", pinWrong1: "Das war's nicht. Noch ein Versuch.", pinLocked: "Zu viele Versuche. Bitte warte {n} s.",
+    offline: "Der Rahmen antwortet nicht. Ist er an und im selben WLAN? Ich versuche es weiter…",
+    live: "Live", off: "Offline", framesOf: "Rahmen von {name}", framePlain: "Der Wiesen-Rahmen",
+    tabNow: "Jetzt", tabProgress: "Fortschritt", tabFamily: "Familie", tabGallery: "Bilder", tabSettings: "Einstellungen",
+    onScreen: "Auf dem Bildschirm", shotLoading: "Ich schaue auf den Rahmen…", tapRefresh: "Tippen zum Aktualisieren", shotAt: "{t} · tippen zum Aktualisieren", shotFail: "Bildschirm nicht sichtbar. Tippen, um es nochmal zu versuchen.",
+    quick: "Schnellaktionen", callsTitle: "Ein Freund ruft", callsAbout: "Tippen, und ein Freund sagt es laut auf dem Rahmen.",
+    loading: "Lädt…",
+    nowEyebrow: "Gerade auf dem Rahmen",
+    sHome: "Auf dem Startbildschirm", sWorld: "In {w}", sPlay: "Spielt {p}", sStickers: "Schaut ins Stickerbuch", sMailbox: "Öffnet den Briefkasten",
+    sParent: "Ein Erwachsener ist in den Einstellungen", sRest: "Pip ruht sich aus", sBreak: "Bewegungspause", sDaily: "Die Spielzeit für heute ist um", sUnknown: "Auf dem Rahmen",
+    gLocked: "Gesperrt", gNight: "Schlafenszeit: nur die ruhige Ecke", gBreak: "Bewegungspause", gDaily: "Tageszeit aufgebraucht",
+    withFriend: "mit {f}",
+    todayOf: "{m} von {l} Min heute", todayNoLimit: "{m} Min heute", left: "noch {n} Min", noLimit: "Kein Tageslimit",
+    clockWait: "Die Uhr des Rahmens ist noch nicht gestellt (dafür braucht er WLAN), die Minuten zählen bald.",
+    aLock: "Pip ruht sich aus", aLockSub: "Rahmen pausieren", aUnlock: "Pip aufwecken", aUnlockSub: "Rahmen entsperren",
+    aBonus: "+15 Minuten", aBonusSub: "Heute länger spielen", aWiggle: "Bewegungspause", aWiggleSub: "Jetzt bewegen und strecken",
+    aNight: "Nachtlicht", aNightSub: "Sanftes Licht, dann dunkel", aStar: "Stern schicken", aStarSub: "Ein Sticker von dir",
+    aHome: "Startbildschirm", aHomeSub: "Zurück zur Wiese", aWake: "Bildschirm wecken", aWakeSub: "Licht wieder an",
+    callDinner: "Essenszeit!", callTidy: "Zeit zum Aufräumen!", callBath: "Badezeit!", callBed: "Zeit fürs Bett!", callOutside: "Lass uns rausgehen!", callLove: "Ich hab dich lieb!",
+    sentOk: "An den Rahmen geschickt", saidOk: "{f} sagt es jetzt", newMail: "{n} neu im Briefkasten", newMail1: "Im Briefkasten wartet etwas Neues",
+    openMailbox: "Briefkasten öffnen",
+    pToday: "Heute", pFortnight: "Die letzten zwei Wochen", pPlayed: "Was gespielt wurde", pSkills: "Fähigkeiten", pStickers: "Sticker", pRecent: "Zuletzt",
+    pTotals: "{t} insgesamt · an {d} Tagen gespielt · etwa {a} Min pro Tag", pTotals1: "{t} insgesamt · an einem Tag gespielt", pNone: "Noch nichts gespielt. Wenn {name} spielt, steht es hier.",
+    pOpened: "{o}× geöffnet · {f}× beendet · {m} Min", pLevel: "Stufe {n} von 5", pHighest: "Höchste gezählte Zahl", pNoSkills: "Fähigkeiten erscheinen, sobald {name} spielt.",
+    pStickerCount: "{n} von {t} gesammelt", pNoStickers: "Für jedes beendete Spiel gibt es einen Sticker.",
+    gCount: "Zählen", gLetter: "Buchstaben", gColor: "Farben", gShape: "Formen", gWord: "Wörter", gNote: "Musik", gFeeling: "Gefühle", gHabit: "Gewohnheiten", gOther: "Sonstiges",
+    minutesOn: "{d}: {m} Min", hm: "{h} Std {m} Min", min: "{m} Min",
+    today: "heute", yesterday: "gestern", daysAgo: "vor {n} Tagen", justNow: "gerade eben", minAgo: "vor {n} Min", hAgo: "vor {n} Std",
+    sendVoice: "Sprachnachricht schicken", fromLabel: "Von", fromPh: "Oma",
+    recordVoice: "Aufnehmen oder Aufnahme wählen", recordVoiceHint: "„Gute Nacht, schlaf schön!“ Ein paar Sekunden reichen.",
+    sendPhoto: "Foto schicken", choosePhoto: "Foto machen oder wählen", choosePhotoHint: "Familiengesichter erscheinen im Briefkasten und im Familienspiel.",
+    nameTitle: "Der Name deines Kindes", nameAbout: "Nimm auf, wie du {name}s Namen sagst. Die Freunde sagen ihn zur Begrüßung.",
+    nameAboutNoName: "Nimm auf, wie du den Namen deines Kindes sagst. Die Freunde sagen ihn zur Begrüßung.",
+    recordName: "Namen aufnehmen", nameHave: "Die Freunde kennen den Namen", replace: "Neu aufnehmen",
+    sent: "An den Rahmen geschickt", send: "An den Rahmen schicken", cancel: "Abbrechen", sending: "Wird geschickt…",
+    tooBig: "Die Datei ist größer als 10 MB. Eine kürzere Aufnahme oder ein kleineres Foto geht.",
+    voiceSent: "Geschickt! Sie wartet im Briefkasten.", photoSent: "Geschickt! Es ist jetzt im Briefkasten.", nameSent: "Gespeichert. Die Freunde sagen ihn.",
+    playNow: "Jetzt abspielen", showNow: "Auf dem Rahmen zeigen", remove: "Löschen", removeQ: "Das vom Rahmen löschen?", removed: "Gelöscht",
+    famEmpty: "Noch nichts geschickt. Sprachnachrichten und Fotos, die du schickst, erscheinen hier.", unseenTag: "neu",
+    voiceFrom: "Sprachnachricht von {f}", photoFrom: "Foto von {f}",
+    paintings: "Bilder", galEmpty: "Noch keine Bilder. Wenn {name} mit Tuka malt, landen die Bilder hier.", download: "Sichern", close: "Schließen", paintingQ: "Dieses Bild löschen?",
+    subFrame: "Rahmen", subActivities: "Spiele", subRoutines: "Abläufe",
+    stChild: "Kind", stName: "Name", stNamePh: "Name deines Kindes", stAge: "Alter", stAgeSub: "Bestimmt den Start; die Spiele passen sich dann an",
+    stLang: "Sprache", stLangSub: "Was die Freunde sprechen",
+    stSound: "Ton und Bildschirm", stVolume: "Lautstärke", stMusic: "Musik", stMusicSub: "Leise Hintergrundmusik",
+    stBright: "Helligkeit", stCalm: "Ruhigere Bewegung", stCalmSub: "Kein Hüpfen, langsameres Blenden",
+    stCaptions: "Gesprochenes anzeigen", stCaptionsSub: "Was die Freunde sagen, als Text, Wort für Wort mitleuchtend",
+    stTime: "Spielzeit", stLimit: "Spielzeit pro Tag", stLimitSub: "Etwa eine Stunde am Tag passt für 2 bis 5 Jahre", stNoLimit: "Kein Limit",
+    stBreak: "Bewegungspause", stBreakSub: "Eine Pause nach so langer Zeit", stNever: "Nie", stEvery: "alle {n} Min",
+    stBed: "Schlafenszeit", stBedMode: "Schlafenszeit-Modus", stBedModeSub: "Nur die ruhige Ecke, dunkler und wärmer",
+    stBedtime: "Schlafenszeit", stWake: "Aufwachen", stNightLight: "Nachtlicht", stNightLightSub: "Danach wird der Bildschirm dunkel",
+    stBacklight: "Nachts Licht ganz aus", stBacklightSub: "Ganz dunkel, wenn das Nachtlicht endet",
+    stKnock: "Klopfen zum Wecken", stKnockSub: "Auf den Rahmen klopfen, um ihn zu wecken",
+    stDash: "Dieses Dashboard", stDashLang: "Sprache des Dashboards", stDashLangFrame: "Wie der Rahmen", stAddr: "Öffnen unter", stVersion: "App-Version",
+    signOut: "Abmelden", saved: "Gespeichert",
+    actOn: "{n} von {t} an", fromAge: "Ab {n}", hiddenAge: "Erscheint ab {n} Jahren", quietTag: "Auch zur Schlafenszeit", noScreenTime: "Zählt nicht als Bildschirmzeit", playIt: "Jetzt spielen",
+    rMorning: "Morgenablauf", rEvening: "Abendablauf", rAdd: "Schritt hinzufügen", rFull: "Das reicht: bis zu 10 Schritte.", rAbout: "Die Bildschritte, die Moos mit {name} durchgeht.",
+    rEmpty: "Noch keine Schritte. Füge unten welche hinzu.", rUp: "Nach oben", rDown: "Nach unten", rRemove: "Entfernen",
+    err: "Da ging etwas schief. Bitte nochmal versuchen.", errOffline: "Der Rahmen hat nicht geantwortet. Prüfe das WLAN.", errType: "Diese Art Datei geht hier nicht.",
+  },
+};
+const WEEKDAYS = { en: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"], de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"] };
+const COLORS = { red: "#DE6A5E", orange: "#EE9B55", yellow: "#F1CD5E", green: "#7DBA70", blue: "#6E9FD6", purple: "#A487C9", pink: "#EFA6C0", brown: "#A9785A", white: "#F8F4EC", black: "#45404A", grey: "#A9A6AD", gray: "#A9A6AD" };
+// skill ids are English words; German names for the common ones
+const SKILL_DE = { red: "rot", orange: "orange", yellow: "gelb", green: "grün", blue: "blau", purple: "lila", pink: "rosa", brown: "braun",
+  white: "weiß", black: "schwarz", grey: "grau", gray: "grau", circle: "Kreis", square: "Quadrat", triangle: "Dreieck", star: "Stern",
+  heart: "Herz", rectangle: "Rechteck", oval: "Oval", diamond: "Raute", moon: "Mond" };
+const skillName = k => (S.lang === "de" && SKILL_DE[k]) || k.replace(/_/g, " ");
+const CALLS = [
+  { id: "call_dinner", k: "callDinner", friend: "moss", tint: "t-sage" },
+  { id: "call_tidy", k: "callTidy", friend: "tuka", tint: "t-terra" },
+  { id: "call_bath", k: "callBath", friend: "bo", tint: "t-sky" },
+  { id: "call_bed", k: "callBed", friend: "luma", tint: "t-lav" },
+  { id: "call_outside", k: "callOutside", friend: "pip", tint: "t-honey" },
+  { id: "call_love", k: "callLove", friend: "pip", tint: "t-rose" },
+];
+const FRIEND_NAMES = { pip: "Pip", tuka: "Tuka", bo: "Bo", moss: "Moss", luma: "Luma" };
+const MAX_UPLOAD = 10 * 1024 * 1024;
+
+// ============================================================ state
+const S = {
+  state: null, catalog: null, progress: null, family: null, drawings: null,
+  tab: "now", sub: "frame", lang: "en", online: true, lastEdit: 0, shotLoaded: false, shotBusy: false,
+};
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("meadow." + k); return v == null ? d : v; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem("meadow." + k, v); } catch (e) { /* private mode */ } },
+};
+
+function t(k, vars) {
+  let s = (WORDS[S.lang] && WORDS[S.lang][k]) || WORDS.en[k] || k;
+  if (vars) for (const v in vars) s = s.split("{" + v + "}").join(vars[v]);
+  return s;
+}
+const tx = o => (o && (o[S.lang] || o.en)) || "";
+const childName = () => (S.state && S.state.settings.childName) || (S.lang === "de" ? "dein Kind" : "your child");
+const icon = (id, cls) => `<svg${cls ? ` class="${cls}"` : ""}><use href="#i-${id}"/></svg>`;
+function sprite(name, fallback, cls) {
+  return `<span class="sprite${cls ? " " + cls : ""}" data-fallback="${esc((fallback || "?").slice(0, 1).toUpperCase())}"><img src="/sprites/${esc(name)}.webp" alt="" loading="lazy" decoding="async"></span>`;
+}
+// a missing sprite (e.g. a routine picture not drawn yet) shows a soft initial instead of a broken image
+document.addEventListener("error", e => {
+  const img = e.target;
+  if (img && img.tagName === "IMG" && img.parentElement && img.parentElement.classList.contains("sprite")) img.parentElement.classList.add("broken");
+}, true);
+
+function applyWords() {
+  document.documentElement.lang = S.lang;
+  $$("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
+  $$("[data-ph]").forEach(el => { el.placeholder = t(el.dataset.ph); });
+}
+function pickLang() {
+  const pref = store.get("lang", "frame");
+  if (pref === "en" || pref === "de") return pref;
+  if (S.state) return S.state.settings.lang === "de" ? "de" : "en";
+  return (navigator.language || "en").toLowerCase().startsWith("de") ? "de" : "en";
+}
+
+// ============================================================ talking to the frame
+class ApiError extends Error { constructor(msg, status, data) { super(msg); this.status = status; this.data = data || {}; } }
+
+async function api(method, path, body) {
+  let res;
+  try {
+    res = await fetch(path, {
+      method, credentials: "same-origin", cache: "no-store",
+      headers: body !== undefined ? { "Content-Type": "application/json" } : {},
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+  } catch (e) {
+    setOnline(false);
+    throw new ApiError(t("errOffline"), 0);
+  }
+  setOnline(true);
+  let data = {};
+  try { data = await res.json(); } catch (e) { /* empty */ }
+  if (res.status === 401 && path !== "/api/login") { showLogin(); throw new ApiError("signin", 401, data); }
+  if (!res.ok) throw new ApiError(friendlyError(res.status, data.error), res.status, data);
+  return data;
+}
+
+function friendlyError(status, msg) {
+  if (status === 413) return t("tooBig");
+  if (status === 415) return S.lang === "en" && msg ? msg : t("errType");
+  if (S.lang === "en" && msg) return msg;
+  return t("err");
+}
+
+function upload(path, blob, onProgress) {
+  return new Promise((resolve, reject) => {
+    const x = new XMLHttpRequest();
+    x.open("POST", path);
+    x.setRequestHeader("Content-Type", blob.type || "application/octet-stream");
+    x.upload.onprogress = e => { if (e.lengthComputable && onProgress) onProgress(e.loaded / e.total); };
+    x.onload = () => {
+      let j = {};
+      try { j = JSON.parse(x.responseText); } catch (e) { /* empty */ }
+      if (x.status === 401) { showLogin(); return reject(new ApiError("signin", 401)); }
+      if (x.status >= 200 && x.status < 300) resolve(j); else reject(new ApiError(friendlyError(x.status, j.error), x.status, j));
+    };
+    x.onerror = () => { setOnline(false); reject(new ApiError(t("errOffline"), 0)); };
+    x.send(blob);
+  });
+}
+
+let toastTimer = 0;
+function toast(msg, isError) {
+  const el = $("#toast");
+  el.textContent = msg;
+  el.classList.toggle("err", !!isError);
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), isError ? 4200 : 2200);
+}
+function fail(e) { if (e && e.status !== 401) toast(e.message || t("err"), true); }
+
+function setOnline(on) {
+  if (S.online === on) return;
+  S.online = on;
+  $("#offline").hidden = on;
+  $("#live").classList.toggle("off", !on);
+  $("#live-text").textContent = on ? t("live") : t("off");
+}
+
+// ============================================================ sign in
+function showLogin() {
+  stopPolling();
+  S.lang = pickLang();
+  applyWords();
+  $("#app").hidden = true; $("#tabs").hidden = true; $("#login").hidden = false;
+  const pin = $("#pin");
+  pin.value = ""; $("#pin-err").textContent = "";
+  setTimeout(() => pin.focus(), 50);
+}
+
+let lockTimer = 0;
+async function tryLogin() {
+  const pin = $("#pin");
+  const v = pin.value.replace(/\D/g, "").slice(0, 4);
+  pin.value = v;
+  if (v.length < 4) return;
+  pin.disabled = true;
+  try {
+    await api("POST", "/api/login", { pin: v });
+    $("#login").hidden = true;
+    await boot();
+  } catch (e) {
+    pin.value = "";
+    const err = $("#pin-err");
+    if (e.status === 429) {
+      let n = e.data.retryAfter || 60;
+      clearInterval(lockTimer);
+      const tick = () => {
+        err.textContent = t("pinLocked", { n });
+        if (n-- <= 0) { clearInterval(lockTimer); err.textContent = ""; pin.disabled = false; pin.focus(); }
+      };
+      tick();
+      lockTimer = setInterval(tick, 1000);
+      return;
+    }
+    err.textContent = e.status === 401 ? (e.data.triesLeft === 1 ? t("pinWrong1") : t("pinWrong", { n: e.data.triesLeft })) : e.message;
+  }
+  pin.disabled = false;
+  if (!$("#login").hidden) pin.focus();
+}
+$("#pin").addEventListener("input", tryLogin);
+
+// ============================================================ boot, tabs, polling
+async function boot() {
+  try {
+    S.state = await api("GET", "/api/state");
+  } catch (e) {
+    if (e.status === 401) return;
+    // offline on first load: keep trying quietly
+    S.lang = pickLang(); applyWords();
+    $("#app").hidden = false; $("#tabs").hidden = false; setOnline(false);
+    setTimeout(boot, 3000);
+    return;
+  }
+  S.lang = pickLang();
+  applyWords();
+  $("#login").hidden = true; $("#app").hidden = false; $("#tabs").hidden = false;
+  setOnline(true);
+  $("#live-text").textContent = t("live");
+  try { S.catalog = await api("GET", "/api/catalog"); } catch (e) { S.catalog = { worlds: [], routineSteps: [], friends: [], stickers: [] }; }
+  $("#from").value = store.get("from", "");
+  renderAll();
+  const [hashTab, hashSub] = location.hash.slice(1).split("/");
+  if (hashSub) S.sub = hashSub;
+  showTab(hashTab || store.get("tab", "now"));
+  startPolling();
+}
+
+function renderAll() {
+  renderNow();
+  renderCalls();
+  if (S.tab === "settings") renderSettings(true);
+  if (S.tab === "progress" && S.progress) renderProgress();
+  if (S.tab === "family") renderFamily();
+}
+
+function showTab(tab) {
+  if (!document.getElementById("v-" + tab)) tab = "now";
+  S.tab = tab;
+  store.set("tab", tab);
+  try { history.replaceState(null, "", "#" + tab); } catch (e) { /* file: or sandboxed */ }
+  $$(".tab").forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === tab)));
+  $$("[data-view]").forEach(v => { v.hidden = v.dataset.view !== tab; });
+  window.scrollTo(0, 0);
+  if (tab === "now" && !S.shotLoaded) refreshShot();
+  if (tab === "progress") loadProgress();
+  if (tab === "family") loadFamily();
+  if (tab === "gallery") loadDrawings();
+  if (tab === "settings") renderSettings(true);
+}
+$("#tabs").addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) showTab(b.dataset.tab); });
+
+let pollTimer = 0, polling = false;
+function startPolling() { polling = true; schedulePoll(0); }
+function stopPolling() { polling = false; clearTimeout(pollTimer); }
+function schedulePoll(ms) { clearTimeout(pollTimer); if (polling) pollTimer = setTimeout(poll, ms); }
+async function poll() {
+  if (document.visibilityState !== "visible") return; // resumed by visibilitychange
+  try {
+    const st = await api("GET", "/api/state");
+    const langBefore = S.lang, settingsBefore = JSON.stringify(S.state && S.state.settings);
+    S.state = st;
+    S.lang = pickLang();
+    if (S.lang !== langBefore) { applyWords(); renderAll(); }
+    else {
+      renderNow();
+      if (S.tab === "settings" && JSON.stringify(st.settings) !== settingsBefore) renderSettings(false);
+    }
+  } catch (e) { /* offline banner is up; keep trying */ }
+  schedulePoll(3000);
+}
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && polling) schedulePoll(0); });
+
+// ============================================================ now
+function nowInfo(st) {
+  const scr = st.screen || "home";
+  let title, friend = "pip", spriteName = null;
+  if (st.play) { title = t("sPlay", { p: tx(st.play.title) }); friend = st.play.friend; spriteName = st.play.icon; }
+  else if (scr.startsWith("world:") && st.world) { title = t("sWorld", { w: tx(st.world.title) }); friend = st.world.friend; }
+  else title = ({ home: t("sHome"), stickers: t("sStickers"), mailbox: t("sMailbox"), parent: t("sParent"), rest: t("sRest"), break: t("sBreak") })[scr] || t("sUnknown");
+  if (st.gate === "locked") { title = t("sRest"); friend = "pip"; spriteName = "ch_pip_sleep"; }
+  else if (st.gate === "dailylimit") { title = t("sDaily"); spriteName = "ch_" + friend + "_wave"; }
+  else if (st.gate === "break") { title = t("sBreak"); spriteName = "ch_moss_happy"; friend = "moss"; }
+  return { title, friend, spriteName: spriteName || "ch_" + friend + "_idle" };
+}
+
+function setHtml(el, html) { if (el._html !== html) { el._html = html; el.innerHTML = html; } }
+
+function renderNow() {
+  const st = S.state;
+  if (!st) return;
+  const s = st.settings;
+  $("#brand-sub").textContent = s.childName ? t("framesOf", { name: s.childName }) : t("framePlain");
+  const info = nowInfo(st);
+  const gateChip = { locked: ["gLocked", "rose"], night: ["gNight", "lav"], break: ["gBreak", "sage"], dailylimit: ["gDaily", "honey"] }[st.gate];
+  const tint = { locked: "var(--tint-rose)", night: "var(--tint-lav)", break: "var(--tint-sage)" }[st.gate] || "var(--tint-honey)";
+  setHtml($("#now-status"), `
+    <div class="hero">
+      <div class="bubble" style="background:${tint}">${sprite(info.spriteName, info.friend)}</div>
+      <div class="grow">
+        <div class="eyebrow">${esc(t("nowEyebrow"))}</div>
+        <h2>${esc(info.title)}</h2>
+        <div class="chips">
+          ${st.play ? `<span class="chip">${esc(t("withFriend", { f: FRIEND_NAMES[st.play.friend] || st.play.friend }))}</span>` : ""}
+          ${gateChip ? `<span class="chip ${gateChip[1]}">${esc(t(gateChip[0]))}</span>` : ""}
+        </div>
+      </div>
+    </div>`);
+  const limit = s.dailyLimitMin, m = st.todayMinutes;
+  const pct = limit > 0 ? Math.min(100, Math.round(m * 100 / limit)) : 0;
+  setHtml($("#now-today"), `
+    <div class="row"><b>${esc(limit > 0 ? t("todayOf", { m, l: limit }) : t("todayNoLimit", { m }))}</b>
+      <span class="soft">${esc(limit > 0 ? t("left", { n: st.minutesLeft == null ? 0 : st.minutesLeft }) : t("noLimit"))}</span></div>
+    ${limit > 0 ? `<div class="bar${m >= limit ? " full" : ""}"><i style="width:${pct}%"></i></div>` : ""}
+    ${st.clockOk ? "" : `<p class="soft small" style="margin-top:8px">${esc(t("clockWait"))}</p>`}`);
+
+  const lockA = st.locked
+    ? { cmd: "unlock", k: "aUnlock", sub: "aUnlockSub", ic: "unlock", tint: "t-sage" }
+    : { cmd: "lock", k: "aLock", sub: "aLockSub", ic: "lock", tint: "t-rose" };
+  const actions = [
+    lockA,
+    { cmd: "bonus", k: "aBonus", sub: "aBonusSub", ic: "plus", tint: "t-honey" },
+    { cmd: "wiggle", k: "aWiggle", sub: "aWiggleSub", ic: "wiggle", tint: "t-sage" },
+    { cmd: "nightlight", k: "aNight", sub: "aNightSub", ic: "moon", tint: "t-lav" },
+    { cmd: "star", k: "aStar", sub: "aStarSub", ic: "star", tint: "t-honey" },
+    { cmd: "home", k: "aHome", sub: "aHomeSub", ic: "home", tint: "t-sky" },
+  ];
+  setHtml($("#actions"), actions.map(a => `
+    <button class="action ${a.tint}" type="button" data-cmd="${a.cmd}">
+      <span class="ic">${icon(a.ic)}</span>
+      <span><b>${esc(t(a.k))}</b><span>${esc(t(a.sub))}</span></span>
+    </button>`).join(""));
+
+  const unseen = st.unseen || [];
+  setHtml($("#now-mail"), unseen.length ? `
+    <div class="card row mail" style="margin-top:14px">
+      ${sprite("ch_bo_happy", "B", "")}
+      <div class="grow"><b>${esc(unseen.length === 1 ? t("newMail1") : t("newMail", { n: unseen.length }))}</b>
+      <div class="soft small">${esc(unseen.map(u => u.from).join(", "))}</div></div>
+      <button class="btn small" type="button" data-cmd="message" data-id="${esc(unseen[0].id)}">${esc(t("openMailbox"))}</button>
+    </div>` : "");
+}
+
+function renderCalls() {
+  setHtml($("#calls"), CALLS.map(c => `
+    <button class="call ${c.tint}" type="button" data-say="${c.id}" data-friend="${c.friend}">
+      ${sprite("ch_" + c.friend + "_talk", c.friend)}<span>${esc(t(c.k))}</span>
+    </button>`).join(""));
+}
+
+async function command(body, okMsg) {
+  try {
+    await api("POST", "/api/command", body);
+    toast(okMsg || t("sentOk"));
+    setTimeout(() => schedulePoll(0), 600);
+    if (S.tab === "now") setTimeout(refreshShot, 1600);
+  } catch (e) { fail(e); }
+}
+
+document.addEventListener("click", e => {
+  const c = e.target.closest("[data-cmd]");
+  if (c) {
+    const body = { type: c.dataset.cmd };
+    if (c.dataset.id) body.id = c.dataset.id;
+    if (body.type === "bonus") body.minutes = 15;
+    command(body);
+    return;
+  }
+  const say = e.target.closest("[data-say]");
+  if (say) command({ type: "say", id: say.dataset.say }, t("saidOk", { f: FRIEND_NAMES[say.dataset.friend] }));
+});
+
+// the screenshot: one tap, one fresh picture (the frame caches it for 3 s)
+function refreshShot() {
+  if (S.shotBusy) return;
+  S.shotBusy = true;
+  const btn = $("#shot"), img = $("#shot-img");
+  btn.classList.add("loading");
+  const next = new Image();
+  next.onload = () => {
+    img.src = next.src; img.hidden = false; $("#shot-wait").hidden = true;
+    btn.classList.remove("loading"); S.shotBusy = false; S.shotLoaded = true;
+    $("#shot-time").textContent = t("shotAt", { t: new Date().toLocaleTimeString(S.lang, { hour: "2-digit", minute: "2-digit", second: "2-digit" }) });
+  };
+  next.onerror = () => {
+    btn.classList.remove("loading"); S.shotBusy = false;
+    if (img.hidden) { $("#shot-wait").hidden = false; $("#shot-wait").textContent = t("shotFail"); }
+    else $("#shot-time").textContent = t("shotFail");
+  };
+  next.src = "/api/screenshot?size=small&t=" + Date.now();
+}
+$("#shot").addEventListener("click", refreshShot);
+
+// ============================================================ progress
+async function loadProgress() {
+  try { S.progress = await api("GET", "/api/progress"); renderProgress(); }
+  catch (e) { fail(e); }
+}
+
+function fmtMinutes(m) { return m >= 60 ? t("hm", { h: Math.floor(m / 60), m: m % 60 }) : t("min", { m }); }
+function ago(ms) {
+  if (!ms) return "";
+  const d = Date.now() - ms;
+  if (d < 60e3) return t("justNow");
+  if (d < 3600e3) return t("minAgo", { n: Math.round(d / 60e3) });
+  const then = new Date(ms), now = new Date();
+  const days = Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - new Date(then.getFullYear(), then.getMonth(), then.getDate())) / 864e5);
+  if (days === 0) return t("hAgo", { n: Math.round(d / 3600e3) });
+  if (days === 1) return t("yesterday");
+  if (days < 7) return t("daysAgo", { n: days });
+  return then.toLocaleDateString(S.lang, { day: "numeric", month: "short" });
+}
+function dayLabel(key) {
+  const [y, m, d] = key.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString(S.lang, { weekday: "short", day: "numeric", month: "short" });
+}
+
+function renderProgress() {
+  const p = S.progress, st = S.state;
+  if (!p || !st) return;
+  const sum = p.summary, s = st.settings, name = childName();
+  const limit = s.dailyLimitMin, m = st.todayMinutes;
+  const days = sum.days;
+  const maxM = Math.max(10, limit > 0 ? limit * 1.15 : 0, ...days.map(d => d.minutes));
+  const bars = days.map((d, i) => `<div class="col${d.minutes ? "" : " zero"}${d.today ? " today" : ""}" data-i="${i}" title="${esc(t("minutesOn", { d: dayLabel(d.day), m: d.minutes }))}"><i style="height:${Math.max(2, d.minutes * 100 / maxM)}%"></i></div>`).join("");
+  const limitLine = limit > 0 ? `<div class="limit" style="bottom:${limit * 100 / maxM}%"><span>${esc(t("min", { m: limit }))}</span></div>` : "";
+  const totals = sum.totals;
+
+  const plays = sum.plays.length ? sum.plays.map(r => {
+    const lvl = r.level < 0 ? -1 : r.level;
+    return `<div class="list-row">${sprite(r.icon || "ob_star", tx(r.title) || r.id)}
+      <div class="grow"><div class="title ellipsis">${esc(tx(r.title) || r.id)}</div>
+      <div class="sub">${esc(t("pOpened", { o: r.opened, f: r.finished, m: r.minutes }))}</div>
+      <div class="sub">${lvl >= 0 ? `<span class="levels" title="${esc(t("pLevel", { n: lvl + 1 }))}">${[0, 1, 2, 3, 4].map(n => `<i class="${n <= lvl ? "on" : ""}"></i>`).join("")}</span> · ` : ""}${esc(ago(r.lastMs))}</div></div></div>`;
+  }).join("") : `<div class="empty">${sprite("ch_pip_wave", "P")}<p>${esc(t("pNone", { name }))}</p></div>`;
+
+  const groups = sum.skills || {};
+  const order = ["count", "letter", "color", "shape", "word", "note", "feeling", "habit"];
+  const keys = Object.keys(groups).sort((a, b) => (order.indexOf(a) + 1 || 99) - (order.indexOf(b) + 1 || 99) || a.localeCompare(b));
+  const gname = g => { const k = "g" + g.charAt(0).toUpperCase() + g.slice(1); return WORDS.en[k] ? t(k) : g.charAt(0).toUpperCase() + g.slice(1).replace(/_/g, " "); };
+  const skillHtml = keys.map(g => {
+    const items = Object.entries(groups[g]);
+    if (g === "count") items.sort((a, b) => Number(a[0]) - Number(b[0]));
+    else items.sort((a, b) => a[0].localeCompare(b[0]));
+    const chips = items.map(([k, n]) => {
+      if (g === "color") return `<span class="chip"><span class="swatch" style="background:${COLORS[k] || "#ccc"}"></span>${esc(skillName(k))} <span class="count">×${n}</span></span>`;
+      if (g === "letter") return `<span class="chip">${esc(k.toUpperCase() + k.toLowerCase())} <span class="count">×${n}</span></span>`;
+      return `<span class="chip">${esc(skillName(k))} <span class="count">×${n}</span></span>`;
+    }).join("");
+    return `<div class="skill"><h3>${esc(gname(g))}</h3><div class="chips">${chips}</div></div>`;
+  }).join("");
+  const hi = sum.highestCount;
+  const stickers = p.stickers || [];
+
+  const events = (p.events || []).slice(-12).reverse();
+  setHtml($("#progress-body"), `
+    <div class="section-title">${esc(t("pToday"))}</div>
+    <div class="card">
+      <div class="row" style="align-items:flex-end;justify-content:space-between;margin-bottom:10px">
+        <div><div class="big-num">${esc(fmtMinutes(m))}</div><div class="soft small">${esc(limit > 0 ? t("todayOf", { m, l: limit }) : t("noLimit"))}</div></div>
+        ${limit > 0 ? `<div class="soft">${esc(t("left", { n: st.minutesLeft == null ? 0 : st.minutesLeft }))}</div>` : ""}
+      </div>
+      ${limit > 0 ? `<div class="bar${m >= limit ? " full" : ""}"><i style="width:${Math.min(100, m * 100 / limit)}%"></i></div>` : ""}
+    </div>
+
+    <div class="section-title">${esc(t("pFortnight"))}</div>
+    <div class="card">
+      <div class="chart" id="chart" role="img" aria-label="${esc(t("pFortnight"))}">${limitLine}${bars}</div>
+      <div class="days">${days.map(d => `<span class="${d.today ? "today" : ""}">${esc(WEEKDAYS[S.lang][d.weekday])}</span>`).join("")}</div>
+      <div class="chart-cap" id="chart-cap">${esc(t(totals.daysPlayed === 1 ? "pTotals1" : "pTotals", { t: fmtMinutes(totals.minutes), d: totals.daysPlayed, a: totals.average }))}</div>
+    </div>
+
+    <div class="section-title">${esc(t("pPlayed"))}</div>
+    <div class="card">${plays}</div>
+
+    <div class="section-title">${esc(t("pSkills"))}</div>
+    <div class="card">
+      ${hi != null ? `<div class="skill-hero"><div class="big-num">${hi}</div><b>${esc(t("pHighest"))}</b></div>` : ""}
+      ${skillHtml || `<p class="soft">${esc(t("pNoSkills", { name }))}</p>`}
+    </div>
+
+    <div class="section-title">${esc(t("pStickers"))}</div>
+    <div class="card">
+      <p class="soft small" style="margin-bottom:10px">${esc(stickers.length ? t("pStickerCount", { n: stickers.length, t: sum.stickersTotal }) : t("pNoStickers"))}</p>
+      ${stickers.length ? `<div class="stickers">${stickers.map(n => sprite(n, n.replace(/^ob_/, ""))).join("")}</div>` : ""}
+    </div>
+
+    ${events.length ? `<div class="section-title">${esc(t("pRecent"))}</div>
+    <div class="card"><ul class="events">${events.map(ev => `<li><span>${esc(ev.text)}</span><span class="faint small">${esc(ago(ev.ms))}</span></li>`).join("")}</ul></div>` : ""}
+  `);
+  // tap (or hover) a day to read its minutes; tap it again for the fortnight's totals
+  const cap = $("#chart-cap"), totalsText = cap.textContent;
+  let sel = -1;
+  const pick = i => {
+    sel = i;
+    $$("#chart .col").forEach(c => c.classList.toggle("sel", Number(c.dataset.i) === i));
+    cap.textContent = i < 0 ? totalsText : t("minutesOn", { d: dayLabel(days[i].day), m: days[i].minutes });
+  };
+  $("#chart").addEventListener("click", e => {
+    const col = e.target.closest(".col");
+    if (col) pick(Number(col.dataset.i) === sel ? -1 : Number(col.dataset.i));
+  });
+  $("#chart").addEventListener("mouseover", e => { const col = e.target.closest(".col"); if (col) pick(Number(col.dataset.i)); });
+  $("#chart").addEventListener("mouseleave", () => pick(-1));
+}
+
+// ============================================================ family
+async function loadFamily() {
+  try { S.family = await api("GET", "/api/family"); renderFamily(); }
+  catch (e) { fail(e); }
+}
+
+function renderFamily() {
+  const f = S.family;
+  const name = S.state && S.state.settings.childName;
+  const nm = f && f.name;
+  setHtml($("#name-card"), `
+    <p class="soft">${esc(name ? t("nameAbout", { name }) : t("nameAboutNoName"))}</p>
+    ${nm ? `<div class="row"><span class="chip sage">${esc(t("nameHave"))}</span></div><audio controls preload="none" src="${esc(nm.url)}"></audio>` : ""}
+    <div class="row">
+      <label class="btn ${nm ? "" : "primary"}" style="position:relative">${icon("mic")}<span>${esc(nm ? t("replace") : t("recordName"))}</span>
+        <input type="file" accept="audio/*" capture id="name-file" style="position:absolute;width:1px;height:1px;opacity:0"></label>
+      ${nm ? `<button class="btn ghost danger" type="button" id="name-del">${icon("trash")}<span>${esc(t("remove"))}</span></button>` : ""}
+    </div>
+    <div class="progress" id="name-progress" hidden><i></i></div>`);
+  if (!f) return;
+  const items = f.items || [];
+  setHtml($("#family-list"), items.length ? items.map(it => {
+    const isPhoto = it.kind === "photo";
+    const label = isPhoto ? t("photoFrom", { f: it.from }) : t("voiceFrom", { f: it.from });
+    return `<div class="msg">
+      ${isPhoto ? `<img class="thumb" src="${esc(it.url)}" alt="" loading="lazy">` : `<span class="thumb voice">${icon("sound")}</span>`}
+      <div class="grow">
+        <b>${esc(label)}</b>${it.seen ? "" : `<span class="new">${esc(t("unseenTag"))}</span>`}
+        <div class="soft small">${esc(ago(it.createdMs))}</div>
+        ${isPhoto ? "" : `<audio controls preload="none" src="${esc(it.url)}" style="margin-top:6px"></audio>`}
+        <div class="btns">
+          <button class="btn small" type="button" data-cmd="message" data-id="${esc(it.id)}">${icon("play")}<span>${esc(isPhoto ? t("showNow") : t("playNow"))}</span></button>
+          <button class="btn small ghost danger" type="button" data-del-family="${esc(it.id)}">${icon("trash")}<span>${esc(t("remove"))}</span></button>
+        </div>
+      </div></div>`;
+  }).join("") : `<div class="empty">${sprite("ch_bo_wave", "B")}<p>${esc(t("famEmpty"))}</p></div>`);
+}
+
+$("#from").addEventListener("change", e => store.set("from", e.target.value.trim()));
+
+document.addEventListener("click", async e => {
+  const del = e.target.closest("[data-del-family]");
+  if (del) {
+    if (!confirm(t("removeQ"))) return;
+    try { await api("DELETE", "/api/family/" + encodeURIComponent(del.dataset.delFamily)); toast(t("removed")); loadFamily(); } catch (err) { fail(err); }
+    return;
+  }
+  if (e.target.closest("#name-del")) {
+    if (!confirm(t("removeQ"))) return;
+    try { await api("DELETE", "/api/family/name"); toast(t("removed")); loadFamily(); } catch (err) { fail(err); }
+  }
+});
+
+function fmtBytes(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB"; }
+
+/** Photos are shrunk on the phone (max 1600 px JPEG): quicker to send, already upright, and never HEIC. */
+async function shrinkPhoto(file) {
+  try {
+    const url = URL.createObjectURL(file);
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const w = img.naturalWidth, h = img.naturalHeight, max = 1600;
+    const k = Math.min(1, max / Math.max(w, h));
+    if (k === 1 && file.type === "image/jpeg" && file.size < 1.5e6) { URL.revokeObjectURL(url); return file; }
+    const c = document.createElement("canvas");
+    c.width = Math.round(w * k); c.height = Math.round(h * k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    URL.revokeObjectURL(url);
+    const blob = await new Promise(r => c.toBlob(r, "image/jpeg", 0.86));
+    return blob || file;
+  } catch (e) { return file; }
+}
+
+function preparePreview(box, file, isPhoto, onSend) {
+  const url = URL.createObjectURL(file);
+  box.hidden = false;
+  box.innerHTML = `
+    ${isPhoto ? `<img src="${url}" alt="">` : `<audio controls src="${url}"></audio>`}
+    <div class="soft small ellipsis">${esc(file.name || "")} · ${fmtBytes(file.size)}</div>
+    <div class="progress" hidden><i></i></div>
+    <div class="row">
+      <button class="btn primary grow" type="button" data-send>${icon("send")}<span>${esc(t("send"))}</span></button>
+      <button class="btn ghost" type="button" data-cancel>${esc(t("cancel"))}</button>
+    </div>`;
+  const close = () => { box.hidden = true; box.innerHTML = ""; URL.revokeObjectURL(url); };
+  box.querySelector("[data-cancel]").onclick = close;
+  box.querySelector("[data-send]").onclick = async ev => {
+    const btn = ev.currentTarget;
+    btn.disabled = true;
+    btn.querySelector("span").textContent = t("sending");
+    const bar = box.querySelector(".progress");
+    bar.hidden = false;
+    try {
+      await onSend(p => { bar.firstElementChild.style.width = Math.round(p * 100) + "%"; });
+      close();
+    } catch (err) {
+      fail(err);
+      btn.disabled = false;
+      btn.querySelector("span").textContent = t("send");
+      bar.hidden = true;
+    }
+  };
+}
+
+function fromName() {
+  const v = $("#from").value.trim();
+  if (v) store.set("from", v);
+  return v || t("fromPh");
+}
+
+$("#voice-file").addEventListener("change", e => {
+  const file = e.target.files[0];
+  e.target.value = "";
+  if (!file) return;
+  if (file.size > MAX_UPLOAD) return toast(t("tooBig"), true);
+  preparePreview($("#voice-preview"), file, false, async progress => {
+    const r = await upload(`/api/family/voice?from=${encodeURIComponent(fromName())}&name=${encodeURIComponent(file.name || "")}`, file, progress);
+    toast(t("voiceSent"));
+    loadFamily();
+    return r;
+  });
+});
+
+$("#photo-file").addEventListener("change", async e => {
+  const raw = e.target.files[0];
+  e.target.value = "";
+  if (!raw) return;
+  const file = await shrinkPhoto(raw);
+  if (file.size > MAX_UPLOAD) return toast(t("tooBig"), true);
+  if (!file.name) try { file.name = "photo.jpg"; } catch (err) { /* Blob */ }
+  preparePreview($("#photo-preview"), file, true, async progress => {
+    const r = await upload(`/api/family/photo?from=${encodeURIComponent(fromName())}&name=${encodeURIComponent(raw.name || "photo.jpg")}`, file, progress);
+    toast(t("photoSent"));
+    loadFamily();
+    return r;
+  });
+});
+
+document.addEventListener("change", async e => {
+  if (e.target.id !== "name-file") return;
+  const file = e.target.files[0];
+  e.target.value = "";
+  if (!file) return;
+  if (file.size > MAX_UPLOAD) return toast(t("tooBig"), true);
+  const bar = $("#name-progress");
+  bar.hidden = false;
+  try {
+    await upload(`/api/family/name?name=${encodeURIComponent(file.name || "")}`, file, p => { bar.firstElementChild.style.width = Math.round(p * 100) + "%"; });
+    toast(t("nameSent"));
+    loadFamily();
+  } catch (err) { fail(err); bar.hidden = true; }
+});
+
+// ============================================================ gallery
+async function loadDrawings() {
+  try { S.drawings = await api("GET", "/api/drawings"); renderGallery(); }
+  catch (e) { fail(e); }
+}
+function fmtDate(ms) { return new Date(ms).toLocaleDateString(S.lang, { weekday: "short", day: "numeric", month: "short" }) + ", " + new Date(ms).toLocaleTimeString(S.lang, { hour: "2-digit", minute: "2-digit" }); }
+function renderGallery() {
+  const d = S.drawings || [];
+  setHtml($("#gallery-body"), d.length ? `<div class="gallery">${d.map((p, i) => `
+    <button class="painting" type="button" data-painting="${i}"><img src="${esc(p.url)}" alt="" loading="lazy"><span>${esc(fmtDate(p.ms))}</span></button>`).join("")}</div>`
+    : `<div class="card empty">${sprite("ch_tuka_wave", "T")}<p>${esc(t("galEmpty", { name: childName() }))}</p></div>`);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-painting]");
+  if (!b) return;
+  const p = S.drawings[Number(b.dataset.painting)];
+  const box = document.createElement("div");
+  box.className = "lightbox";
+  box.innerHTML = `<img src="${esc(p.url)}" alt="">
+    <div class="row">
+      <a class="btn" href="${esc(p.url)}" download="${esc(p.file)}">${icon("down-load")}<span>${esc(t("download"))}</span></a>
+      <button class="btn" type="button" data-x="del">${icon("trash")}<span>${esc(t("remove"))}</span></button>
+      <button class="btn" type="button" data-x="close">${icon("x")}<span>${esc(t("close"))}</span></button>
+    </div>`;
+  const close = () => { box.remove(); document.removeEventListener("keydown", onKey); };
+  const onKey = ev => { if (ev.key === "Escape") close(); };
+  document.addEventListener("keydown", onKey);
+  box.addEventListener("click", async ev => {
+    const x = ev.target.closest("[data-x]");
+    if (ev.target === box || (x && x.dataset.x === "close")) return close();
+    if (x && x.dataset.x === "del") {
+      if (!confirm(t("paintingQ"))) return;
+      try { await api("DELETE", "/api/drawings/" + encodeURIComponent(p.file)); close(); toast(t("removed")); loadDrawings(); } catch (err) { fail(err); }
+    }
+  });
+  document.body.appendChild(box);
+});
+
+// ============================================================ settings
+$("#subtabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-sub]");
+  if (!b) return;
+  S.sub = b.dataset.sub;
+  renderSettings(true);
+});
+
+const saveTimers = {};
+function saveSetting(patch, delay) {
+  S.lastEdit = Date.now();
+  Object.assign(S.state.settings, patch);
+  const key = Object.keys(patch).join(",");
+  clearTimeout(saveTimers[key]);
+  saveTimers[key] = setTimeout(async () => {
+    try {
+      const r = await api("PUT", "/api/settings", patch);
+      S.state.settings = r.settings;
+      toast(t("saved"));
+      if ("lang" in patch && store.get("lang", "frame") === "frame") { S.lang = pickLang(); applyWords(); renderAll(); }
+      if ("childName" in patch) renderNow();
+    } catch (e) { fail(e); }
+  }, delay || 0);
+}
+
+function renderSettings(full) {
+  $$("#subtabs [data-sub]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.sub === S.sub)));
+  ["frame", "activities", "routines"].forEach(k => { $("#sub-" + k).hidden = k !== S.sub; });
+  if (!S.state) return;
+  // don't pull values from under a finger: polled changes wait until the grown-up stops editing
+  if (!full && (Date.now() - S.lastEdit < 4000 || (document.activeElement && document.activeElement.matches("input, select")))) return;
+  if (S.sub === "frame") renderFrameSettings();
+  else if (S.sub === "activities") renderActivities();
+  else renderRoutines();
+}
+
+function seg(key, options, value) {
+  return `<div class="seg" data-key="${key}">${options.map(([v, label]) => `<button type="button" data-v="${esc(v)}" aria-pressed="${String(String(value) === String(v))}">${esc(label)}</button>`).join("")}</div>`;
+}
+function sw(key, value) { return `<input type="checkbox" role="switch" class="switch" data-key="${key}"${value ? " checked" : ""}>`; }
+function range(key, value, min, max, step) {
+  return `<input type="range" data-key="${key}" min="${min}" max="${max}" step="${step}" value="${value}" style="--p:${fill(value, min, max)}">`;
+}
+function fill(v, min, max) { return Math.max(0, Math.min(100, (v - min) * 100 / (max - min))) + "%"; }
+function setRow(title, sub, control, extra) {
+  return `<div class="set${extra || ""}"><div class="label"><b>${esc(title)}</b>${sub ? `<span>${esc(sub)}</span>` : ""}</div>${control}</div>`;
+}
+const fmtLimit = v => (Number(v) === 0 ? t("stNoLimit") : t("min", { m: v }));
+const fmtBreak = v => (Number(v) === 0 ? t("stNever") : t("stEvery", { n: v }));
+const fmtPct = v => v + " %";
+
+function renderFrameSettings() {
+  const s = S.state.settings, st = S.state;
+  const dash = store.get("lang", "frame");
+  const valRow = (title, sub, key, value, fmt, min, max, step) => `
+    <div class="set col"><div class="row"><div class="label"><b>${esc(title)}</b>${sub ? `<span>${esc(sub)}</span>` : ""}</div>
+    <span class="value" data-out="${key}">${esc(fmt(value))}</span></div>${range(key, value, min, max, step)}</div>`;
+  $("#sub-frame").innerHTML = `
+    <div class="group"><div class="group-title">${esc(t("stChild"))}</div>
+      <div class="set col"><div class="label"><b>${esc(t("stName"))}</b></div>
+        <input class="field" data-key="childName" maxlength="24" value="${esc(s.childName)}" placeholder="${esc(t("stNamePh"))}" autocomplete="off"></div>
+      <div class="set col"><div class="label"><b>${esc(t("stAge"))}</b><span>${esc(t("stAgeSub"))}</span></div>${seg("age", [[2, "2"], [3, "3"], [4, "4"], [5, "5"]], s.age)}</div>
+      <div class="set col"><div class="label"><b>${esc(t("stLang"))}</b><span>${esc(t("stLangSub"))}</span></div>${seg("lang", [["en", "English"], ["de", "Deutsch"]], s.lang)}</div>
+    </div>
+    <div class="group"><div class="group-title">${esc(t("stSound"))}</div>
+      ${valRow(t("stVolume"), "", "volume", s.volume, fmtPct, 0, 100, 5)}
+      ${setRow(t("stMusic"), t("stMusicSub"), sw("music", s.music))}
+      ${valRow(t("stBright"), "", "brightness", s.brightness, fmtPct, 10, 100, 5)}
+      ${setRow(t("stCalm"), t("stCalmSub"), sw("reducedMotion", s.reducedMotion))}
+      ${setRow(t("stCaptions"), t("stCaptionsSub"), sw("captions", s.captions))}
+    </div>
+    <div class="group"><div class="group-title">${esc(t("stTime"))}</div>
+      ${valRow(t("stLimit"), t("stLimitSub"), "dailyLimitMin", s.dailyLimitMin, fmtLimit, 0, 240, 5)}
+      ${valRow(t("stBreak"), t("stBreakSub"), "breakEveryMin", s.breakEveryMin, fmtBreak, 0, 60, 5)}
+    </div>
+    <div class="group"><div class="group-title">${esc(t("stBed"))}</div>
+      ${setRow(t("stBedMode"), t("stBedModeSub"), sw("bedtimeMode", s.bedtimeMode))}
+      ${setRow(t("stBedtime"), "", `<input type="time" class="field" data-key="bedtime" value="${esc(s.bedtime)}">`)}
+      ${setRow(t("stWake"), "", `<input type="time" class="field" data-key="wakeUp" value="${esc(s.wakeUp)}">`)}
+      ${valRow(t("stNightLight"), t("stNightLightSub"), "nightLightMin", s.nightLightMin, v => t("min", { m: v }), 5, 90, 5)}
+      ${setRow(t("stBacklight"), t("stBacklightSub"), sw("backlightOffAtNight", s.backlightOffAtNight))}
+      ${setRow(t("stKnock"), t("stKnockSub"), sw("knockToWake", s.knockToWake))}
+    </div>
+    <div class="group"><div class="group-title">${esc(t("stDash"))}</div>
+      <div class="set col"><div class="label"><b>${esc(t("stDashLang"))}</b></div>
+        <div class="seg" id="dash-lang">${[["frame", t("stDashLangFrame")], ["en", "English"], ["de", "Deutsch"]].map(([v, l]) => `<button type="button" data-v="${v}" aria-pressed="${dash === v}">${esc(l)}</button>`).join("")}</div></div>
+      ${setRow(t("stAddr"), (st.urls || []).join("  ·  ") || "–", "")}
+      ${setRow(t("stVersion"), st.version, `<button class="btn small ghost" type="button" id="sign-out">${esc(t("signOut"))}</button>`)}
+    </div>`;
+}
+
+// one set of listeners for every control in the settings view
+const views = $("#v-settings");
+views.addEventListener("click", e => {
+  const b = e.target.closest(".seg[data-key] button");
+  if (b) {
+    const segEl = b.parentElement, key = segEl.dataset.key;
+    $$("button", segEl).forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    saveSetting({ [key]: key === "age" ? Number(b.dataset.v) : b.dataset.v });
+    return;
+  }
+  const dl = e.target.closest("#dash-lang button");
+  if (dl) {
+    store.set("lang", dl.dataset.v);
+    S.lang = pickLang(); applyWords(); renderAll();
+    return;
+  }
+  if (e.target.closest("#sign-out")) {
+    api("POST", "/api/logout").catch(() => {}).then(showLogin);
+  }
+});
+views.addEventListener("input", e => {
+  const el = e.target;
+  if (el.type !== "range" || !el.dataset.key) return;
+  const key = el.dataset.key, v = Number(el.value);
+  el.style.setProperty("--p", fill(v, Number(el.min), Number(el.max)));
+  const out = $(`[data-out="${key}"]`, views);
+  const fmt = { dailyLimitMin: fmtLimit, breakEveryMin: fmtBreak, nightLightMin: x => t("min", { m: x }) }[key] || fmtPct;
+  if (out) out.textContent = fmt(v);
+  saveSetting({ [key]: v }, 450);
+});
+views.addEventListener("change", e => {
+  const el = e.target;
+  const key = el.dataset.key;
+  if (!key) return;
+  if (el.classList.contains("switch")) saveSetting({ [key]: el.checked });
+  else if (el.type === "time") { if (el.value) saveSetting({ [key]: el.value }); }
+  else if (key === "childName") saveSetting({ childName: el.value.trim() });
+});
+views.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.dataset.key === "childName") e.target.blur(); });
+
+// ---- activities: switch each one on or off (settings.hidden)
+function renderActivities() {
+  const s = S.state.settings, hidden = new Set(s.hidden || []);
+  const worlds = (S.catalog && S.catalog.worlds) || [];
+  $("#sub-activities").innerHTML = worlds.filter(w => w.plays.length).map(w => {
+    const on = w.plays.filter(p => !hidden.has(p.id)).length;
+    return `<div class="card" style="margin-bottom:14px">
+      <div class="world-head">${sprite("ch_" + w.friend + "_idle", w.friend)}
+        <div class="grow"><h2>${esc(tx(w.title))}</h2><div class="soft small">${esc(t("actOn", { n: on, t: w.plays.length }))}</div></div>
+        <span class="world-band" style="background:${esc(w.color)}"></span></div>
+      ${w.plays.map(p => {
+        const off = hidden.has(p.id);
+        const tooYoung = p.minAge > s.age;
+        return `<div class="play-row${off ? " off" : ""}">${sprite(p.icon, tx(p.title))}
+          <div class="grow"><div class="ptitle">${esc(tx(p.title))}</div>
+            ${tx(p.about) ? `<div class="pabout">${esc(tx(p.about))}</div>` : ""}
+            <div class="tags">${tooYoung ? `<span class="tag">${esc(t("hiddenAge", { n: p.minAge }))}</span>` : p.minAge > 2 ? `<span class="tag">${esc(t("fromAge", { n: p.minAge }))}</span>` : ""}
+              ${p.quiet ? `<span class="tag">${esc(t("quietTag"))}</span>` : ""}
+              ${p.screenTime === false ? `<span class="tag">${esc(t("noScreenTime"))}</span>` : ""}</div></div>
+          <button class="btn icon ghost" type="button" data-cmd="play" data-id="${esc(p.id)}" aria-label="${esc(t("playIt"))}" title="${esc(t("playIt"))}">${icon("play")}</button>
+          <input type="checkbox" role="switch" class="switch" data-play="${esc(p.id)}" aria-label="${esc(tx(p.title))}"${off ? "" : " checked"}>
+        </div>`;
+      }).join("")}
+    </div>`;
+  }).join("") || `<div class="card empty">${esc(t("loading"))}</div>`;
+}
+views.addEventListener("change", e => {
+  const id = e.target.dataset.play;
+  if (!id) return;
+  const hidden = new Set(S.state.settings.hidden || []);
+  if (e.target.checked) hidden.delete(id); else hidden.add(id);
+  e.target.closest(".play-row").classList.toggle("off", !e.target.checked);
+  saveSetting({ hidden: Array.from(hidden).sort() });
+});
+
+// ---- routines: tap picture chips to add, arrows to reorder
+function renderRoutines() {
+  const s = S.state.settings;
+  const steps = (S.catalog && S.catalog.routineSteps) || [];
+  const byId = Object.fromEntries(steps.map(x => [x.id, x]));
+  const card = (key, title, flag) => {
+    const list = s[key] || [];
+    const add = steps.filter(x => x[flag] && !list.includes(x.id));
+    return `<div class="card" style="margin-bottom:14px" data-routine="${key}">
+      <div class="world-head">${sprite(key === "morningRoutine" ? "ch_moss_wave" : "ch_moss_sleep", "M")}<div class="grow"><h2>${esc(title)}</h2>
+        <div class="soft small">${esc(t("rAbout", { name: childName() }))}</div></div></div>
+      ${list.length ? list.map((id, i) => {
+        const x = byId[id] || { id, title: { en: id }, sprite: "hb_step_" + id };
+        return `<div class="step"><span class="n">${i + 1}</span>${sprite(x.sprite, tx(x.title))}
+          <div class="title">${esc(tx(x.title))}</div>
+          <button class="btn icon" type="button" data-r="up" data-i="${i}" aria-label="${esc(t("rUp"))}"${i === 0 ? " disabled" : ""}>${icon("up")}</button>
+          <button class="btn icon" type="button" data-r="down" data-i="${i}" aria-label="${esc(t("rDown"))}"${i === list.length - 1 ? " disabled" : ""}>${icon("down")}</button>
+          <button class="btn icon" type="button" data-r="rm" data-i="${i}" aria-label="${esc(t("rRemove"))}">${icon("x")}</button></div>`;
+      }).join("") : `<p class="soft" style="padding:8px 0">${esc(t("rEmpty"))}</p>`}
+      <div class="section-title" style="margin:16px 0 0">${esc(t("rAdd"))}</div>
+      ${list.length >= 10 ? `<p class="soft small" style="margin-top:8px">${esc(t("rFull"))}</p>` :
+        `<div class="add-steps">${add.map(x => `<button class="add-step" type="button" data-add="${esc(x.id)}">${sprite(x.sprite, tx(x.title))}<span>${esc(tx(x.title))}</span></button>`).join("")}</div>`}
+    </div>`;
+  };
+  $("#sub-routines").innerHTML = card("morningRoutine", t("rMorning"), "morning") + card("eveningRoutine", t("rEvening"), "evening");
+}
+views.addEventListener("click", e => {
+  const box = e.target.closest("[data-routine]");
+  if (!box) return;
+  const key = box.dataset.routine;
+  const list = (S.state.settings[key] || []).slice();
+  const add = e.target.closest("[data-add]"), r = e.target.closest("[data-r]");
+  if (add) { if (list.length < 10) list.push(add.dataset.add); }
+  else if (r) {
+    const i = Number(r.dataset.i), j = r.dataset.r === "up" ? i - 1 : i + 1;
+    if (r.dataset.r === "rm") list.splice(i, 1);
+    else if (j >= 0 && j < list.length) [list[i], list[j]] = [list[j], list[i]];
+  } else return;
+  saveSetting({ [key]: list });
+  renderRoutines();
+});
+
+// ============================================================ go
+S.lang = pickLang();
+applyWords();
+boot();
+</script>
+</body>
+</html>

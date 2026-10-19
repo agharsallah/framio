@@ -1,0 +1,135 @@
+# Lumas Stiller Baum: leise, langsam, geborgen. Kurze Sätze.
+play_breathe	Atmen mit Luma.
+play_feelings	Gefühle.
+play_stories	Geschichten.
+play_nightlight	Nachtlicht.
+
+# ---- breathe
+breathe_intro	Huhu. Lass uns zusammen ganz langsam atmen.
+breathe_pick	Such dir ein Bild aus.
+breathe_name_flower	An der Blume riechen, die Kerze auspusten.
+breathe_name_balloon	Ballonbauch.
+breathe_name_hand	Seesternhand.
+breathe_flower_start	Wir riechen an der Blume, und pusten die Kerze aus. Ganz langsam.
+breathe_balloon_start	Leg deine Hände auf deinen Bauch. Dein Bauch ist ein Ballon.
+breathe_hand_start	Mach deine Hand ganz weit auf, wie ein Seestern. Wir fahren deine Finger entlang, einen nach dem anderen.
+breathe_flower_in	Riech an der Blume. Mmh.
+breathe_flower_out	Und jetzt puste die Kerze aus. Fffuuh.
+breathe_balloon_in	Atme ein, und mach deinen Ballonbauch ganz rund.
+breathe_balloon_out	Atme aus, und lass die Luft langsam raus.
+breathe_hand_in	Fahr den Finger hinauf, und atme ein.
+breathe_hand_out	Fahr hinunter, und atme aus.
+breathe_in	Ein.
+breathe_out	Aus.
+breathe_end	Wie fühlst du dich jetzt? Schön ruhig.
+
+# ---- feelings
+feelings_intro	Huhu. Lass uns über Gefühle sprechen. Jeder hat Gefühle.
+feelings_explore	Tipp auf ein Gesicht, dann siehst du ein Gefühl.
+feelings_ready	Alle Gefühle sind in Ordnung. Jetzt spielen wir ein Gefühle-Spiel!
+feelings_whathelps	Was kann helfen?
+feelings_about_happy	Fröhlich! Wenn ich fröhlich bin, lächle ich, und möchte es mit allen teilen.
+feelings_about_sad	Traurig. Wenn ich traurig bin, hilft eine Umarmung. Ich kann es jemandem erzählen.
+feelings_about_angry	Wütend. Grrr. Wenn ich wütend bin, halte ich kurz an, und atme tief durch.
+feelings_about_scared	Ängstlich. Wenn ich Angst habe, gehe ich zu jemandem, den ich lieb habe. Kuscheln hilft.
+feelings_about_surprised	Überrascht! Oh! Meine Augen werden ganz groß und rund.
+feelings_about_sleepy	Müde. Gähn. Wenn ich müde bin, ist es Zeit, mich auszuruhen.
+feelings_about_proud	Stolz! Wenn ich etwas Schweres schaffe, bin ich stolz auf mich.
+feelings_about_calm	Ruhig. Langsam und weich, wie ein leiser Atemzug.
+feelings_name_happy	Fröhlich.
+feelings_name_sad	Traurig.
+feelings_name_angry	Wütend.
+feelings_name_scared	Ängstlich.
+feelings_name_surprised	Überrascht.
+feelings_name_sleepy	Müde.
+feelings_name_proud	Stolz.
+feelings_name_calm	Ruhig.
+feelings_yes_happy	Ja, fröhlich! Fröhlich fühlt sich hell und warm an.
+feelings_yes_sad	Ja, traurig. Es ist in Ordnung, traurig zu sein.
+feelings_yes_angry	Ja, wütend. Es ist in Ordnung, wütend zu sein. Man kann wütend sein, und trotzdem lieb.
+feelings_yes_scared	Ja, ängstlich. Es ist in Ordnung, Angst zu haben.
+feelings_yes_surprised	Ja, überrascht! Oh, wow!
+feelings_yes_sleepy	Ja, müde. Müde sein ist auch in Ordnung.
+feelings_yes_proud	Ja, stolz! Stolz fühlt sich groß und warm an.
+feelings_yes_calm	Ja, ruhig. Ruhig fühlt sich weich und langsam an.
+feelings_share_happy	Fröhliche Gefühle kann man wunderbar teilen. Komm, wir lächeln zusammen!
+feelings_share_surprised	Bei Überraschungen werden die Augen ganz groß. Was für eine Überraschung!
+feelings_share_proud	Du kannst auch stolz auf dich sein, wenn du etwas Schweres probierst.
+feelings_share_calm	Aah. Lass uns einen Moment zusammen ganz ruhig sein.
+feelings_help_hug	Eine große, warme Umarmung.
+feelings_help_talk	Mit jemandem reden, den man lieb hat.
+feelings_help_breathe	Langsam atmen. Ein, und aus.
+feelings_help_rest	Ein bisschen ausruhen.
+feelings_help_play	Zusammen mit einem Freund spielen.
+feelings_better_pip	Das hilft. Jetzt geht es Pip besser.
+feelings_better_tuka	Das hilft. Jetzt geht es Tuka besser.
+feelings_better_bo	Das hilft. Jetzt geht es Bo besser.
+feelings_better_moss	Das hilft. Jetzt geht es Moos besser.
+feelings_s_icecream	Oh nein! Tuka ist ihr Eis ins Gras gefallen. Wie fühlt sich Tuka?
+feelings_s_balloon	Bos Luftballon ist weggeflogen, hoch, hoch in den Himmel. Wie fühlt sich Bo?
+feelings_s_gift	Pip hat ein Geschenk von einem Freund bekommen. Wie fühlt sich Pip?
+feelings_s_ball	Die Freunde von Moos kommen, um mit ihm Ball zu spielen. Wie fühlt sich Moos?
+feelings_s_tower	Bo hat einen hohen Turm gebaut, und jemand hat ihn umgeworfen. Wie fühlt sich Bo?
+feelings_s_wait	Pip will auch mal trommeln, aber er muss warten, und warten. Wie fühlt sich Pip?
+feelings_s_noise	Es ist dunkel, und Moos hört ein lautes Geräusch. Wie fühlt sich Moos?
+feelings_s_thunder	Rumms! Der Donner grollt am Himmel. Wie fühlt sich Tuka?
+feelings_s_butterfly	Ein Schmetterling landet genau auf Bos Rüssel! Wie fühlt sich Bo?
+feelings_s_party	Pip macht die Tür auf, und alle Freunde rufen: Überraschung! Wie fühlt sich Pip?
+feelings_s_yawn	Tuka hat den ganzen Tag gespielt. Jetzt werden ihre Augen ganz schwer. Wie fühlt sich Tuka?
+feelings_s_busy	Bo hatte einen langen, vollen Tag. Er gähnt ganz groß. Wie fühlt sich Bo?
+feelings_s_built	Moos hat einen hohen Turm gebaut, ganz allein! Wie fühlt sich Moos?
+feelings_s_clouds	Pip liegt im Gras, und schaut den Wolken zu, wie sie langsam vorbeiziehen. Wie fühlt sich Pip?
+
+# ---- stories
+stories_intro	Huhu. Jetzt ist Geschichtenzeit.
+stories_pick	Welche Geschichte wollen wir lesen? Tipp auf ein Buch.
+stories_end	Ende. Träum was Schönes.
+stories_title_pip_sleep	Pip kann nicht schlafen.
+stories_title_tuka_share	Tuka teilt ihre Beeren.
+stories_title_moss_slow	Moos lässt sich Zeit.
+stories_title_bo_rain	Bos großer Regen.
+stories_pip_sleep_1	Es war Nacht auf der Wiese. Der Mond war da, und die Sterne funkelten. Aber Pip konnte nicht schlafen.
+stories_pip_sleep_2	Pip wackelte. Pip kicherte. Pip drehte sich hin, und her. „Ich bin gar nicht müde!“, rief Pip.
+stories_pip_sleep_3	Huhu. Luma, die Eule, flog herunter. „Kannst du nicht schlafen, kleiner Pip? Komm, wir machen uns zusammen bettfertig.“
+stories_pip_sleep_4	Zuerst etwas Warmes zu trinken. Moos brachte einen Becher warme Milch. Schlürf, schlürf. Mmh. Gemütlich.
+stories_pip_sleep_5	Dann Zähne putzen. Bo zeigte Pip, wie es geht. Schrubb, schrubb, rauf und runter. Alles sauber und glänzend!
+stories_pip_sleep_6	Dann eine Geschichte. Tuka las ein Buch über den Mond vor. Pip kuschelte sich ganz nah heran, und hörte zu.
+stories_pip_sleep_7	„Jetzt atmen wir ganz langsam“, sagte Luma. „Ein, und aus. Ein, und aus.“
+stories_pip_sleep_8	Pips Augen wurden ganz schwer. Pip gähnte ganz, ganz groß. Uaaah.
+stories_pip_sleep_9	Pip kuschelte sich in sein gemütliches Nest. Gute Nacht, Pip. Gute Nacht, ihr Lieben.
+stories_tuka_share_1	An einem sonnigen Morgen ging Tuka zum großen Beerenstrauch.
+stories_tuka_share_2	Sie pflückte eine Beere, zwei Beeren, ganz viele Beeren! Bald war ihr Korb ganz voll.
+stories_tuka_share_3	„Mmh, lecker!“, sagte Tuka. „Alle für mich!“
+stories_tuka_share_4	Da sah Tuka den Bo. Bos Bauch grummelte. Bo sah ein bisschen traurig aus.
+stories_tuka_share_5	Tuka schaute in ihren Korb. Dann schaute sie Bo an. Hmm. Was konnte sie tun?
+stories_tuka_share_6	„Hier, Bo“, sagte Tuka. „Möchtest du ein paar Beeren?“ Bo strahlte über das ganze Gesicht. „Danke, Tuka!“
+stories_tuka_share_7	Pip und Moos kamen auch dazu. Tuka teilte mit allen. Eine für dich, und eine für dich, und eine für dich!
+stories_tuka_share_8	Alle waren fröhlich. Und Tuka wurde es ganz warm ums Herz. Teilen fühlt sich schön an.
+stories_moss_slow_1	Das ist Moos. Moos ist eine Schildkröte, und er macht alles ganz langsam. Schritt, für Schritt, für Schritt.
+stories_moss_slow_2	„Komm, Moos!“, rief Pip. „Wir gehen auf den großen Hügel, und schauen uns den Sonnenuntergang an!“
+stories_moss_slow_3	Pip flog. Tuka rannte. Bo trabte. Und los ging es, ganz schnell!
+stories_moss_slow_4	Moos ging langsam. Unterwegs traf er eine kleine Schnecke. „Hallo, Schnecke. Du bist ja auch langsam!“
+stories_moss_slow_5	Er sah einen Schmetterling mit lila Flügeln, und eine Blume, die ganz süß duftete. Mmh.
+stories_moss_slow_6	Oben auf dem Hügel schauten sich die Freunde um. „Wo ist denn Moos?“
+stories_moss_slow_7	Und da kam Moos, Schritt für Schritt. „Da bin ich!“, lächelte er. „Ich habe mir Zeit gelassen.“
+stories_moss_slow_8	Moos erzählte von der Schnecke, dem Schmetterling, und der süßen Blume. „Wow!“, sagte Tuka. „Wir waren viel zu schnell, um sie zu sehen!“
+stories_moss_slow_9	Dann schauten sie zusammen den Sonnenuntergang an. Schnell oder langsam, das ist in Ordnung. Jeder kommt an, in seinem eigenen Tempo.
+stories_bo_rain_1	Bo spielte Ball auf der Wiese. Da wurde der Himmel grau, und große Wolken zogen heran.
+stories_bo_rain_2	Pitsch, patsch. Es fing an zu regnen. Und dann grollte der Donner: Rumms, rumms.
+stories_bo_rain_3	Bo bekam Angst. Sein Bauch fühlte sich ganz wackelig an, und er wollte sich verstecken.
+stories_bo_rain_4	Luma kam ganz nah. „Du hast Angst, Bo. Das ist in Ordnung. Der Donner ist laut, aber hier unter dem großen Baum sind wir sicher.“
+stories_bo_rain_5	„Lass uns zusammen atmen“, sagte Luma. „Riech an der Blume, und puste die Kerze aus.“ Ein, und aus.
+stories_bo_rain_6	Bo atmete ein. Bo atmete aus. Langsam wurde sein Bauch wieder ruhiger.
+stories_bo_rain_7	„Du kannst meinen Flügel halten“, sagte Luma. Und so schauten Bo und Luma zusammen dem Regen zu, ganz nah beieinander.
+stories_bo_rain_8	Nach und nach wurde der Regen leiser. Der Donner zog weit weg. Und die Sonne blinzelte hervor.
+stories_bo_rain_9	Schau, ein Regenbogen! „Ich hatte Angst“, sagte Bo, „aber jetzt geht es mir besser.“ Und er drückte Luma ganz fest.
+
+# ---- night light
+nightlight_hello	Huhu. Jetzt ist Schlafenszeit. Wir sagen unseren Freunden gute Nacht.
+nightlight_gn_pip	Gute Nacht, Pip.
+nightlight_gn_tuka	Gute Nacht, Tuka.
+nightlight_gn_bo	Gute Nacht, Bo.
+nightlight_gn_moss	Gute Nacht, Moos.
+nightlight_gn_you	Und gute Nacht, kleiner Schatz. Schlaf schön.
+nightlight_shh	Psst. Schlaf schön.
+nightlight_shh_2	Psst. Die Sterne passen auf dich auf.
