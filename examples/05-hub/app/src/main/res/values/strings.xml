@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hub</string>
+    <string name="tile_subtitle">Family hub</string>
+    <string name="service_channel">Hub running</string>
+    <string name="service_text">Timers and phones stay on</string>
+
+    <!-- Dock -->
+    <string name="dock_today">Today</string>
+    <string name="dock_week">Week</string>
+    <string name="dock_timers">Timers</string>
+    <string name="dock_board">Board</string>
+    <string name="dock_routines">Routines</string>
+    <string name="dock_settings">Settings</string>
+    <string name="dock_settings_hint">Hold for Settings</string>
+    <string name="dock_exit">Exit</string>
+    <string name="quit_title">Quit the Hub?</string>
+    <string name="quit_detail_timers">%1$s will stop and won\'t ring.</string>
+    <string name="quit_confirm">Hold to quit</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Time -->
+    <string name="time_unknown">Waiting for the time</string>
+    <string name="time_unknown_detail">The frame learns the time from the internet</string>
+
+    <!-- Day sentence -->
+    <string name="clause_rain_until">%1$s until %2$s.</string>
+    <string name="clause_rain_on">%1$s for the next hours.</string>
+    <string name="clause_rain_from">%1$s from %2$s.</string>
+    <string name="clause_dry_until">Dry until %1$s, then %2$s.</string>
+    <string name="clause_dry">Dry for the next %1$d hours.</string>
+    <string name="clause_frost">Frost tonight, %1$s.</string>
+    <string name="clause_event_at">%1$s at %2$s</string>
+    <string name="clause_event_in">%1$s in %2$d min</string>
+    <string name="clause_event_now">%1$s now</string>
+    <string name="clause_tomorrow_at">Tomorrow: %1$s at %2$s</string>
+    <string name="clause_tomorrow_all_day">Tomorrow: %1$s</string>
+    <string name="clause_who">%1$s · %2$s</string>
+    <string name="sentence_nothing">A quiet day.</string>
+
+    <string name="kind_rain">Rain</string>
+    <string name="kind_showers">Showers</string>
+    <string name="kind_snow">Snow</string>
+    <string name="kind_drizzle">Drizzle</string>
+    <string name="kind_thunder">Thunderstorms</string>
+    <string name="kind_rain_lower">rain</string>
+    <string name="kind_showers_lower">showers</string>
+    <string name="kind_snow_lower">snow</string>
+    <string name="kind_drizzle_lower">drizzle</string>
+    <string name="kind_thunder_lower">thunderstorms</string>
+
+    <!-- Weather -->
+    <string name="weather_hi_lo">↑%1$s ↓%2$s</string>
+    <string name="weather_old">Weather is %1$s old</string>
+    <string name="weather_none">No weather yet</string>
+    <string name="weather_no_location">Set a location from a phone</string>
+    <string name="degrees">%1$d°</string>
+
+    <!-- Chips -->
+    <string name="chip_timer_running">%1$s %2$s</string>
+    <string name="chip_timer_paused">%1$s paused %2$s</string>
+    <string name="chip_timer_ringing">%1$s is done</string>
+    <string name="chip_timer_finished">%1$s finished %2$s ago</string>
+    <string name="chip_timer_finished_now">%1$s finished</string>
+    <string name="chip_timer_interrupted">%1$s: interrupted by a restart</string>
+    <plurals name="chip_new_notes">
+        <item quantity="one">%d new note</item>
+        <item quantity="other">%d new notes</item>
+    </plurals>
+    <string name="chip_routine">%1$s %2$d/%3$d</string>
+    <string name="chip_routine_leave">%1$s %2$d/%3$d · %4$d min</string>
+    <string name="chip_recovered">Recovered from a problem</string>
+    <string name="safe_mode">Safe mode: feeds and phones are off after repeated crashes</string>
+
+    <!-- Durations -->
+    <string name="minutes_short">%d min</string>
+    <string name="hours_short">%d h</string>
+    <string name="hours_minutes_short">%1$d h %2$d min</string>
+
+    <!-- Today / Week -->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="all_day">all day</string>
+    <string name="until">until %1$s</string>
+    <string name="nothing_planned">Nothing planned</string>
+    <string name="next_12_hours">Next 12 hours</string>
+    <string name="section_timers">Timers</string>
+    <string name="section_board">Board</string>
+    <string name="section_routine">Routine</string>
+    <string name="no_timers">No timers</string>
+    <string name="board_empty_short">Nothing on the board</string>
+    <string name="calendars_old">Calendars are %1$s old</string>
+    <string name="no_calendars">Add calendars from a phone</string>
+
+    <!-- Timers -->
+    <string name="timers_running">Running</string>
+    <string name="timers_none">Set a time on the dial, or pick one</string>
+    <string name="timers_new">New timer</string>
+    <string name="timers_start">Start %1$s</string>
+    <string name="timer_pause">Pause</string>
+    <string name="timer_resume">Resume</string>
+    <string name="timer_plus_1">+1 min</string>
+    <string name="timer_plus_5">+5 min</string>
+    <string name="timer_stop">Stop</string>
+    <string name="timer_cancel">Cancel</string>
+    <string name="timer_label_default">Timer</string>
+    <string name="timer_full">At most 8 timers</string>
+    <string name="label_pasta">Pasta</string>
+    <string name="label_eggs">Eggs</string>
+    <string name="label_oven">Oven</string>
+    <string name="label_tea">Tea</string>
+    <string name="label_laundry">Laundry</string>
+    <string name="label_homework">Homework</string>
+    <string name="dial_minutes">%d minutes</string>
+
+    <!-- Alert -->
+    <string name="alert_done">is done</string>
+    <string name="alert_knock">Knock twice to stop</string>
+
+    <!-- Board -->
+    <string name="board_new_scribble">Scribble</string>
+    <string name="board_empty">Notes from phones and scribbles appear here</string>
+    <string name="board_by">%1$s · %2$s</string>
+    <string name="board_ago">%1$s ago</string>
+    <string name="board_just_now">just now</string>
+    <string name="board_remove">Hold to remove</string>
+    <string name="board_pin">Pin</string>
+    <string name="board_unpin">Unpin</string>
+    <string name="keep_today">Today</string>
+    <string name="keep_3d">3 days</string>
+    <string name="keep_pinned">Pinned</string>
+    <string name="scribble_save">Save</string>
+    <string name="scribble_undo">Undo</string>
+    <string name="scribble_eraser">Eraser</string>
+
+    <!-- Routines -->
+    <string name="routines_empty">No routines yet</string>
+    <string name="routines_add_morning">Add a morning routine</string>
+    <string name="routines_add_bedtime">Add a bedtime routine</string>
+    <string name="routine_morning">Morning</string>
+    <string name="routine_bedtime">Bedtime</string>
+    <string name="step_dress">Get dressed</string>
+    <string name="step_breakfast">Breakfast</string>
+    <string name="step_teeth">Brush teeth</string>
+    <string name="step_shoes">Shoes and coat</string>
+    <string name="step_bag">School bag</string>
+    <string name="step_bath">Bath</string>
+    <string name="step_pyjamas">Pyjamas</string>
+    <string name="step_story">Story</string>
+    <string name="step_lights">Lights out</string>
+    <string name="routine_leave_in">Leave in %d min</string>
+    <string name="routine_done">All done!</string>
+    <string name="routine_reset">Hold to reset</string>
+    <string name="routine_remove">Hold to remove</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_night">Night</string>
+    <string name="settings_night_on">Screen off at night</string>
+    <string name="settings_night_start">Starts</string>
+    <string name="settings_night_end">Ends</string>
+    <string name="settings_night_mode_schedule">At a time</string>
+    <string name="settings_night_mode_sunset">After sunset</string>
+    <string name="settings_night_offset">After sunset by</string>
+    <string name="settings_brightness">Day brightness</string>
+    <string name="settings_brightness_system">System</string>
+    <string name="settings_sound">Sound</string>
+    <string name="settings_quiet">Quiet hours</string>
+    <string name="settings_quiet_detail">Only timers make sound</string>
+    <string name="settings_hourly">Chime every hour</string>
+    <string name="settings_motion">Motion</string>
+    <string name="settings_knock">Knock twice to wake and stop alarms</string>
+    <string name="settings_reduce_motion">Reduce motion</string>
+    <string name="settings_keep_running">Keep running after Exit</string>
+    <string name="settings_keep_running_detail">Phones can still reach the board and timers</string>
+    <string name="settings_place">Place</string>
+    <string name="settings_location_none">No location: weather is off</string>
+    <string name="settings_people">People</string>
+    <string name="settings_calendars">Calendars</string>
+    <string name="settings_phones">Phones</string>
+    <string name="settings_add_phone">Add a phone</string>
+    <string name="settings_pair_hint">Scan with a phone on the same Wi-Fi, or open %1$s and enter %2$s</string>
+    <string name="settings_pair_expires">Valid for 2 minutes</string>
+    <string name="settings_no_phones">No phones yet</string>
+    <string name="settings_revoke">Hold to remove</string>
+    <string name="settings_remote">Remote access</string>
+    <string name="settings_remote_on">Use the Hub away from home</string>
+    <string name="settings_remote_detail">End-to-end encrypted, through %1$s</string>
+    <string name="settings_remote_reset">Hold to reset remote access</string>
+    <string name="settings_diagnostics">Diagnostics</string>
+    <string name="settings_run_selftest">Run self-test</string>
+    <string name="settings_about">About</string>
+    <string name="settings_about_text">Hub %1$s · weather by Open-Meteo.com (CC BY 4.0) · calendars read with biweekly · QR codes by Nayuki</string>
+    <string name="settings_none">None</string>
+    <string name="settings_from_phone">Add and edit from a phone</string>
+    <string name="settings_last_seen">seen %1$s ago</string>
+
+    <!-- Diagnostics -->
+    <string name="diag_time">Time</string>
+    <string name="diag_time_trusted">trusted (%1$s)</string>
+    <string name="diag_time_unknown">not yet trusted</string>
+    <string name="diag_zone">Time zone</string>
+    <string name="diag_weather">Weather</string>
+    <string name="diag_calendar">Calendar %1$s</string>
+    <string name="diag_ok_age">ok, %1$s ago</string>
+    <string name="diag_never">never</string>
+    <string name="diag_lan">Phone address</string>
+    <string name="diag_version">Version</string>
+    <string name="diag_crash">Last crash</string>
+
+    <!-- Night -->
+    <string name="night_wake">Tap to see the time</string>
+</resources>
