@@ -1,6 +1,9 @@
 package dev.framio.launcher
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.WindowManager
@@ -17,10 +20,14 @@ import androidx.core.view.WindowInsetsControllerCompat
 /** The frame's home screen. Android starts it at boot and whenever "home" is requested. */
 class LauncherActivity : ComponentActivity() {
 
-    // Re-read on every resume: apps can be installed or removed over adb while we run
-    private var helloInstalled by mutableStateOf(false)
+    // Re-read on every resume, and while visible on every install/removal (apps arrive over adb)
     private var frameoInstalled by mutableStateOf(false)
+    private var apps by mutableStateOf(emptyList<AppTile>())
     private var use24h by mutableStateOf(true)
+
+    private val packagesChanged = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) = refreshApps()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +43,9 @@ class LauncherActivity : ComponentActivity() {
                 lifecycle = lifecycle,
                 use24h = use24h,
                 frameoInstalled = frameoInstalled,
-                helloInstalled = helloInstalled,
+                apps = apps,
                 onPhotos = { Apps.openPhotos(this) },
-                onHello = { Apps.openHello(this) },
+                onOpen = { Apps.open(this, it) },
             )
         }
 
@@ -46,11 +53,32 @@ class LauncherActivity : ComponentActivity() {
         startService(Intent(this, HotCornerService::class.java))
     }
 
+    override fun onStart() {
+        super.onStart()
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_PACKAGE_ADDED)
+            addAction(Intent.ACTION_PACKAGE_REMOVED)
+            addAction(Intent.ACTION_PACKAGE_CHANGED)
+            addAction(Intent.ACTION_PACKAGE_REPLACED)
+            addDataScheme("package")
+        }
+        registerReceiver(packagesChanged, filter)
+    }
+
+    override fun onStop() {
+        unregisterReceiver(packagesChanged)
+        super.onStop()
+    }
+
     override fun onResume() {
         super.onResume()
-        frameoInstalled = Apps.isInstalled(this, Apps.FRAMEO)
-        helloInstalled = Apps.isInstalled(this, Apps.HELLO)
+        refreshApps()
         use24h = DateFormat.is24HourFormat(this)
+    }
+
+    private fun refreshApps() {
+        frameoInstalled = Apps.isInstalled(this, Apps.FRAMEO)
+        apps = Apps.discover(this)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

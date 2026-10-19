@@ -111,3 +111,43 @@ Env: `export JAVA_HOME=$(/usr/libexec/java_home -v 21)` · `adb` = `~/Downloads/
 | `adb logcat -d -b crash \| grep -ci framio` | `0` | no crashes |
 
 Not tested here: reboot (the frame was busy with a backup). Expected: the system starts the launcher at boot, the launcher starts the dot.
+
+## Hardware Lab tile (example 03)
+
+| Command | Output | Note |
+|---|---|---|
+| `Apps.openLab` (MAIN + LAUNCHER → `dev.framio.lab/.LabActivity`), `labInstalled` re-read in `onResume`, `<queries>` + `dev.framio.lab` | | same pattern as Hello Frame |
+| three tiles, Photos weight 1.4 → 1.2 | "Hardware Lab" wrapped onto the glyph, then "Example 03 · Hardware tests" wrapped | title **Lab**, subtitle **Example 03 · Hardware** fit on one line |
+| `./gradlew assembleRelease` + `adb install -r …/app-release.apk` | `Success` | |
+| `KEYCODE_HOME` → tap Lab tile | `mResumedActivity: dev.framio.lab/.LabActivity` | |
+| long-press dot | `dev.framio.launcher/.LauncherActivity` | |
+| tap Lab tile → tap the lab's Exit | `dev.framio.lab/.LabActivity` → `dev.framio.launcher/.LauncherActivity` | |
+| `dumpsys activity activities \| grep mFocusedActivity` | lagged one step behind | use `mResumedActivity` to check navigation |
+| `adb logcat -d \| grep -c "FATAL EXCEPTION"` | `0` | |
+
+## App shelf: framio apps found automatically
+
+Tiles are no longer hard-coded: `Apps.discover` lists every `dev.framio.*` app with a `MAIN`/`LAUNCHER` activity
+(`queryIntentActivities(…, GET_META_DATA)`), sorted by `order` then title. An app can style its tile from its
+LAUNCHER activity (all optional; without them: its label, its icon or first letter, a colour picked from its package):
+
+```xml
+<meta-data android:name="dev.framio.tile.subtitle" android:value="Prayer times" />
+<meta-data android:name="dev.framio.tile.accent" android:value="#6CC79A" />
+<meta-data android:name="dev.framio.tile.order" android:value="40" />
+```
+
+Hello Frame (10) and Hardware Lab (30) keep their drawn glyphs and subtitles from defaults in `Apps.KNOWN`.
+Up to 4 tiles share the row (Photos 1.15×); with more, a `LazyRow` that snaps tile by tile, 3.5 tiles visible,
+edge fades where there is more, back to Photos on every resume. Titles auto-size to one line (`TextAutoSize`, 28–46 sp).
+A receiver for `PACKAGE_ADDED/REMOVED/CHANGED/REPLACED` (while visible) refreshes the shelf as apps arrive over adb.
+`<queries>`: Frameo + an intent for every launchable app (Android 11+ only).
+
+| Command | Output | Note |
+|---|---|---|
+| `./gradlew assembleRelease lintDebug` | first: `NonObservableLocale` in `Clock` (old code, first lint run) | locale from `LocalConfiguration`, `Locale.ROOT` fallback; lint clean |
+| `pm install -r` launcher + Mawaqit (`/tmp/framio-frame.lock` held: other sessions share the frame) | `Success` ×2 | |
+| `KEYCODE_HOME`, screenshot | Photos · Hello Frame · Hardware Lab · Mawaqit · **Little Meadow** (another session's app, found with no launcher change) | 5 tiles → shelf |
+| first screenshot | shelf left scrolled to the end; Mawaqit's "Example 04 · Prayer times" ellipsized; Little Meadow's title lower (no subtitle) | scroll to 0 on resume, subtitle "Prayer times", empty subtitle line kept |
+| `input swipe 1100 620 300 620 300`, then `input tap 1000 620` | snapped to a tile edge; `mResumedActivity: dev.framio.meadow/.MeadowActivity` | |
+| `KEYCODE_HOME` | `dev.framio.launcher/.LauncherActivity`, shelf back on Photos, half Mawaqit tile + fade on the right | |

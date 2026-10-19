@@ -4,10 +4,16 @@
     <!-- The hot corner dot is an overlay window above other apps -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!-- Apps the tiles open (only needed on Android 11+, harmless on 6) -->
+    <!--
+      Apps the tiles open (only needed on Android 11+, harmless on 6): Frameo, and every launchable app,
+      of which the home screen keeps the dev.framio.* ones
+    -->
     <queries>
         <package android:name="net.frameo.frame" />
-        <package android:name="dev.framio.hello" />
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
     </queries>
 
     <application
