@@ -182,7 +182,7 @@ func run(ctx context.Context, e *env, args []string) error {
 	for _, c := range commands {
 		if c.name == args[0] && c.run != nil {
 			if lockingCommands[c.name] {
-				release, err := e.lock(ctx)
+				release, err := e.lock(ctx, lockWhat(c.name, args[1:]))
 				if err != nil {
 					return err
 				}

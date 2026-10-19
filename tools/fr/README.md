@@ -178,8 +178,16 @@ set:
 - `logs`, `rec` and `mirror` never take it, because they run for minutes.
 
 The protocol: `mkdir` takes the lock, `rmdir` releases it, a waiting command retries every second,
-and a lock older than 5 minutes counts as stale. Shell scripts can join with two lines;
-`examples/04-little-meadow/tools/frame.sh` already does.
+and a lock untouched for 5 minutes counts as stale. Shell scripts can join with two lines;
+`examples/04-little-meadow/tools/frame.sh` already does, and `scripts/frame-lock.sh` adds a queue
+and a `status` command.
+
+fr also writes `<lock>.owner` next to the lock (never inside it): `name|pid|since|what`, with the
+name from `$FRAME_OWNER`, else `$CLAUDE_SESSION_NAME`, else `fr:<user>`. While it holds the lock it
+touches both every 20 s, so a long `install` never looks stale. A waiting fr says who holds the lock
+(`held by X · install 06-pomodoro · 12 s`) and frees it at once when the owner's pid is gone.
+Waiters that free a dead lock take turns through `<lock>.reap` and re-check the lock just before
+removing it, so two of them never free it twice.
 
 ## Good to know
 

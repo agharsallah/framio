@@ -84,3 +84,20 @@ the same time. `fr connect` is therefore not built; USB only.
 | `fr bug smoke` | 8 files in 4.6 s | |
 | `fr doctor` | all ✓; warnings: no shell protocol, encoder max 1280×720 | |
 | `tools/fr/smoke.sh` | **15 passed, 0 failed** (2 min 50 s, incl. a 30 s+ wait for another session's lock) | one scrcpy startup segfault, retried |
+
+## Lock owner file (cooperating with `scripts/frame-lock.sh`)
+
+| Command | Output | Note |
+|---|---|---|
+| `go vet ./... && go test ./...` | pass, incl. `TestParseOwner`, `TestReapReason`, `TestLockWhat`, `TestLockOwnerFile` | |
+| `FR_LOCK=/tmp/framio-frame.lock FRAME_OWNER=framio-7a/fr-test fr shot`, lock held by `mawaqit-secondary` | waited its turn, then `094110_dev.framio.meadow.png`, rc 0 | |
+| `scripts/frame-lock.sh status` polled meanwhile | `frame: held by framio-7a/fr-test · shot · 0 s (pid 6116)` | owner file removed on release |
+
+### Reaping races (found by framio-7f's stress test of `scripts/frame-lock.sh`)
+
+| Command | Output | Note |
+|---|---|---|
+| review of `reap()` in lock.go | both races present: the re-check compared the owner line only, so a fresh lock (no owner file yet) taken right after a stale one passed it; two reapers could both pass it, and the second removed the lock the first had re-taken | a missing lock already read as "not held" |
+| first fix: claim by `rename(lock, private)`, then verify inode + mtime | `TestLockNoOverlap`: **2 overlaps** in 40 turns | giving back a wrongly moved lock races with a third `mkdir` |
+| fix: reapers take turns through `<lock>.reap` (mkdir), re-check inode + mtime + owner line, remove the owner file, then rmdir | | window left only against reapers outside fr; documented in `freeLock` |
+| `go vet ./... && go test -race ./...`; `-count=30` on the lock tests | pass; 0 overlaps in 8×5 turns, the dead holder freed exactly once, 16 concurrent reapers free it once | no device used |

@@ -9,9 +9,12 @@ import (
 	"flag"
 	"image/png"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -362,5 +365,293 @@ func TestInfo(t *testing.T) {
 func TestInputText(t *testing.T) {
 	if got := inputText("a b%c"); got != `a%sb\%c` {
 		t.Errorf("got %q", got)
+	}
+}
+
+// --- device lock ($FR_LOCK) ----------------------------------------------------
+
+func TestParseOwner(t *testing.T) {
+	o, ok := parseOwner("framio-7a/fr-test|4242|1760800000|install 06-pomodoro\n")
+	if !ok || o.name != "framio-7a/fr-test" || o.pid != 4242 || o.since.Unix() != 1760800000 || o.what != "install 06-pomodoro" {
+		t.Errorf("got %+v %v", o, ok)
+	}
+	if o, ok := parseOwner("me|7|1|sh echo a|b"); !ok || o.what != "sh echo a|b" {
+		t.Errorf("what keeps later separators: %+v", o)
+	}
+	if o, ok := parseOwner("me|7"); !ok || !o.since.IsZero() || o.what != "" {
+		t.Errorf("name and pid are enough: %+v %v", o, ok)
+	}
+	for _, bad := range []string{"", "me", "me||1|x", "me|abc|1|x", "me|0|1|x", "me|-3|1|x"} {
+		if _, ok := parseOwner(bad); ok {
+			t.Errorf("parseOwner(%q) must fail", bad)
+		}
+	}
+	line := lockOwner{name: "a|b", pid: 9, since: time.Unix(5, 0), what: "x\ny"}.String()
+	if line != "a b|9|5|x y" {
+		t.Errorf("String() = %q", line)
+	}
+	now := time.Unix(1760800012, 0)
+	if got := o.describe(now); got != "held by framio-7a/fr-test · install 06-pomodoro · 12 s" {
+		t.Errorf("describe() = %q", got)
+	}
+}
+
+func TestReapReason(t *testing.T) {
+	alive := func(pid int) bool { return pid == 1 }
+	dir := t.TempDir()
+	info, _ := os.Stat(dir)
+	epoch := filepath.Join(dir, "epoch")
+	os.Mkdir(epoch, 0o755)
+	os.Chtimes(epoch, time.Unix(0, 0), time.Unix(0, 0))
+	zero, _ := os.Stat(epoch)
+	held := func(age time.Duration, pid int) lockState {
+		return lockState{dir: info, age: age, owner: lockOwner{name: "x", pid: pid}, hasOwner: pid != 0}
+	}
+	tests := []struct {
+		name string
+		st   lockState
+		reap bool
+	}{
+		{"fresh, owner alive", held(time.Minute, 1), false},
+		{"fresh, owner gone", held(time.Second, 2), true},
+		{"fresh, no owner file", held(time.Minute, 0), false},
+		{"fresh, unreadable or earlier owner", lockState{dir: info, age: time.Minute, owner: lockOwner{pid: 2}}, false},
+		{"stale, no owner file", held(lockStale+time.Second, 0), true},
+		{"stale, owner alive", held(lockStale+time.Second, 1), true},
+		{"missing lock is free, not ancient", lockState{age: 56 * 365 * 24 * time.Hour}, false},
+		{"mtime 0 is not ancient", lockState{dir: zero, age: 56 * 365 * 24 * time.Hour}, false},
+	}
+	for _, tt := range tests {
+		if got := reapReason(tt.st, alive) != ""; got != tt.reap {
+			t.Errorf("%s: reap %v", tt.name, got)
+		}
+	}
+	if _, ok := readLock(filepath.Join(dir, "missing"), time.Now()); ok {
+		t.Error("a missing lock must read as not held")
+	}
+}
+
+// staleLock makes a lock untouched for 10 minutes, with an optional owner line.
+func staleLock(t *testing.T, path, owner string) {
+	t.Helper()
+	if err := os.Mkdir(path, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	old := time.Now().Add(-10 * time.Minute)
+	if owner != "" {
+		os.WriteFile(path+".owner", []byte(owner), 0o644)
+		os.Chtimes(path+".owner", old, old)
+	}
+	os.Chtimes(path, old, old)
+}
+
+func deadPid(t *testing.T) int {
+	t.Helper()
+	p := exec.Command("true")
+	if err := p.Run(); err != nil {
+		t.Fatal(err)
+	}
+	return p.Process.Pid
+}
+
+func TestReapLeavesAFreshLock(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "frame.lock")
+	staleLock(t, path, "")
+	judged, _ := readLock(path, time.Now())
+	if reapReason(judged, pidAlive) == "" {
+		t.Fatal("setup: lock should be stale")
+	}
+	// meanwhile the stale lock goes and the next holder takes a fresh one
+	os.Remove(path)
+	os.Mkdir(path, 0o755)
+	if freeLock(path, judged) {
+		t.Error("freed a fresh lock judged stale a moment earlier")
+	}
+	if st, ok := readLock(path, time.Now()); !ok || st.age > time.Minute {
+		t.Errorf("fresh lock gone or changed: %v %v", ok, st.age)
+	}
+	// the same with an owner file: the new holder's line must survive
+	os.Remove(path)
+	staleLock(t, path, "gone|"+strconv.Itoa(deadPid(t))+"|1|shot\n")
+	judged, _ = readLock(path, time.Now())
+	os.Remove(path)
+	os.Mkdir(path, 0o755)
+	os.WriteFile(path+".owner", []byte("next|1|1|tap\n"), 0o644)
+	if freeLock(path, judged) {
+		t.Error("freed a lock that changed hands")
+	}
+	if b, _ := os.ReadFile(path + ".owner"); string(b) != "next|1|1|tap\n" {
+		t.Errorf("owner file now %q", b)
+	}
+	if _, err := os.Stat(path + ".reap"); !os.IsNotExist(err) {
+		t.Error("reaper turn dir left behind")
+	}
+}
+
+func TestReapersFreeADeadLockOnce(t *testing.T) {
+	for _, owner := range []string{"gone|" + strconv.Itoa(deadPid(t)) + "|1|shot\n", ""} {
+		path := filepath.Join(t.TempDir(), "frame.lock")
+		staleLock(t, path, owner)
+		judged, _ := readLock(path, time.Now())
+		var freed atomic.Int32
+		var wg sync.WaitGroup
+		start := make(chan struct{})
+		for i := 0; i < 16; i++ {
+			wg.Add(1)
+			go func() {
+				defer wg.Done()
+				<-start
+				if freeLock(path, judged) {
+					freed.Add(1)
+					os.Mkdir(path, 0o755) // the winner re-takes it at once
+				}
+			}()
+		}
+		close(start)
+		wg.Wait()
+		if freed.Load() != 1 {
+			t.Errorf("owner %q: freed %d times", owner, freed.Load())
+		}
+		if _, err := os.Stat(path); err != nil {
+			t.Errorf("owner %q: a reaper removed the lock the winner re-took", owner)
+		}
+	}
+}
+
+func TestLockNoOverlap(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "frame.lock")
+	t.Setenv("FR_LOCK", path)
+	old := lockRetry
+	lockRetry = 2 * time.Millisecond
+	t.Cleanup(func() { lockRetry = old })
+	staleLock(t, path, "gone|"+strconv.Itoa(deadPid(t))+"|1|shot\n") // freed exactly once
+
+	var inside, overlaps, turns atomic.Int32
+	var wg sync.WaitGroup
+	errs := make([]bytes.Buffer, 8)
+	for i := range errs {
+		wg.Add(1)
+		go func(stderr *bytes.Buffer) {
+			defer wg.Done()
+			for j := 0; j < 5; j++ {
+				e := &env{stderr: stderr}
+				release, err := e.lock(context.Background(), "test")
+				if err != nil {
+					t.Error(err)
+					return
+				}
+				if inside.Add(1) > 1 {
+					overlaps.Add(1)
+				}
+				turns.Add(1)
+				time.Sleep(time.Millisecond)
+				inside.Add(-1)
+				release()
+			}
+		}(&errs[i])
+	}
+	wg.Wait()
+	freed := 0
+	for i := range errs {
+		freed += strings.Count(errs[i].String(), "freed the device lock")
+	}
+	if overlaps.Load() != 0 || turns.Load() != 40 || freed != 1 {
+		t.Errorf("overlaps %d, turns %d, dead lock freed %d times", overlaps.Load(), turns.Load(), freed)
+	}
+	if _, err := os.Stat(path); !os.IsNotExist(err) {
+		t.Error("lock left behind")
+	}
+}
+
+func TestLockWhat(t *testing.T) {
+	for _, tt := range []struct {
+		cmd  string
+		args []string
+		want string
+	}{
+		{"shot", nil, "shot"},
+		{"install", []string{"../../examples/06-pomodoro", "--launch"}, "install 06-pomodoro --launch"},
+		{"sh", []string{"ls /sdcard | head"}, "sh ls /sdcard   head"},
+		{"text", []string{"hunter2"}, "text"},
+		{"tap", []string{strings.Repeat("x", 80)}, "tap " + strings.Repeat("x", 55) + "…"},
+	} {
+		if got := lockWhat(tt.cmd, tt.args); got != tt.want {
+			t.Errorf("lockWhat(%q, %q) = %q", tt.cmd, tt.args, got)
+		}
+	}
+}
+
+func TestLockOwnerFile(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "frame.lock")
+	t.Setenv("FR_LOCK", path)
+	t.Setenv("FRAME_OWNER", "tester")
+	var errOut bytes.Buffer
+	e := &env{stderr: &errOut}
+
+	// a lock left by a process that is gone is freed at once
+	dead := exec.Command("true")
+	if err := dead.Run(); err != nil {
+		t.Fatal(err)
+	}
+	os.Mkdir(path, 0o755)
+	os.WriteFile(path+".owner", []byte("gone|"+strconv.Itoa(dead.Process.Pid)+"|1|shot\n"), 0o644)
+	release, err := e.lock(context.Background(), "shot")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(errOut.String(), "holder is gone") {
+		t.Errorf("stderr: %q", errOut.String())
+	}
+	b, _ := os.ReadFile(path + ".owner")
+	o, ok := parseOwner(string(b))
+	if !ok || o.name != "tester" || o.pid != os.Getpid() || o.what != "shot" || time.Since(o.since) > time.Minute {
+		t.Errorf("owner file %q", b)
+	}
+	if entries, _ := os.ReadDir(path); len(entries) != 0 {
+		t.Errorf("nothing may go inside the lock dir: %v", entries)
+	}
+
+	// the heartbeat touches both, and only while they are ours
+	old := time.Now().Add(-time.Minute)
+	os.Chtimes(path, old, old)
+	touchLock(path, time.Now())
+	if st, _ := os.Stat(path); time.Since(st.ModTime()) > 10*time.Second {
+		t.Error("heartbeat did not touch the lock")
+	}
+	release()
+	release()
+	if _, err := os.Stat(path); !os.IsNotExist(err) {
+		t.Error("lock not released")
+	}
+	if _, err := os.Stat(path + ".owner"); !os.IsNotExist(err) {
+		t.Error("owner file not removed")
+	}
+	touchLock(path, time.Now())
+	if _, err := os.Stat(path); !os.IsNotExist(err) {
+		t.Error("heartbeat must never create the lock")
+	}
+
+	// a leftover owner file older than the lock says nothing about its holder
+	os.WriteFile(path+".owner", []byte("gone|"+strconv.Itoa(dead.Process.Pid)+"|1|shot\n"), 0o644)
+	os.Chtimes(path+".owner", old, old)
+	os.Mkdir(path, 0o755)
+	if st, ok := readLock(path, time.Now()); !ok || st.hasOwner {
+		t.Errorf("leftover owner file taken for the holder: %+v", st)
+	}
+	if e.reap(path) {
+		t.Error("a bare mkdir holder's lock was freed")
+	}
+
+	// release leaves a lock that someone else took meanwhile
+	os.Remove(path)
+	os.Remove(path + ".owner")
+	release, err = e.lock(context.Background(), "tap")
+	if err != nil {
+		t.Fatal(err)
+	}
+	os.WriteFile(path+".owner", []byte("other|1|1|shot\n"), 0o644)
+	release()
+	if _, err := os.Stat(path); err != nil {
+		t.Error("released someone else's lock")
 	}
 }

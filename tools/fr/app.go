@@ -64,7 +64,7 @@ func cmdRun(ctx context.Context, e *env, args []string) error {
 		return err
 	}
 
-	unlock, err := e.lock(ctx) // only around install and launch, not the build or the logs
+	unlock, err := e.lock(ctx, "run "+pkg) // only around install and launch, not the build or the logs
 	if err != nil {
 		return err
 	}
