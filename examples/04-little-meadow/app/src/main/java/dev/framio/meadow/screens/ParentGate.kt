@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -49,7 +50,7 @@ import kotlin.random.Random
  * a question written in words that a pre-reader can't answer. Children who tap it get nothing.
  */
 @Composable
-fun ParentGateButton(onOpen: () -> Unit, modifier: Modifier = Modifier, light: Boolean = false) {
+fun ParentGateButton(onOpen: () -> Unit, modifier: Modifier = Modifier, light: Boolean = false, size: Dp = 64.dp) {
     val hold = remember { Animatable(0f) }
     val co = rememberCoroutineScope()
     var job by remember { mutableStateOf<Job?>(null) }
@@ -57,7 +58,7 @@ fun ParentGateButton(onOpen: () -> Unit, modifier: Modifier = Modifier, light: B
     val ink = if (light) Palette.moon else Palette.ink
     Box(
         modifier
-            .size(64.dp)
+            .size(size)
             .clip(CircleShape)
             .background(ink.copy(alpha = 0.08f))
             .drawBehind {

@@ -15,7 +15,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 /** Icons drawn with thick rounded strokes, like the rest of the meadow. No text needed to read them. */
-enum class Icon { Back, Home, Replay, Speaker, Play, Pause, Check, Star, Lock, Gear, Close, Next, Prev, Mail, Moon, Sun, Eraser, Brush, Trash, Heart, Music, Book, Plus, Minus }
+enum class Icon { Muted, Back, Home, Replay, Speaker, Play, Pause, Check, Star, Lock, Gear, Close, Next, Prev, Mail, Moon, Sun, Eraser, Brush, Trash, Heart, Music, Book, Plus, Minus }
 
 /** Draws [icon] centred in the current DrawScope, using the middle 50 %. */
 fun DrawScope.drawIcon(icon: Icon, color: Color) {
@@ -47,6 +47,11 @@ fun DrawScope.drawIcon(icon: Icon, color: Color) {
             drawPath(path(0.1f to 0.38f, 0.28f to 0.38f, 0.5f to 0.18f, 0.5f to 0.82f, 0.28f to 0.62f, 0.1f to 0.62f, close = true), color, style = Fill)
             drawArc(color, -50f, 100f, false, p(0.4f, 0.3f), Size(0.4f * s, 0.4f * s), style = stroke)
             drawArc(color, -50f, 100f, false, p(0.35f, 0.1f), Size(0.7f * s, 0.8f * s), style = stroke)
+        }
+        Icon.Muted -> {
+            drawPath(path(0.06f to 0.38f, 0.24f to 0.38f, 0.46f to 0.18f, 0.46f to 0.82f, 0.24f to 0.62f, 0.06f to 0.62f, close = true), color, style = Fill)
+            drawLine(color, p(0.62f, 0.36f), p(0.9f, 0.64f), w, StrokeCap.Round)
+            drawLine(color, p(0.9f, 0.36f), p(0.62f, 0.64f), w, StrokeCap.Round)
         }
         Icon.Play -> drawPath(path(0.28f to 0.14f, 0.85f to 0.5f, 0.28f to 0.86f, close = true), color, style = Fill)
         Icon.Pause -> {

@@ -129,7 +129,7 @@ fun MeadowRoot(nav: Nav, resumed: () -> Boolean, onExit: () -> Unit) {
                 is Route.Play -> {
                     val p = Catalog.play(r.id)
                     val w = Catalog.worldOf(r.id)
-                    if (p != null && w != null) PlayScreen(p, w, onBack = nav::back) else LaunchedEffect(r) { nav.home() }
+                    if (p != null && w != null) PlayScreen(p, w, onBack = nav::back, onParent = { nav.go(Route.Parent) }) else LaunchedEffect(r) { nav.home() }
                 }
                 Route.Stickers -> StickerBook(onBack = nav::back)
                 Route.Mailbox -> Mailbox(onBack = nav::back, autoplay = openMessage, onAutoplayed = { openMessage = null })

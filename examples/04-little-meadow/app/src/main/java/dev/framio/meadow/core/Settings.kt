@@ -36,6 +36,8 @@ data class Settings(
     val reducedMotion: Boolean = false,
     /** Show what the friends say as a caption (for grown-ups and early readers). */
     val captions: Boolean = true,
+    /** Voice, sounds and music silenced from the play screen's mute button (captions keep showing). */
+    val muted: Boolean = false,
     /** Activity ids the grown-up switched off. */
     val hidden: Set<String> = emptySet(),
     /** Step ids of the picture routines (see the habits world). */
@@ -61,6 +63,7 @@ data class Settings(
         .put("knockToWake", knockToWake)
         .put("reducedMotion", reducedMotion)
         .put("captions", captions)
+        .put("muted", muted)
         .put("hidden", JSONArray(hidden.sorted()))
         .put("morningRoutine", JSONArray(morningRoutine))
         .put("eveningRoutine", JSONArray(eveningRoutine))
@@ -85,6 +88,7 @@ data class Settings(
             knockToWake = j.optBoolean("knockToWake", d.knockToWake),
             reducedMotion = j.optBoolean("reducedMotion", d.reducedMotion),
             captions = j.optBoolean("captions", d.captions),
+            muted = j.optBoolean("muted", d.muted),
             hidden = j.optJSONArray("hidden")?.strings()?.toSet() ?: d.hidden,
             morningRoutine = j.optJSONArray("morningRoutine")?.strings()?.take(10) ?: d.morningRoutine,
             eveningRoutine = j.optJSONArray("eveningRoutine")?.strings()?.take(10) ?: d.eveningRoutine,

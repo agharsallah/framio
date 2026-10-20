@@ -61,3 +61,22 @@ with other sessions: device commands go through `tools/frame.sh` (lock `/tmp/fra
 | every world screen at age 5 (one hold) | all 31 activities present with their 3D icons | |
 | home idle / swipe with everything merged (release) | 7 ms / 19 ms median per frame | unchanged by the merges |
 | `dev.framio.tile.*` metadata (order 50) → HOME, swipe the shelf | "Little Meadow · For little ones" tile with Pip's icon | between Mawaqit (40) and Pomodoro (60) |
+
+## Captions ("Show what's said")
+
+| Command | Output | Note |
+|---|---|---|
+| `uv run make_voice.py` (manifest now carries `"t"`) | `en: 764 clips (0 new)`, `de: 764 clips (0 new)`, 764/764 with text | unchanged clips get their text from the TSV without re-recording (the hash already covers the text) |
+| `./gradlew testDebugUnitTest assembleRelease` + `api23_check.py` | 209 tests, 0 failures · 500 platform references OK | new: `CaptionsTest` (manifest, joining, names, word timing, pages), settings round trip + default on |
+| `frame.sh shot … --es play <id>` for all 31 activities, home, a world, story pages, rest, wiggle, call, stickers, mailbox, parent | caption in the top bar between back and "say it again" never reaches content (content starts at 112 dp, pill ends ≤ 104 dp) | home: bubble beside Pip under the cards (cards end at 646 dp); calls: bubble beside the caller; night light: none; bedtime: dim night pill |
+| first look at home | the bubble's tail pointed at Pip's feet | tail moved to the side, toward the face |
+| a call on home | bubble at 168 dp covered the card titles | bottom-aligned beside the caller (40 dp), top bar where there is one |
+| parent screen Off, then dashboard `PUT /api/settings {"captions":true}` | greeting without, then call with caption | applies immediately |
+| test message via `POST /api/family/voice?from=Grandma` + `{"type":"message"}` | "A voice message from Grandma" beside Bo in the mailbox | test item deleted again |
+| `gfxinfo framestats`, home idle (release) | 7.5 ms median, 0 janky | captions hidden or static cost nothing extra |
+| count, speaker tapped twice, captions on/off (60 Hz fades, 3-layer shadow) | 24 % vs 2 % janky frames, p95 57 vs 15 ms | every fade frame is a full-screen redraw on top of the talking friend |
+| same, fades stepped at 30 Hz, then 20 Hz, one shadow layer | 11–15 %, then 5–8 % janky, p95 17–18 ms | |
+| same, pill in a `graphicsLayer` for alpha | 15–19 % janky | the offscreen alpha pass is slower on the Mali-400: alpha stays on each shape |
+| home greeting only, on/off ×2 | median 9.3 vs 8.6 ms, p90 24–26 vs 16–17 ms; static caption frames 7–9 ms | text drawn once into two bitmaps per page instead of 2–3 text draws per frame (record 10 → ≤ 6 ms); the extra cost is ~10 extra redraws per line (fade in, words, fade out) |
+
+| final release: home idle · greeting on/off ×2 | 7.2 ms median, 0 janky · median 8.7–9.5 vs 8.2–8.7 ms, p95 27–38 vs 18–20 ms | `./gradlew --stop` after |

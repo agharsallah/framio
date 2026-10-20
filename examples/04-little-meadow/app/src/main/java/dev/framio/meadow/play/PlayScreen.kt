@@ -45,6 +45,9 @@ import dev.framio.meadow.ui.Mood
 import dev.framio.meadow.ui.Palette
 import dev.framio.meadow.ui.ProgressDots
 import dev.framio.meadow.ui.RoundButton
+import dev.framio.meadow.ui.lighten
+import dev.framio.meadow.screens.ParentGateButton
+import androidx.compose.runtime.collectAsState
 import dev.framio.meadow.ui.SoftCard
 import dev.framio.meadow.ui.Sprite
 import dev.framio.meadow.ui.Type
@@ -213,7 +216,7 @@ internal class PlayHost(
 
 /** An activity on screen: backdrop, top bar, content, the friend, and the ending. */
 @Composable
-fun PlayScreen(play: Play, world: World, onBack: () -> Unit) {
+fun PlayScreen(play: Play, world: World, onBack: () -> Unit, onParent: () -> Unit) {
     val app = LocalApp.current
     var run by remember { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
@@ -263,6 +266,19 @@ fun PlayScreen(play: Play, world: World, onBack: () -> Unit) {
                 Spacer(Modifier.weight(1f))
                 if (play.showDots && host.dotsTotal > 0) ProgressDots(host.dotsDone, host.dotsTotal, color = world.color)
                 Spacer(Modifier.weight(1f))
+                // grown-up menu (hold for 2 s, then the word question) and mute, next to "say it again"
+                ParentGateButton(onOpen = {
+                    app.voice.stop()
+                    onParent()
+                }, size = 60.dp)
+                Spacer(Modifier.width(12.dp))
+                val muted = app.settings.flow.collectAsState().value.muted
+                RoundButton(
+                    if (muted) Icon.Muted else Icon.Music, size = 64.dp, sound = null,
+                    color = if (muted) Palette.rose.lighten(0.35f) else Palette.cream,
+                    onTap = { app.settings.update { it.copy(muted = !it.muted) } },
+                )
+                Spacer(Modifier.width(12.dp))
                 RoundButton(Icon.Speaker, size = 80.dp, sound = null, hint = host.hint && !host.finished, onTap = host::repeatPrompt)
             }
             Box(

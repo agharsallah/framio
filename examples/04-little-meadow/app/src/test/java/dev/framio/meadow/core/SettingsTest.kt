@@ -11,7 +11,7 @@ class SettingsTest {
     @Test fun roundTripKeepsEveryField() {
         val s = Settings(childName = "Mia", age = 4, lang = Lang.DE, volume = 30, music = false, brightness = 50,
             dailyLimitMin = 30, breakEveryMin = 10, bedtime = "20:00", wakeUp = "07:15", bedtimeMode = false,
-            nightLightMin = 15, backlightOffAtNight = false, knockToWake = false, reducedMotion = true, captions = false,
+            nightLightMin = 15, backlightOffAtNight = false, knockToWake = false, reducedMotion = true, muted = true, captions = false,
             hidden = setOf("paint", "echo"), morningRoutine = listOf("wake", "brush"), eveningRoutine = listOf("bath"), pin = "1234")
         val back = Settings.fromJson(s.toJson().put("pin", s.pin))
         assertEquals(s, back)

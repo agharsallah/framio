@@ -1,16 +1,14 @@
 package dev.framio.meadow.ui
 
 import android.os.SystemClock
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,20 +18,27 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.framio.meadow.LocalApp
@@ -42,10 +47,8 @@ import dev.framio.meadow.audio.CaptionKind
 import dev.framio.meadow.audio.CaptionText
 import dev.framio.meadow.core.Friend
 import dev.framio.meadow.core.Pose
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlinx.coroutines.delay
 
 /**
  * Where a screen wants its captions: a free band of the screen that never holds anything to tap
@@ -66,7 +69,7 @@ data class CaptionSpot(
 ) {
     companion object {
         /** In the activity's top bar, between the back and "say it again" buttons; also the world screens. */
-        val TopBar = CaptionSpot(top = true, start = 124.dp, end = 124.dp, inset = 56.dp, align = 0, face = true)
+        val TopBar = CaptionSpot(top = true, start = 262.dp, end = 262.dp, inset = 56.dp, align = 0, face = true)
         /** Top right, beside a screen title (sticker book). */
         val TopEnd = CaptionSpot(top = true, start = 600.dp, end = 32.dp, inset = 64.dp, align = 1, face = true)
         /** Under centred content (rest and wiggle-break screens). */
@@ -104,33 +107,38 @@ fun CaptionOverlay(spot: CaptionSpot?, friend: Friend?, night: Boolean) {
     var shown by remember { mutableStateOf<Caption?>(null) }
     var place by remember { mutableStateOf(spot) }
     var who by remember { mutableStateOf(friend) }
-    val show = remember { Animatable(0f) }
+    /** 0 hidden .. 1 shown: alpha and a short slide. */
+    val show = remember { mutableFloatStateOf(0f) }
+    // the word being said: [spoken] characters are said (through the current word), [word] starts it
+    var spoken by remember { mutableIntStateOf(0) }
+    var word by remember { mutableIntStateOf(-1) }
 
     LaunchedEffect(live, on, spot) {
         val c = live
-        if (place != spot && show.value > 0f) show.animateTo(0f, tween(150)) // moving to another spot: out, then in there
+        if (place != spot && show.floatValue > 0f) show.stepTo(0f, 150) // moving to another spot: out, then in there
         if (!on || c == null) {
-            show.animateTo(0f, tween(300))
+            show.stepTo(0f, 300)
             return@LaunchedEffect
         }
         val left = if (c.done) CaptionText.lingerMs(c.text) - (SystemClock.uptimeMillis() - c.clipStartMs) else Long.MAX_VALUE
         if (left <= 0) {
-            show.animateTo(0f, tween(300))
+            show.stepTo(0f, 300)
             return@LaunchedEffect
         }
         place = spot
         who = friend
+        if (shown?.seq != c.seq) { // a new line starts unsaid, never on the old line's page
+            spoken = 0
+            word = -1
+        }
         shown = c
-        show.animateTo(1f, tween(if (reduced) 500 else 360, easing = FastOutSlowInEasing))
+        show.stepTo(1f, if (reduced) 450 else 320)
         if (c.done) {
             delay(left)
-            show.animateTo(0f, tween(450))
+            show.stepTo(0f, 400)
         }
     }
 
-    // the word being said: [spoken] characters are said (through the current word), [word] starts it
-    var spoken by remember { mutableIntStateOf(0) }
-    var word by remember { mutableIntStateOf(-1) }
     LaunchedEffect(shown?.seq, shown?.clip, shown?.clipStartMs) {
         val c = shown ?: return@LaunchedEffect
         if (c.done) {
@@ -154,7 +162,7 @@ fun CaptionOverlay(spot: CaptionSpot?, friend: Friend?, night: Boolean) {
     val density = LocalDensity.current
     val measurer = rememberTextMeasurer(cacheSize = 6)
     val faceShown = s.face && (who != null || c.kind == CaptionKind.Message)
-    val config = androidx.compose.ui.platform.LocalConfiguration.current
+    val config = LocalConfiguration.current
     val bandPx = with(density) { (config.screenWidthDp.dp - s.start - s.end).coerceAtMost(MAX_PILL).toPx() }
     val textMaxPx = (bandPx - with(density) { (PAD_X * 2 + if (faceShown) FACE + 10.dp else 0.dp).toPx() }).roundToInt()
     // about two lines' worth: Nunito ExtraBold averages a little over half an em per character
@@ -174,56 +182,67 @@ fun CaptionOverlay(spot: CaptionSpot?, friend: Friend?, night: Boolean) {
     val faceRoom = if (faceShown) facePx + with(density) { 10.dp.toPx() } else 0f
     val targetW = layout.size.width + 2 * padX + faceRoom
     val targetH = maxOf(layout.size.height + 2 * padY, if (faceShown) facePx + 2 * with(density) { 6.dp.toPx() } else 0f)
-    val pillW = remember { Animatable(targetW) }
-    val pillH = remember { Animatable(targetH) }
-    val textIn = remember { Animatable(1f) }
-    LaunchedEffect(targetW, targetH) {
-        if (show.value < 0.05f) {
-            pillW.snapTo(targetW)
-            pillH.snapTo(targetH)
-        } else {
-            coroutineScope {
-                launch { pillW.animateTo(targetW, tween(260, easing = FastOutSlowInEasing)) }
-                launch { pillH.animateTo(targetH, tween(260, easing = FastOutSlowInEasing)) }
-            }
-        }
-    }
+    // a new line in a pill already showing: the pill eases to its new size while the words fade in
+    val box = remember { floatArrayOf(targetW, targetH, targetW, targetH) } // from w, h → to w, h
+    val morph = remember { mutableFloatStateOf(1f) }
     LaunchedEffect(layout) {
-        if (show.value < 0.05f) textIn.snapTo(1f) else {
-            textIn.snapTo(0f)
-            textIn.animateTo(1f, tween(240))
+        val m = morph.floatValue
+        box[0] += (box[2] - box[0]) * m // start from wherever an interrupted change got to
+        box[1] += (box[3] - box[1]) * m
+        box[2] = targetW
+        box[3] = targetH
+        if (show.floatValue < 0.05f) {
+            box[0] = targetW
+            box[1] = targetH
+            morph.floatValue = 1f
+            return@LaunchedEffect
         }
+        morph.floatValue = 0f
+        morph.stepTo(1f, 280)
     }
 
     val faceBmp = who?.let { rememberSprite(it.sprite(Pose.Happy)) }
     val colors = if (night) NightColors else DayColors
     val tailPath = remember { Path() }
     val pageStart = page.first
+    val images = remember(layout, colors) { renderPage(layout, colors, density) }
 
+    // Drawn in a band-sized node with the alpha on each shape: a graphicsLayer alpha would render the
+    // band offscreen on every frame of a fade, which measured slower on the Mali-400 (LOG.md).
+    val slack = 32.dp
     Spacer(
         Modifier
-            .fillMaxSize()
+            .layout { m, cs ->
+                val left = s.start.roundToPx() - slack.roundToPx()
+                val right = cs.maxWidth - s.end.roundToPx() + slack.roundToPx()
+                val nh = BAND_H.roundToPx()
+                val top = if (s.top) s.inset.roundToPx() - nh / 2 else cs.maxHeight - s.inset.roundToPx() - nh + LIP.roundToPx()
+                val p = m.measure(Constraints.fixed(right - left, nh))
+                layout(cs.maxWidth, cs.maxHeight) { p.place(left, top) }
+            }
             .drawBehind {
-                val a = show.value
+                val a = show.floatValue
                 if (a <= 0.01f) return@drawBehind
-                val w = pillW.value
-                val h = pillH.value
-                val left = s.start.toPx()
-                val right = size.width - s.end.toPx()
+                val m = morph.floatValue
+                val w = box[0] + (box[2] - box[0]) * m
+                val h = box[1] + (box[3] - box[1]) * m
+                val left = slack.toPx()
+                val right = size.width - slack.toPx()
                 val x = when (s.align) {
                     -1 -> left
                     1 -> right - w
                     else -> (left + right - w) / 2
                 }
-                val slide = if (reduced) 0f else (1f - a) * 10.dp.toPx() * (if (s.top) -1f else 1f)
-                val y = (if (s.top) s.inset.toPx() - h / 2 else size.height - s.inset.toPx() - h) + slide
+                val slide = if (reduced) 0f else (1f - a) * 8.dp.toPx() * (if (s.top) -1f else 1f)
+                val y = (if (s.top) (size.height - h) / 2 else size.height - LIP.toPx() - h) + slide
                 val r = minOf(h / 2, 30.dp.toPx())
                 val corner = CornerRadius(r)
 
-                // a soft drawn shadow (three faint layers): no blur, no layer, cheap at any size
-                if (colors.shadow.alpha > 0f) for (i in 1..3) {
-                    val g = i * 2.dp.toPx()
-                    drawRoundRect(colors.shadow, Offset(x - g / 2, y + g * 0.9f), Size(w + g, h + g / 2), CornerRadius(r + g / 2), alpha = a * (0.55f - i * 0.12f))
+                // one soft clay lip under the pill instead of a blurred shadow: every extra layer is
+                // fill rate the Mali-400 pays on each frame
+                if (colors.shadow.alpha > 0f) {
+                    val g = 3.dp.toPx()
+                    drawRoundRect(colors.shadow, Offset(x - g / 3, y + g), Size(w + g * 2 / 3, h + g / 2), CornerRadius(r + g / 3), alpha = a)
                 }
                 if (s.tail != 0) drawTail(tailPath, s.tail, x, y, w, h, colors.paper, a)
                 drawRoundRect(colors.paper, Offset(x, y), Size(w, h), corner, alpha = a * colors.paperAlpha)
@@ -244,13 +263,17 @@ fun CaptionOverlay(spot: CaptionSpot?, friend: Friend?, night: Boolean) {
 
                 val tx = x + if (faceShown) padX * 0.55f + faceRoom else padX
                 val ty = y + (h - layout.size.height) / 2
-                val ta = a * textIn.value
                 translate(tx, ty) {
-                    drawWords(layout, pageStart, word, spoken, colors, ta)
+                    drawWords(layout, images, pageStart, word, spoken, colors, a * m)
                 }
             },
     )
 }
+
+/** Height of the layer the pill draws in: two lines and padding, with room to grow. */
+private val BAND_H = 128.dp
+/** Room under a bottom pill for its clay lip. */
+private val LIP = 8.dp
 
 private class CaptionColors(
     val paper: Color, val paperAlpha: Float, val rim: Color, val shadow: Color,
@@ -258,7 +281,7 @@ private class CaptionColors(
 )
 
 private val DayColors = CaptionColors(
-    paper = Palette.cream, paperAlpha = 0.97f, rim = Color(0x14000000), shadow = Color(0x2E3E3346),
+    paper = Palette.cream, paperAlpha = 1f, rim = Color(0x14000000), shadow = Color(0x2E3E3346),
     ink = Palette.ink, upcoming = Palette.inkSoft.copy(alpha = 0.78f), marker = Palette.honey.copy(alpha = 0.34f), faceAlpha = 1f,
 )
 
@@ -268,8 +291,28 @@ private val NightColors = CaptionColors(
     ink = Palette.moon.copy(alpha = 0.8f), upcoming = Palette.moon.copy(alpha = 0.42f), marker = Palette.lavender.copy(alpha = 0.3f), faceAlpha = 0.7f,
 )
 
+/**
+ * Moves this value to [target] in steps 20 times a second, eased. A third of the frames of a 60 Hz
+ * animation: this firmware redraws the whole screen for each one, and on top of a talking friend a
+ * 60 Hz fade fell behind on the Mali-400 (LOG.md). For a soft fade the steps don't show.
+ */
+private suspend fun androidx.compose.runtime.MutableFloatState.stepTo(target: Float, ms: Int) {
+    val start = floatValue
+    if (start == target) return
+    val t0 = SystemClock.uptimeMillis()
+    val total = (ms * kotlin.math.abs(target - start)).coerceAtLeast(1f)
+    while (true) {
+        val f = ((SystemClock.uptimeMillis() - t0) / total).coerceAtMost(1f)
+        floatValue = start + (target - start) * FastOutSlowInEasing.transform(f)
+        if (f >= 1f) return
+        delay(STEP_MS)
+    }
+}
+
+private const val STEP_MS = 50L
+
 /** The text with the said part in ink, the rest softer, and a soft marker behind the word being said. */
-private fun DrawScope.drawWords(layout: TextLayoutResult, pageStart: Int, word: Int, spoken: Int, colors: CaptionColors, alpha: Float) {
+private fun DrawScope.drawWords(layout: TextLayoutResult, images: PageImages, pageStart: Int, word: Int, spoken: Int, colors: CaptionColors, alpha: Float) {
     val len = layout.layoutInput.text.length
     val said = (spoken - pageStart).coerceIn(0, len)
     val w = word - pageStart
@@ -284,24 +327,38 @@ private fun DrawScope.drawWords(layout: TextLayoutResult, pageStart: Int, word: 
         drawRoundRect(colors.marker, Offset(a.left - px, top + 2.dp.toPx()), Size(right - a.left + 2 * px, bottom - top - 2.dp.toPx()), CornerRadius(10.dp.toPx()), alpha = alpha)
     }
     if (said >= len) {
-        drawText(layout, color = colors.ink, alpha = alpha)
+        drawImage(images.ink, alpha = alpha)
         return
     }
-    drawText(layout, color = colors.upcoming, alpha = alpha)
+    drawImage(images.soft, alpha = alpha)
     if (said <= 0) return
-    // the said part again in ink, clipped line by line (rectangular clips are cheap on the Mali)
+    // the said part in ink on top, clipped line by line (rectangular clips are cheap on the Mali)
     for (line in 0 until layout.lineCount) {
         val start = layout.getLineStart(line)
         if (said <= start) break
         val end = layout.getLineEnd(line)
-        val right = if (said >= end) size.width + layout.size.width else layout.getHorizontalPosition(said, usePrimaryDirection = true)
-        clipRect(left = -4f, top = layout.getLineTop(line), right = right, bottom = layout.getLineBottom(line)) {
-            drawText(layout, color = colors.ink, alpha = alpha)
+        val right = if (said >= end) size.width else layout.getHorizontalPosition(said, usePrimaryDirection = true)
+        clipRect(left = 0f, top = layout.getLineTop(line), right = right, bottom = layout.getLineBottom(line)) {
+            drawImage(images.ink, alpha = alpha)
         }
     }
 }
 
-private fun DrawScope.drawFace(bmp: androidx.compose.ui.graphics.ImageBitmap, px: Float, alpha: Float) {
+/** A page's words in ink and in the softer "still to say" colour, each drawn once into a bitmap. */
+private class PageImages(val ink: ImageBitmap, val soft: ImageBitmap)
+
+// Measured on the frame: drawing the text itself two or three times per frame (and recording it for
+// every word) cost 5–10 ms a frame on the A7; two cached images cost almost nothing.
+private fun renderPage(layout: TextLayoutResult, colors: CaptionColors, density: Density): PageImages {
+    val w = layout.size.width.coerceAtLeast(1)
+    val h = layout.size.height.coerceAtLeast(1)
+    fun one(color: Color) = ImageBitmap(w, h).also { img ->
+        CanvasDrawScope().draw(density, LayoutDirection.Ltr, Canvas(img), Size(w.toFloat(), h.toFloat())) { drawText(layout, color = color) }
+    }
+    return PageImages(one(colors.ink), one(colors.upcoming))
+}
+
+private fun DrawScope.drawFace(bmp: ImageBitmap, px: Float, alpha: Float) {
     drawImage(
         bmp,
         srcOffset = androidx.compose.ui.unit.IntOffset.Zero,

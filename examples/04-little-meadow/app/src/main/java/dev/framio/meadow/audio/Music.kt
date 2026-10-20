@@ -30,7 +30,12 @@ class Music(private val context: Context) {
     private var target = 0f
     @Volatile private var enabled = true
     @Volatile private var ducked = false
+    /** 0..1 on top of each track's level (0 = muted); fades to the new level. */
     @Volatile var master = 1f
+        set(value) {
+            field = value
+            handler.post { retarget() }
+        }
 
     fun play(track: Track?) = handler.post {
         if (track == current) return@post

@@ -59,6 +59,13 @@ class AppState(val context: Context) {
         }
         scope.launch { voice.speaking.collect { music.duck(it) } }
         scope.launch {
+            settings.flow.map { it.muted }.distinctUntilChanged().collect { muted ->
+                voice.volume = if (muted) 0f else 1f
+                sfx.volume = if (muted) 0f else 0.8f
+                music.master = if (muted) 0f else 1f
+            }
+        }
+        scope.launch {
             var age = settings.value.age
             settings.flow.collect {
                 if (it.age != age) {

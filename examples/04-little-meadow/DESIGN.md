@@ -9,6 +9,15 @@ Mali-400, 1 GB RAM, no TTS/mic/camera; see `docs/device-log.md`). Native Jetpack
   no shaking, no flashing, no confetti bursts, nothing loud. Celebrations are slow falling petals.
 - **Voice first.** Children can't read. Every instruction is spoken (`prompt`). On-screen words are for
   grown-ups and early readers only, never needed to play.
+- **Captions** show what is said (`Settings.captions`, on by default). `make_voice.py` writes each clip's
+  text into `manifest.json` (`"t"`); every `say(...)` becomes one `Voice.caption` (its clips joined into
+  one sentence, "@name" merged in, "@file:" as "A voice message from …") and `CaptionOverlay` (in
+  `MeadowRoot`, above everything, no pointer input) draws it in a band that never holds anything to tap:
+  the top bar between back and "say it again" in activities and worlds, a bubble from the corner friend
+  on home and mailbox, under the scene on the rest and wiggle screens, top right in the sticker book,
+  a dim night pill at bedtime. Words light up on an estimate from the clip length (per letter, with
+  pauses at punctuation); long lines turn page by sentence. `Play(captions = false)` opts an activity
+  out (the night light); an activity that draws into the top bar should do the same.
 - **No failure.** No timers, lives, scores or buzzers. A wrong answer gets `notQuite()` (soft sound,
   kind line, a small tilt); the second miss turns on a visual `hint` that pulses around the answer.
 - **Big, forgiving targets.** ≥ 150 dp for things to tap, ≥ 80 dp for buttons. Every drag also
@@ -41,9 +50,9 @@ dev.framio.meadow
   MeadowActivity.kt    the one activity: adb extras, knocks, brightness, backlight
   MeadowRoot.kt        navigation, gates (rest, wiggle break), the play clock, remote commands
   core/                Settings (+JSON), Progress (+Difficulty), Session (+SessionRules), Clock, Family, Commands, Friends
-  audio/               Voice (narration clips), Sfx (SoundPool + instruments), Music (looping tracks)
+  audio/               Voice (narration clips), Captions (text, joining, word timing, pages), Sfx (SoundPool + instruments), Music (looping tracks)
   hw/                  Knock (accelerometer), Device (volume, brightness, root backlight, screenshot)
-  ui/                  Theme (Palette, Type), Sprites, FriendView, Components, Icons, DragDrop, Celebrate, Backdrop
+  ui/                  Theme (Palette, Type), Sprites, FriendView, CaptionOverlay, Components, Icons, DragDrop, Celebrate, Backdrop
   play/                Play/World/PlayScope, PlayScreen (the host), Choices (ChoiceRow), Catalog, Stickers
   screens/             Home, World, gates, sticker book, mailbox, parent screen + gate
   worlds/<id>/         <Id>World.kt (the World and its Plays) + one file per activity
@@ -104,7 +113,7 @@ area is the full width × (800 − 112) dp. Keep the bottom-left ~230×230 dp fr
 - `Modifier.softShadow(corner, elevation)`: a cached blurred bitmap; use it, never `Modifier.shadow` or
   `clip(RoundedCornerShape)`, on anything on screen while things move. `rememberSlowClock()`: a ~12 Hz
   time for endless ambient motion (breathing, bobbing, twinkling) instead of `rememberInfiniteTransition`.
-- `Play(stillFriend = true)` for screens with a GL view.
+- `Play(stillFriend = true)` for screens with a GL view. `Play(captions = false)`: no captions (night light).
 - Sounds: `Sound.*` (tap, pop, good, sparkle, place, hmm, whoosh, pick, drum, shaker, clap, ding,
   splash, brush, yawn) and `app.sfx.note(Instrument.Marimba|Bell|Kalimba|MusicBox, midi)`.
 - Music: `Play(music = Track.Meadow|Studio|Night|Calm|null)`.
@@ -143,6 +152,8 @@ Keep colours from `objects.COLORS` for teaching colours. Objects 320×320 (`size
   `Canvas { }`, never in composition. No per-frame recomposition of big trees.
 - Few simultaneous infinite animations (≤ ~8 per screen). Sprites ≤ 512 px. No blur effects
   (RenderEffect is API 31). No `Modifier.shadow` on things that animate every frame.
+- Transitions that run on top of other motion (the caption's fade) step at 20 Hz instead of 60: each
+  frame is a full-screen redraw, and a 60 Hz fade on top of a talking friend fell behind (LOG.md).
 - Bitmaps count against the Java heap on Android 6: use `Sprites` (bounded cache), decode photos scaled.
 - API 23 only: `python3 -I tools/api23_check.py` after `assembleDebug` (Lint's NewApi doesn't fire here).
 

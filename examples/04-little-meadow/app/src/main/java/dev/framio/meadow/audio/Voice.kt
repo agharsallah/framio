@@ -37,7 +37,12 @@ class Voice(private val context: Context, private val familyDir: File) {
     private val manifests = HashMap<Lang, Map<String, Clip>>()
 
     @Volatile var lang: Lang = Lang.EN
+    /** 0..1; applies to the clip already playing too (the mute button). */
     @Volatile var volume: Float = 1f
+        set(value) {
+            field = value
+            handler.post { player?.setVolume(value, value) }
+        }
     /** The child's name as typed by a grown-up, for the caption of "@name" ("" = leave it out). */
     @Volatile var childName: () -> String = { "" }
     /** Who sent the family message at this path, for its caption; null = no caption. */
@@ -130,6 +135,11 @@ class Voice(private val context: Context, private val familyDir: File) {
             }
             mp.setVolume(volume, volume)
             mp.start()
+            // MediaPlayer sometimes never reports the end (seen after errors on this firmware's decoder):
+            // a clip still "playing" well after its length counts as finished, so the voice and its
+            // caption never hang
+            val length = (clip(id)?.ms ?: mp.duration).coerceAtLeast(500)
+            handler.postDelayed({ if (player === mp) { Log.w(TAG, "voice $id never finished"); release(); next() } }, length + 4000L)
             val part = partOf.getOrElse(index) { -1 }
             if (part >= 0) pending?.let { captionState.value = it.copy(clip = part, clipStartMs = SystemClock.uptimeMillis()) }
             return

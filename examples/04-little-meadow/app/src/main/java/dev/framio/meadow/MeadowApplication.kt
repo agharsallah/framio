@@ -9,6 +9,7 @@ class MeadowApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        dev.framio.meadow.core.Diagnostics.install(filesDir) // first: so a crash while starting is recorded too
         state = AppState(this)
     }
 }

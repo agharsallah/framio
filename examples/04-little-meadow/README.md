@@ -4,6 +4,9 @@ A calm, cheerful learning app for children aged 2 to 5, made for this frame. Fiv
 guide 31 activities in seven places, everything is spoken (English or German, no reading needed), and a
 grown-up can set it up and send messages from a phone on the same Wi-Fi.
 
+- **Captions:** what the friends say is written in a soft paper pill (top bar in activities, a speech
+  bubble on the home screen), each word lighting up as it is spoken. For grown-ups and early readers;
+  on by default, "Show what's said" on the parent screen and the dashboard switches it off.
 - **Calm by design:** muted pastels, slow eased motion, no flashing, no buzzers, no timers or scores.
   A wrong answer gets a kind word and, the second time, a soft pulse around the right one.
 - **Adapts:** every activity starts from the child's age and gets easier or harder with how it goes.
@@ -52,12 +55,14 @@ adb shell am start -n dev.framio.meadow/.MeadowActivity
 Release builds only for real use: Compose is several times smoother minified on this CPU.
 
 **For grown-ups on the frame:** hold the gear (top right) for two seconds, then tap the numbers written
-in words. The parent screen shows the dashboard address and PIN, and the most-used settings.
+in words. The parent screen shows the dashboard address and PIN, and the most-used settings (age,
+language, volume, brightness, play time, wiggle break, bedtime mode, music, show what's said, calmer motion).
 
 **From a phone:** open `http://<frame-ip>:8077` (shown on the parent screen) and sign in with the PIN.
 Now (what's playing, a live screenshot, lock, +15 min, wiggle break, night light, send a star, "Dinner time!"
 and other calls a friend says out loud), Progress, Family (voice messages, photos, the child's name
-recorded in your voice), Gallery (paintings), Settings, Activities on/off, Routines.
+recorded in your voice), Gallery (paintings), Settings (including "Show what's said" captions), Activities
+on/off, Routines.
 
 ## Driving it over adb
 
