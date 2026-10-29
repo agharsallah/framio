@@ -1,3 +1,44 @@
+# macOS
 .DS_Store
+
+# Claude Code
 .claude/worktrees/
+
+# Android / Gradle
+.gradle/
+build/
+bin/
+local.properties
 captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+output-metadata.json
+hs_err_pid*
+.kotlin/
+
+# Signing
+*.jks
+*.keystore
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.swp
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Env / secrets
+.env
+.env.*
