@@ -1,0 +1,21 @@
+# Binaries: never diffed or normalised
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.mp3 binary
+*.m4a binary
+*.mp4 binary
+*.ttf binary
+*.otf binary
+*.jar binary
+*.apk binary
+
+# GitHub language stats (linguist). The apps are the project, but linguist files anything under examples/ as
+# documentation and leaves it out, so the repo showed up as Go (tools/fr) and Shell. Count them as code.
+examples/** linguist-documentation=false
+# The Gradle wrapper scripts are generated, copied into every app: not our Shell
+**/gradlew linguist-generated
+**/gradlew.bat linguist-generated
+# Screen captures and recordings from the frame
+captures/** linguist-documentation
