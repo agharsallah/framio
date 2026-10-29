@@ -122,7 +122,7 @@ class LauncherActivity : ComponentActivity() {
                 countdown = countdown,
                 onPhotos = { Apps.openPhotos(this@LauncherActivity) },
                 onOpen = { Apps.open(this@LauncherActivity, it) },
-                onAppMenu = { sheet = AppEntry(it.component, it.title, isSystem(it.pkg)) },
+                onAppMenu = { sheet = AppEntry(it.component, it.title, isSystem(it.pkg), it.subtitle, it.accent) },
                 onControls = {
                     tab = Tab.QUICK
                     panel = Panel.CONTROLS

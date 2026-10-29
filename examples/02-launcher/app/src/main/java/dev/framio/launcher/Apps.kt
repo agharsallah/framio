@@ -27,8 +27,17 @@ data class AppTile(
     val pkg: String get() = component.packageName
 }
 
-/** Any launchable app on the frame, for the All apps grid. */
-data class AppEntry(val component: ComponentName, val label: String, val system: Boolean) {
+/**
+ * Any launchable app on the frame, for the All apps grid. framio apps carry their tile's [subtitle] and [accent]
+ * (ARGB); for the others the grid takes the accent from the icon.
+ */
+data class AppEntry(
+    val component: ComponentName,
+    val label: String,
+    val system: Boolean,
+    val subtitle: String = "",
+    val accent: Int? = null,
+) {
     val pkg: String get() = component.packageName
     val framio: Boolean get() = pkg.startsWith("dev.framio.")
 }
@@ -88,10 +97,8 @@ object Apps {
                 AppTile(
                     component = ComponentName(a.packageName, a.name),
                     title = info.loadLabel(pm).toString(),
-                    subtitle = meta?.getString(META_SUBTITLE) ?: known?.first ?: "",
-                    accent = meta?.getString(META_ACCENT)?.let(::parseColor)
-                        ?: known?.second
-                        ?: PALETTE[a.packageName.hashCode().mod(PALETTE.size)],
+                    subtitle = subtitleOf(a.packageName, meta),
+                    accent = accentOf(a.packageName, meta),
                     // getInt: android:value="40" is stored as an Int
                     order = meta?.getInt(META_ORDER, -1)?.takeIf { it >= 0 } ?: known?.third ?: 100,
                     icon = if (a.iconResource != 0 || a.applicationInfo.icon != 0) info.loadIcon(pm) else null,
@@ -104,14 +111,27 @@ object Apps {
     fun all(context: Context): List<AppEntry> {
         val pm = context.packageManager
         val launchable = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
-        return pm.queryIntentActivities(launchable, 0)
+        return pm.queryIntentActivities(launchable, PackageManager.GET_META_DATA)
             .filter { it.activityInfo.packageName != context.packageName }
             .map {
                 val a = it.activityInfo
-                AppEntry(ComponentName(a.packageName, a.name), it.loadLabel(pm).toString(), a.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0)
+                val framio = a.packageName.startsWith(PREFIX)
+                AppEntry(
+                    ComponentName(a.packageName, a.name),
+                    it.loadLabel(pm).toString(),
+                    a.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0,
+                    subtitle = if (framio) subtitleOf(a.packageName, a.metaData) else "",
+                    accent = if (framio) accentOf(a.packageName, a.metaData) else null,
+                )
             }
             .sortedBy { it.label.lowercase() }
     }
+
+    private fun subtitleOf(pkg: String, meta: android.os.Bundle?): String =
+        meta?.getString(META_SUBTITLE) ?: KNOWN[pkg]?.first ?: ""
+
+    private fun accentOf(pkg: String, meta: android.os.Bundle?): Int =
+        meta?.getString(META_ACCENT)?.let(::parseColor) ?: KNOWN[pkg]?.second ?: PALETTE[pkg.hashCode().mod(PALETTE.size)]
 
     fun icon(context: Context, component: ComponentName): Drawable? = try {
         context.packageManager.getActivityIcon(component)

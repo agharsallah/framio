@@ -258,12 +258,13 @@ internal fun Hint(text: String, modifier: Modifier = Modifier) =
     BasicText(text, modifier, style = Small, maxLines = 3, overflow = TextOverflow.Ellipsis)
 
 /** Icons can be vectors, bitmaps or layer lists: draw any of them into a bitmap of the given size, once. */
-internal fun render(drawable: Drawable, sizePx: Int): ImageBitmap {
+internal fun render(drawable: Drawable, sizePx: Int): ImageBitmap = renderBitmap(drawable, sizePx).asImageBitmap()
+
+internal fun renderBitmap(drawable: Drawable, sizePx: Int): android.graphics.Bitmap {
     val bitmap = createBitmap(sizePx, sizePx)
-    val canvas = android.graphics.Canvas(bitmap)
     drawable.setBounds(0, 0, sizePx, sizePx)
-    drawable.draw(canvas)
-    return bitmap.asImageBitmap()
+    drawable.draw(android.graphics.Canvas(bitmap))
+    return bitmap
 }
 
 // --- Glyphs: drawn, so they stay sharp at any size and cost no resources

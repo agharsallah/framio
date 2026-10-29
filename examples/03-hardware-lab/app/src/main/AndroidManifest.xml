@@ -52,6 +52,7 @@
     <application
         android:name=".LabApplication"
         android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
         android:label="Hardware Lab"
         android:theme="@style/Theme.Lab"
         android:usesCleartextTraffic="true">

@@ -31,6 +31,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.asImageBitmap
+import android.graphics.Bitmap
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,26 +55,32 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * Every launchable app on the frame, Android's Settings included. Tap opens; hold for the app's menu
- * (put it on Home, open it at startup, close it, its Android page, uninstall).
+ * Every launchable app on the frame, Android's Settings included: the framio apps first, then what came with the
+ * frame. Tap opens; hold for the app's menu (put it on Home, open it at startup, close it, its Android page, uninstall).
+ * Cards echo Home's tiles: each glows in its app's colour, the tile accent for framio apps, the icon's own otherwise.
  */
 @Composable
 fun AllApps(c: Controller, onOpen: (AppEntry) -> Unit, onMenu: (AppEntry) -> Unit, onClose: () -> Unit) {
     LaunchedEffect(Unit) { c.refreshAll() }
+    val (framio, others) = remember(c.allApps) { c.allApps.partition { it.framio } }
     Column(
         Modifier
             .fillMaxSize()
-            .background(Bottom)
+            .background(Brush.verticalGradient(listOf(Top, Bottom)))
             .clickable(remember { MutableInteractionSource() }, indication = null) {}
-            .padding(start = 72.dp, end = 72.dp, top = 36.dp)
+            .padding(start = 72.dp, end = 72.dp, top = 40.dp)
     ) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            BasicText("All apps", Modifier.weight(1f), style = Heading)
-            Hint("Hold an app for more")
-            Spacer(Modifier.width(24.dp))
+            Column(Modifier.weight(1f)) {
+                BasicText("All apps", style = Heading.copy(fontSize = 44.sp))
+                BasicText(
+                    if (c.allApps.isEmpty()) "Looking…" else "${c.allApps.size} apps · hold one for more",
+                    style = Small,
+                )
+            }
             Pill("Home", onClose, glyph = Glyphs.back)
         }
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(18.dp))
         LazyVerticalGrid(
             GridCells.Fixed(6),
             Modifier.fillMaxSize(),
@@ -73,31 +88,85 @@ fun AllApps(c: Controller, onOpen: (AppEntry) -> Unit, onMenu: (AppEntry) -> Uni
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            items(c.allApps, key = { it.component.flattenToString() }) { e ->
-                Column(
-                    Modifier
-                        .press(onLongClick = { onMenu(e) }) { onOpen(e) }
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(Card)
-                        .padding(vertical = 20.dp, horizontal = 10.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    ComponentIcon(e.component, 72)
-                    Spacer(Modifier.height(12.dp))
-                    BasicText(
-                        e.label,
-                        Modifier.fillMaxWidth(),
-                        style = Small.copy(color = Ink, fontSize = 19.sp, textAlign = TextAlign.Center),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                    // a dot under the name: it is also on Home
-                    Box(Modifier.padding(top = 6.dp).size(6.dp).clip(RoundedCornerShape(3.dp)).background(if (c.onShelf(e)) Amber else Color.Transparent))
-                }
+            section("framio", framio.size)
+            items(framio, key = { it.component.flattenToString() }) { e -> AppCard(e, c.onShelf(e), onOpen, onMenu) }
+            section("On this frame", others.size)
+            items(others, key = { it.component.flattenToString() }) { e -> AppCard(e, c.onShelf(e), onOpen, onMenu) }
+        }
+    }
+}
+
+private fun LazyGridScope.section(title: String, count: Int) {
+    if (count == 0) return
+    item(key = "section:$title", span = { GridItemSpan(maxLineSpan) }) {
+        Row(Modifier.padding(top = 10.dp, bottom = 2.dp), verticalAlignment = Alignment.Bottom) {
+            BasicText(title.uppercase(), style = Small.copy(color = InkDim, fontSize = 17.sp, letterSpacing = 3.sp))
+            Spacer(Modifier.width(12.dp))
+            BasicText("$count", style = Small.copy(color = InkFaint, fontSize = 17.sp))
+        }
+    }
+}
+
+@Composable
+private fun AppCard(e: AppEntry, onHome: Boolean, onOpen: (AppEntry) -> Unit, onMenu: (AppEntry) -> Unit) {
+    val icon = rememberIcon("${e.component.flattenToString()}@$CARD_ICON", CARD_ICON) { Apps.icon(it, e.component) }
+    val accent = e.accent?.let(::Color) ?: icon?.accent ?: InkDim
+    val shape = RoundedCornerShape(24.dp)
+    Box(
+        Modifier
+            .press(onLongClick = { onMenu(e) }) { onOpen(e) }
+            .height(184.dp)
+            .clip(shape)
+            .background(Card)
+            .drawBehind {
+                // the same corner glow as Home's tiles
+                val r = size.height * 1.05f
+                val corner = Offset(size.width, 0f)
+                drawCircle(Brush.radialGradient(listOf(accent.copy(alpha = 0.22f), Color.Transparent), corner, r), r, corner)
+            }
+            .border(1.dp, Hairline, shape)
+            .padding(horizontal = 12.dp, vertical = 18.dp),
+    ) {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(Modifier.size(CARD_ICON.dp), contentAlignment = Alignment.Center) {
+                IconOrPlaceholder(icon, CARD_ICON)
+            }
+            Spacer(Modifier.weight(1f))
+            BasicText(
+                e.label,
+                Modifier.fillMaxWidth(),
+                style = Body.copy(fontSize = 21.sp, textAlign = TextAlign.Center),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            // Kept even when empty, so every name sits at the same height
+            BasicText(
+                e.subtitle.substringAfter(" · "), // "Example 03 · Hardware" → "Hardware": the card is narrow
+                Modifier.fillMaxWidth(),
+                style = Small.copy(fontSize = 16.sp, textAlign = TextAlign.Center),
+                maxLines = 1,
+                minLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        if (onHome) {
+            // On Home: a small amber house in the corner
+            Box(
+                Modifier
+                    .align(Alignment.TopEnd)
+                    .offset(x = 4.dp, y = (-6).dp)
+                    .size(30.dp)
+                    .clip(RoundedCornerShape(15.dp))
+                    .background(Amber.copy(alpha = 0.18f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Canvas(Modifier.size(16.dp)) { Glyphs.home(this, Amber) }
             }
         }
     }
 }
+
+private const val CARD_ICON = 84
 
 /** What can be done with one app; shown over Home or All apps. */
 @Composable
@@ -171,21 +240,23 @@ fun AppSheet(c: Controller, e: AppEntry, onOpen: () -> Unit, onDismiss: () -> Un
 
 // --- Icons, loaded off the main thread and kept: the grid scrolls without decoding again
 
-private val icons = object : LruCache<String, ImageBitmap>(2 * 1024 * 1024) {
-    override fun sizeOf(key: String, value: ImageBitmap) = value.width * value.height * 4
+/** An app icon drawn at its display size, and its dominant colour (for the card's glow). */
+class LoadedIcon(val image: ImageBitmap, val accent: Color?)
+
+private val icons = object : LruCache<String, LoadedIcon>(3 * 1024 * 1024) {
+    override fun sizeOf(key: String, value: LoadedIcon) = value.image.width * value.image.height * 4
 }
 
 @Composable
 fun ComponentIcon(component: ComponentName, sizeDp: Int) {
-    val context = LocalContext.current
-    val key = "${component.flattenToString()}@$sizeDp"
-    IconImage(key, sizeDp) { Apps.icon(context, component) }
+    val icon = rememberIcon("${component.flattenToString()}@$sizeDp", sizeDp) { Apps.icon(it, component) }
+    IconOrPlaceholder(icon, sizeDp)
 }
 
 @Composable
 fun PackageIcon(pkg: String, sizeDp: Int) {
-    val context = LocalContext.current
-    IconImage("$pkg@$sizeDp", sizeDp) { packageIcon(context, pkg) }
+    val icon = rememberIcon("$pkg@$sizeDp", sizeDp) { packageIcon(it, pkg) }
+    IconOrPlaceholder(icon, sizeDp)
 }
 
 private fun packageIcon(context: Context, pkg: String) = try {
@@ -195,18 +266,53 @@ private fun packageIcon(context: Context, pkg: String) = try {
 }
 
 @Composable
-private fun IconImage(key: String, sizeDp: Int, load: () -> android.graphics.drawable.Drawable?) {
+private fun rememberIcon(key: String, sizeDp: Int, load: (Context) -> android.graphics.drawable.Drawable?): LoadedIcon? {
+    val context = LocalContext.current
     // 1 dp == 1 px on the frame (160 dpi), but go by density in case the launcher ever runs elsewhere
     val px = with(LocalDensity.current) { sizeDp.dp.roundToPx() }
-    val image by produceState(icons.get(key), key) {
+    val icon by produceState(icons.get(key), key) {
         if (value == null) {
-            value = withContext(Dispatchers.IO) { load()?.let { render(it, px) } }?.also { icons.put(key, it) }
+            value = withContext(Dispatchers.IO) {
+                load(context)?.let { d ->
+                    val bitmap = renderBitmap(d, px)
+                    LoadedIcon(bitmap.asImageBitmap(), dominant(bitmap))
+                }
+            }?.also { icons.put(key, it) }
         }
     }
-    val img = image
-    if (img != null) {
-        Image(img, null, Modifier.size(sizeDp.dp))
+    return icon
+}
+
+@Composable
+private fun IconOrPlaceholder(icon: LoadedIcon?, sizeDp: Int) {
+    if (icon != null) {
+        Image(icon.image, null, Modifier.size(sizeDp.dp))
     } else {
-        Canvas(Modifier.size(sizeDp.dp)) { drawRoundRect(CardHigh, cornerRadius = androidx.compose.ui.geometry.CornerRadius(12.dp.toPx())) }
+        Canvas(Modifier.size(sizeDp.dp)) { drawRoundRect(CardHigh, cornerRadius = CornerRadius(size.minDimension * 0.22f)) }
     }
+}
+
+/**
+ * The icon's main colour: the average of its opaque, saturated pixels on a coarse grid (a few hundred reads, once per
+ * icon). Null for grey icons, which then glow in a neutral tone.
+ */
+internal fun dominant(b: Bitmap): Color? {
+    var r = 0L
+    var g = 0L
+    var bl = 0L
+    var n = 0
+    val hsv = FloatArray(3)
+    val step = (b.width / 16).coerceAtLeast(1)
+    for (y in 0 until b.height step step) for (x in 0 until b.width step step) {
+        val p = b.getPixel(x, y)
+        if (android.graphics.Color.alpha(p) < 200) continue
+        android.graphics.Color.colorToHSV(p, hsv)
+        if (hsv[1] < 0.35f || hsv[2] < 0.25f) continue
+        r += android.graphics.Color.red(p)
+        g += android.graphics.Color.green(p)
+        bl += android.graphics.Color.blue(p)
+        n++
+    }
+    if (n < 4) return null
+    return Color((r / n).toInt(), (g / n).toInt(), (bl / n).toInt())
 }

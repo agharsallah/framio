@@ -5,6 +5,7 @@
 
     <application
         android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
         android:label="Hello Frame"
         android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen">
 

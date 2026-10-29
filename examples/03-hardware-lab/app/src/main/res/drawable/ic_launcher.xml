@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A microchip on deep violet, as on its launcher tile (vector drawables work as icons from API 21) -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path android:fillColor="#2A2245" android:pathData="M24,0a24,24 0,1 1,0 48a24,24 0,1 1,0 -48z" />
+    <path
+        android:pathData="M18,15.5h12a2.5,2.5 0,0 1,2.5 2.5v12a2.5,2.5 0,0 1,-2.5 2.5h-12a2.5,2.5 0,0 1,-2.5 -2.5v-12a2.5,2.5 0,0 1,2.5 -2.5z"
+        android:strokeWidth="3"
+        android:strokeColor="#A38BE8" />
+    <path android:fillColor="#A38BE8" android:fillAlpha="0.6" android:pathData="M20.5,20.5h7v7h-7z" />
+    <path
+        android:pathData="M19.75,15.5v-4M24,15.5v-4M28.25,15.5v-4M19.75,32.5v4M24,32.5v4M28.25,32.5v4M15.5,19.75h-4M15.5,24h-4M15.5,28.25h-4M32.5,19.75h4M32.5,24h4M32.5,28.25h4"
+        android:strokeLineCap="round"
+        android:strokeWidth="2.5"
+        android:strokeColor="#A38BE8" />
+</vector>
