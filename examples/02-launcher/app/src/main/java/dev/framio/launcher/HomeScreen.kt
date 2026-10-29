@@ -1,14 +1,12 @@
 package dev.framio.launcher
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.text.format.DateFormat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -25,6 +23,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -46,17 +45,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -72,17 +67,6 @@ import java.util.Locale
 
 // Laid out for the frame: 1280×800 at 160 dpi, so 1.dp == 1 px. Sizes are meant to read from across a room.
 
-private val Ink = Color(0xFFF1ECE4) // warm white, softer than #FFF at night
-private val InkDim = Color(0xFF9A968E)
-private val InkFaint = Color(0xFF55575D)
-private val Card = Color(0xFF16181D)
-private val Hairline = Color(0xFF262A31)
-private val Amber = Color(0xFFE9A23B)
-private val Bottom = Color(0xFF0B0C0F) // the background's lower colour, for the shelf's edge fades
-
-// Named family on purpose: below API 28 Compose only reaches Roboto Light/Thin via "sans-serif-light" etc.
-private val Base = TextStyle(fontFamily = FontFamily.SansSerif)
-
 /** Up to this many tiles share the row's width; more, and the row becomes a shelf that scrolls. */
 private const val ROW_TILES = 4
 
@@ -92,40 +76,111 @@ private val GLYPHS: Map<String, DrawScope.(Color) -> Unit> = mapOf(
     "dev.framio.lab" to ::chipGlyph,
 )
 
+/** What the status corner shows: Wi-Fi bars (null when off or not joined) and the media volume. */
+data class HomeStatus(val wifiLevel: Int?, val wifiName: String?, val volume: Float)
+
+/** The boot countdown before the startup app opens; see [Startup]. */
+data class Countdown(val label: String, val secondsLeft: Int)
+
 @Composable
 fun HomeScreen(
     lifecycle: Lifecycle,
     use24h: Boolean,
     frameoInstalled: Boolean,
     apps: List<AppTile>,
+    status: HomeStatus,
+    countdown: Countdown?,
     onPhotos: () -> Unit,
     onOpen: (AppTile) -> Unit,
+    onAppMenu: (AppTile) -> Unit,
+    onControls: () -> Unit,
+    onAllApps: () -> Unit,
+    onCountdownNow: () -> Unit,
+    onCountdownCancel: () -> Unit,
 ) {
     val now by rememberMinuteClock(lifecycle)
 
     Box(
         Modifier
             .fillMaxSize()
-            .background(Brush.verticalGradient(listOf(Color(0xFF14161B), Bottom)))
+            .background(Brush.verticalGradient(listOf(Top, Bottom)))
             .padding(start = 72.dp, end = 72.dp, top = 48.dp, bottom = 88.dp) // bottom: keep clear of the hot corner dot
     ) {
-        BasicText(
-            "framio",
-            Modifier.align(Alignment.TopEnd).padding(top = 18.dp),
-            style = Base.copy(color = InkFaint, fontSize = 20.sp, letterSpacing = 6.sp),
-        )
+        StatusCorner(status, onControls, onAllApps, Modifier.align(Alignment.TopEnd).padding(top = 8.dp))
 
         Column(Modifier.fillMaxSize()) {
             Clock(now, use24h)
             Spacer(Modifier.weight(1f))
-            Shelf(lifecycle, frameoInstalled, apps, onPhotos, onOpen, Modifier.fillMaxWidth().height(280.dp))
+            if (countdown != null) {
+                CountdownBar(countdown, onCountdownNow, onCountdownCancel)
+                Spacer(Modifier.height(20.dp))
+            }
+            Shelf(lifecycle, frameoInstalled, apps, onPhotos, onOpen, onAppMenu, Modifier.fillMaxWidth().height(if (countdown != null) 220.dp else 280.dp))
         }
+    }
+}
+
+/** Wi-Fi and volume at a glance (tap: Controls), and the two ways further: All apps and Controls. */
+@Composable
+private fun StatusCorner(status: HomeStatus, onControls: () -> Unit, onAllApps: () -> Unit, modifier: Modifier) {
+    Row(modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Row(
+            Modifier
+                .press(onClick = onControls)
+                .height(64.dp)
+                .clip(RoundedCornerShape(32.dp))
+                .background(Card)
+                .border(1.dp, Hairline, RoundedCornerShape(32.dp))
+                .padding(horizontal = 22.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Canvas(Modifier.size(28.dp)) { Glyphs.wifi(status.wifiLevel)(this, InkDim) }
+            if (status.wifiName != null) {
+                Spacer(Modifier.width(10.dp))
+                BasicText(status.wifiName, Modifier.widthIn(max = 200.dp), style = Small.copy(fontSize = 20.sp), maxLines = 1, overflow = TextOverflow.Ellipsis)
+            }
+            Spacer(Modifier.width(22.dp))
+            Canvas(Modifier.size(28.dp)) { Glyphs.speaker(status.volume)(this, InkDim) }
+            Spacer(Modifier.width(8.dp))
+            BasicText("${Math.round(status.volume * 100)}", style = Small.copy(fontSize = 20.sp, fontFeatureSettings = "tnum"))
+        }
+        RoundButton(Glyphs.grid, onAllApps)
+        RoundButton(Glyphs.gear, onControls)
+    }
+}
+
+/** "Opening Photos in 7 s": the frame comes back to its main app after a reboot, unless someone is there to stop it. */
+@Composable
+private fun CountdownBar(c: Countdown, onNow: () -> Unit, onCancel: () -> Unit) {
+    val shape = RoundedCornerShape(24.dp)
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .height(76.dp)
+            .clip(shape)
+            .background(Card)
+            .border(1.dp, Amber.copy(alpha = 0.5f), shape)
+            .padding(horizontal = 26.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        BasicText("Opening ${c.label} in ${c.secondsLeft} s", Modifier.weight(1f), style = Body.copy(fontSize = 26.sp), maxLines = 1, overflow = TextOverflow.Ellipsis)
+        Pill("Open now", onNow, accent = Amber, filled = true)
+        Spacer(Modifier.width(12.dp))
+        Pill("Stay on Home", onCancel)
     }
 }
 
 /** Photos first, then every framio app found on the frame (see [Apps.discover]). */
 @Composable
-private fun Shelf(lifecycle: Lifecycle, frameoInstalled: Boolean, apps: List<AppTile>, onPhotos: () -> Unit, onOpen: (AppTile) -> Unit, modifier: Modifier) {
+private fun Shelf(
+    lifecycle: Lifecycle,
+    frameoInstalled: Boolean,
+    apps: List<AppTile>,
+    onPhotos: () -> Unit,
+    onOpen: (AppTile) -> Unit,
+    onAppMenu: (AppTile) -> Unit,
+    modifier: Modifier,
+) {
     val gap = 24.dp
 
     @Composable
@@ -146,6 +201,7 @@ private fun Shelf(lifecycle: Lifecycle, frameoInstalled: Boolean, apps: List<App
         accent = Color(app.accent),
         enabled = true,
         onClick = { onOpen(app) },
+        onLongClick = { onAppMenu(app) },
         modifier = modifier,
         icon = { AppIcon(app) },
     )
@@ -235,6 +291,7 @@ private fun Tile(
     enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier,
+    onLongClick: (() -> Unit)? = null,
     icon: @Composable () -> Unit,
 ) {
     val interaction = remember { MutableInteractionSource() }
@@ -263,7 +320,7 @@ private fun Tile(
                 )
             }
             .border(if (pressed) 2.dp else 1.dp, if (pressed) accent else Hairline, shape)
-            .clickable(interaction, indication = null, enabled = enabled, role = Role.Button, onClick = onClick)
+            .combinedClickable(interaction, indication = null, enabled = enabled, role = Role.Button, onLongClick = onLongClick, onClick = onClick)
             .padding(30.dp)
     ) {
         Box(Modifier.align(Alignment.TopStart)) { icon() }
@@ -295,15 +352,6 @@ private fun AppIcon(app: AppTile) {
             BasicText(app.title.take(1).uppercase(), style = Base.copy(color = accent, fontSize = 38.sp, fontWeight = FontWeight.Medium))
         }
     }
-}
-
-/** Icons can be vectors, bitmaps or layer lists: draw any of them into a bitmap of the tile's size, once. */
-private fun render(drawable: Drawable, sizePx: Int): ImageBitmap {
-    val bitmap = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
-    val canvas = android.graphics.Canvas(bitmap)
-    drawable.setBounds(0, 0, sizePx, sizePx)
-    drawable.draw(canvas)
-    return bitmap.asImageBitmap()
 }
 
 /** Sun over two hills. */

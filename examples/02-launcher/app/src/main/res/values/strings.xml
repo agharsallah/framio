@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_service_description">Lets the Framio home button go Back and know which app is in front.</string>
+</resources>

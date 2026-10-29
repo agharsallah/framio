@@ -12,8 +12,8 @@ android {
         applicationId = "dev.framio.launcher"
         minSdk = 23 // the frame runs Android 6.0.1
         targetSdk = 37
-        versionCode = 1
-        versionName = "0.1"
+        versionCode = 2
+        versionName = "0.2"
     }
 
     buildTypes {
@@ -41,4 +41,6 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2026.09.00"))
     implementation("androidx.compose.foundation:foundation") // layout, text, clicks; no Material
     implementation("androidx.activity:activity-compose:1.13.0")
+
+    testImplementation("junit:junit:4.13.2")
 }

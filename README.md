@@ -11,7 +11,7 @@ Full command log with outputs: [docs/device-log.md](docs/device-log.md)
 | | |
 |---|---|
 | [`examples/01-hello-frame`](examples/01-hello-frame) | Kotlin app with a full-screen WebView, a clock page and a JS → Kotlin bridge (`window.Frame`) |
-| [`examples/02-launcher`](examples/02-launcher) | Jetpack Compose HOME app: clock, Photos (Frameo) and a shelf of every installed framio app (found automatically, styled by `dev.framio.tile.*` metadata), hot corner dot as the Home button · [LOG](examples/02-launcher/LOG.md) |
+| [`examples/02-launcher`](examples/02-launcher) | Jetpack Compose HOME app: clock, Photos (Frameo) and a shelf of every installed framio app (found automatically, styled by `dev.framio.tile.*` metadata) plus pinned apps; All apps; Controls (volume, brightness, Wi-Fi networks, running apps and Close all, startup app with countdown, back-after-idle, device info, restart/power off); a movable home-button dot with a Home · Back · Close app · Controls menu · [LOG](examples/02-launcher/LOG.md) |
 | [`examples/03-hardware-lab`](examples/03-hardware-lab) | Native Compose app with 15 labs (display, touch, sensors, speaker, mic, video, GPU, network, time, keys, storage, root…), each with an automated self-test |
 | [`examples/04-mawaqit`](examples/04-mawaqit) | Mawaqit mosque-screen clone: a real Mawaqit mosque or computed times, adhan on the speaker, iqama countdown, azkar, night mode, Frameo photo-frame mode; web panel on the LAN and encrypted remote control through ntfy · [LOG](examples/04-mawaqit/LOG.md) · [API](examples/04-mawaqit/REMOTE.md) |
 | [`examples/04-little-meadow`](examples/04-little-meadow) | Calm learning app for ages 2–5 in native Compose: five clay 3D friends, 31 voice-guided activities in 7 places (numbers, colours and art, letters and animals, music, good habits, puzzles with real-time 3D shapes, feelings, stories and a night light), adaptive levels, sticker book, wiggle breaks, daily limit and bedtime; English and German; parent dashboard on the LAN with family voice messages · [LOG](examples/04-little-meadow/LOG.md) · [DESIGN](examples/04-little-meadow/DESIGN.md) |
@@ -53,12 +53,35 @@ adb shell am start -n dev.framio.hello/.MainActivity
 cd examples/02-launcher
 ./gradlew assembleRelease     # R8-minified, debug-signed: ~15 MB RAM vs ~31 MB for assembleDebug
 adb install -r app/build/outputs/apk/release/app-release.apk
-adb shell appops set dev.framio.launcher SYSTEM_ALERT_WINDOW allow   # once: lets the hot corner draw over apps
+# no appops step since v0.2: the launcher grants itself the overlay, WRITE_SETTINGS and Wi-Fi scan access with root
+# (by hand, if su is missing: adb shell appops set dev.framio.launcher SYSTEM_ALERT_WINDOW allow)
 adb shell input keyevent KEYCODE_HOME   # "Select a Home app" → Framio → ALWAYS (screenshot to find the taps)
 adb shell dumpsys activity activities | grep -i home   # cmp=dev.framio.launcher/.LauncherActivity
 ```
 
-**On the frame:** tap a tile; long-press the dot in the bottom-left corner to come back home from any app.
+**On the frame:** tap a tile; tap the dot (bottom-left, movable) for Home · Back · Close app · Controls, or hold it to
+go home from any app.
+
+## Keep the frame up to date: `scripts/deploy.sh`
+
+There is no store: every app is installed over adb and signed with the same debug key, so `adb install -r` updates it
+in place and keeps its data. One script keeps the frame in step with the repo:
+
+```bash
+scripts/deploy.sh status          # per app: up to date / behind / not from here / not installed (no build)
+scripts/deploy.sh                 # build every app, install only those whose APK differs from the frame's
+scripts/deploy.sh launcher lab    # just these (folder name or its end: 02-launcher, launcher, hello…)
+scripts/deploy.sh --no-build      # install what is already built
+```
+
+- **Variant:** release (R8, about half the RAM) when the app signs release with the debug key, else debug.
+- **Changed?** md5 of the built APK vs the installed one (`pm path`). Gradle is incremental: unchanged apps build in seconds to the same bytes and are skipped.
+- **Record:** each install appends `package date commit clean|dirty md5 variant` to `/data/local/tmp/framio-deploy.tsv` on the frame, so `status` can say which commit is installed and whether the app's folder changed since.
+- **Safe on a shared frame:** installs run under `scripts/frame-lock.sh`; an app that was in front is reopened after its update (this firmware restarts nothing in the background).
+
+**Rule:** after changing an app, run `scripts/deploy.sh <app>` (or plain `scripts/deploy.sh` before you stop for the
+day), and check `scripts/deploy.sh status` shows no "behind". Installing by hand with `adb install` works too, but
+`status` then shows the app as "not from here" until the next deploy.
 
 ## Capture and control: `fr`
 

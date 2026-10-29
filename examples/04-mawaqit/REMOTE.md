@@ -74,6 +74,8 @@ Receiving: `new EventSource(server + "/" + topic + "/sse?since=" + sinceUnixSeco
 | `adhan.rename` | `{"id", "name"}` | as `adhan.list` |
 | `adhan.delete` | `{"id"}` | as `adhan.list`; the file is removed, and a `voice` that used it goes back to `adhan-afassy`, a `fajrVoice` to `same` |
 | `audio.stop` | – | `{}` |
+| `adhan.skip` | – | `{"skipped": bool}`: stops the adhan and ends its screen (what follows it comes now); a previewed adhan screen closes |
+| `adhan.volume` | `volume` 0–100 or `delta` ±N, and/or `muted` bool | `{"playing", "volume"}`: the playing adhan's volume now, kept as `adhan.volume`; `muted` silences this adhan only |
 | `message.show` | `{"text": "...", "title": "...", "seconds": 30}` | `{}` full-screen message right now |
 | `phase.preview` | `{"kind": "adhan"\|"dua"\|"countdown"\|"iqama"\|"prayer"\|"azkar"\|"jumua"\|"night", "seconds": 20}` | `{}` shows that screen (no sound) |
 | `screen` | `{"mode": "on"\|"off"\|"auto"}` | `{}` force the backlight on/off, or back to the schedule |
@@ -128,7 +130,7 @@ prayers, the main `voice`'s, so a different Fajr file keeps that length.
   "screen": {"mode": "auto", "state": "on"},
   "foreground": "display",
   "weather": {"temp": 12, "unit": "C"},
-  "audio": {"playing": false, "what": null},
+  "audio": {"playing": false, "what": null, "volume": 60, "muted": false},
   "adhkar": {"enabled": true, "open": true, "view": "reader", "category": "morning", "index": 6, "current": "morning",
              "reminder": {"category": "morning", "done": 6, "total": 26, "until": 1792313100000},
              "today": {"morning": {"done": 6, "total": 26, "complete": false, "streak": 3, "after": null},

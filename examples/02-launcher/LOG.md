@@ -151,3 +151,55 @@ A receiver for `PACKAGE_ADDED/REMOVED/CHANGED/REPLACED` (while visible) refreshe
 | first screenshot | shelf left scrolled to the end; Mawaqit's "Example 04 · Prayer times" ellipsized; Little Meadow's title lower (no subtitle) | scroll to 0 on resume, subtitle "Prayer times", empty subtitle line kept |
 | `input swipe 1100 620 300 620 300`, then `input tap 1000 620` | snapped to a tile edge; `mResumedActivity: dev.framio.meadow/.MeadowActivity` | |
 | `KEYCODE_HOME` | `dev.framio.launcher/.LauncherActivity`, shelf back on Photos, half Mawaqit tile + fade on the right | |
+
+## v0.2: Controls, All apps, startup app, a better home button
+
+What changed (sources in `app/src/main/java/dev/framio/launcher/`):
+
+| File | What |
+|---|---|
+| `Root.kt` | one persistent `su` (end marker + exit code per command, `su -c` fallback), as 05-hub; package names checked by regex before they reach a shell |
+| `Device.kt` | media/alarm volume (`AudioManager`), brightness (`Settings.System`, root `settings put` fallback, min 30/255), backlight off/on (`rk28_bl`, recovered at start), memory, storage, IP, uptime; running apps from root `ps` (columns by header name), close = root `am force-stop` (fallback `killBackgroundProcesses`); app in front from `NavService` or `dumpsys activity activities` (`mResumedActivity`); restart / power off; **self-provisioning**: `appops SYSTEM_ALERT_WINDOW`, `appops WRITE_SETTINGS`, `pm grant ACCESS_COARSE_LOCATION`, each only when missing |
+| `Wifi.kt` | on/off, scan, list (strongest AP per name; joined, saved, signal), join saved/open/WPA, forget (only networks we added: Android 6 rule); falls back to root `dumpsys wifi` when Android hands back no scan results (location off); the list is only kept while the Wi-Fi tab shows |
+| `Prefs.kt` | `Config` in SharedPreferences: startup target + countdown, back-after-idle, dot on/size/rest opacity/edge+height, hidden framio apps, pinned other apps, Keep (Frameo by default) |
+| `ControlCenter.kt` | panel with tabs: Quick (3 sliders, Wi-Fi / Sleep screen / Close apps / Android settings tiles), Wi-Fi, Running, Startup, Home button, Device |
+| `AppDrawer.kt` | All apps (6-column grid, icons rendered once off the main thread into a 2 MB LRU), app sheet: Open · Add to/Remove from Home · Open at startup · Keep open · Close · App info · Uninstall |
+| `HotCornerService.kt` | the dot: tap → menu (Home, Back, Close app, Controls; closes on outside touch or after 6 s), hold → Home, drag → snaps to the nearest side edge, saved; fades to its rest opacity after 3 s; hidden while Home is in front |
+| `NavService.kt` | optional accessibility service (Controls → Home button → Instant Back): `GLOBAL_ACTION_BACK` and the app in front, `typeWindowStateChanged` only, no window content. Off: Back is root `input keyevent 4` |
+| `LauncherActivity.kt` | startup app once per boot (`/proc/sys/kernel/random/boot_id` changed) after a countdown bar (Open now / Stay on Home), only while Home is in front; back-after-idle; brightness previewed on the window while dragging, written on release; Back/HOME close panels |
+
+| Command | Output | Note |
+|---|---|---|
+| `./gradlew assembleDebug` | `BUILD SUCCESSFUL`; first: `setPressed(Z)V` / `setEnabled(Z)V` clashes | `View.pressed` and a `var enabled` + `fun setEnabled` → renamed `held`, `turn()` |
+| `./gradlew testDebugUnitTest` | `ParsersTest`: 6 tests, 0 failures | `ps` (toolbox + toybox), `mResumedActivity`, `dumpsys wifi` table with spaces in SSIDs, `Root.pkg` rejects `x; reboot` etc. |
+| `./gradlew lintDebug` | first: 8 × `MissingPermission` (`getConfiguredNetworks`/`getScanResults` want FINE location) | API 23 needs coarse; wrapped with `SecurityException` handling. Now only the 4 old warnings (Gradle 9.8.2, orientation, allowBackup, icon) |
+| `./gradlew assembleRelease` | `app-release.apk` 1.28 MB (was 784 KB) | |
+
+**Device checklist** (written before the frame was on adb; results in the next section):
+install release → no `appops` → `dumpsys window windows | grep "Window #"` shows the dot; `appops get dev.framio.launcher`
+(`SYSTEM_ALERT_WINDOW`, `WRITE_SETTINGS` allow); `dumpsys package dev.framio.launcher | grep COARSE` granted ·
+dot: tap/hold/drag, menu actions, rest fade, hidden on Home · Controls: volumes (`dumpsys audio`), brightness
+(`settings get system screen_brightness`), Sleep screen (`rk28_bl` 0 → back), Wi-Fi list (is location off? which path
+filled it), join/forget, Running list vs `ps`, Close all keeps Frameo · Startup: set Photos, reboot, countdown, opens ·
+`dumpsys meminfo dev.framio.launcher` (was 15.6 MB PSS).
+
+### On the frame (2026-10-29, release build, uptime 3 min after another session's reboot)
+
+| Command | Output | Note |
+|---|---|---|
+| `install -r` 0.2 (no appops) → `appops get dev.framio.launcher` | `WRITE_SETTINGS: allow` (new), `SYSTEM_ALERT_WINDOW: allow` | log: `appops set … WRITE_SETTINGS allow → ok`, `pm grant … ACCESS_COARSE_LOCATION → ok` |
+| `dumpsys window windows` on Home | dot window `mViewVisibility=0x8` | hidden while Home is in front |
+| Controls → Wi-Fi | 6 networks, joined one first with Forget | `getScanResults` answered: no root `dumpsys wifi` fallback needed |
+| first Running tab | System UI, Android Keyboard, Wireless Update, System Update, External Storage | **Close all would have force-stopped System UI** → only apps with a LAUNCHER activity are listed; now: Frameo ≈ 121 MB, Kept |
+| media slider tap 50% → 33% | `STREAM_MUSIC` speaker `5` → `8` → `5` | |
+| brightness tap 50% → 70% | `screen_brightness` and `rk28_bl` `187` → `142` → `187` | |
+| Sleep screen, wait, tap | `rk28_bl` `0`, `0`, then `187` | |
+| Lab → tap dot | menu Home · Back · Close · "Con-" | labels wrapped to the glyph's 56 px (vertical LinearLayout gives children MATCH_PARENT) → WRAP_CONTENT, one line: "Close app", "Controls" |
+| menu Close app | `Force stopping dev.framio.lab … from pid 1810`, launcher resumed, no lab process | first try hit the lab: the menu closes itself after 6 s |
+| hold dot · menu Home · menu Controls | launcher resumed each time (Controls opens the panel) | |
+| Lab → System → menu Back | Lab Overview | root `input keyevent 4` (~1 s). Instant Back (accessibility) not switched on: it changes a system setting on a shared frame |
+| `input swipe 44 756 1200 300` on the dot | window at `[1208,267][1264,323]` | snapped to the right edge at the drop height |
+| All apps, hold DeviceTest | grid of 13 apps, sheet without Uninstall (system app) | |
+| startup Photos, boot id removed from prefs, `am force-stop` + HOME | "Opening Photos in 6 s" bar; at 0 `mResumedActivity: net.frameo.frame/…AWaitForDeferredInitCompleted` | then startup set back to Home. Editing the prefs as root needs `chown 10026:10026` after: a root-owned file reads as empty and the app wrote defaults over it |
+| `dumpsys meminfo dev.framio.launcher` | `TOTAL 21905` KB PSS (0.1: 15572), Java heap 4.7 MB | after opening every panel |
+| `logcat -b crash \| grep -ci framio` | `0` | |

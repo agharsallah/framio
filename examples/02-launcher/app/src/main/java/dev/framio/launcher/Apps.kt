@@ -3,9 +3,13 @@ package dev.framio.launcher
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.provider.Settings
 import android.util.Log
+import androidx.core.graphics.toColorInt
 
 /**
  * One tile of the home screen: a framio app found on the frame.
@@ -23,7 +27,13 @@ data class AppTile(
     val pkg: String get() = component.packageName
 }
 
-/** The apps the home screen opens: Frameo's photos, and every framio app installed. */
+/** Any launchable app on the frame, for the All apps grid. */
+data class AppEntry(val component: ComponentName, val label: String, val system: Boolean) {
+    val pkg: String get() = component.packageName
+    val framio: Boolean get() = pkg.startsWith("dev.framio.")
+}
+
+/** The apps the home screen opens: Frameo's photos, every framio app installed, and the apps the user pinned. */
 object Apps {
 
     const val FRAMEO = "net.frameo.frame"
@@ -58,12 +68,18 @@ object Apps {
         false
     }
 
-    /** Every framio app with a LAUNCHER activity (not this launcher), by `order` then title. */
-    fun discover(context: Context): List<AppTile> {
+    /**
+     * The shelf: every framio app with a LAUNCHER activity (not this launcher) unless [hidden], plus the other apps
+     * [pinned] from All apps; by `order` then title.
+     */
+    fun discover(context: Context, hidden: Set<String> = emptySet(), pinned: Set<String> = emptySet()): List<AppTile> {
         val pm = context.packageManager
         val launchable = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
         return pm.queryIntentActivities(launchable, PackageManager.GET_META_DATA)
-            .filter { it.activityInfo.packageName.startsWith(PREFIX) && it.activityInfo.packageName != context.packageName }
+            .filter {
+                val p = it.activityInfo.packageName
+                p != context.packageName && p != FRAMEO && if (p.startsWith(PREFIX)) p !in hidden else p in pinned
+            }
             .distinctBy { it.activityInfo.packageName } // one tile per app
             .map { info ->
                 val a = info.activityInfo
@@ -84,8 +100,74 @@ object Apps {
             .sortedWith(compareBy({ it.order }, { it.title.lowercase() }))
     }
 
+    /** Every launchable app but this launcher, by name: Android's Settings included, the frame's escape hatch. */
+    fun all(context: Context): List<AppEntry> {
+        val pm = context.packageManager
+        val launchable = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        return pm.queryIntentActivities(launchable, 0)
+            .filter { it.activityInfo.packageName != context.packageName }
+            .map {
+                val a = it.activityInfo
+                AppEntry(ComponentName(a.packageName, a.name), it.loadLabel(pm).toString(), a.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0)
+            }
+            .sortedBy { it.label.lowercase() }
+    }
+
+    fun icon(context: Context, component: ComponentName): Drawable? = try {
+        context.packageManager.getActivityIcon(component)
+    } catch (_: PackageManager.NameNotFoundException) {
+        null
+    }
+
+    fun label(context: Context, pkg: String): String = try {
+        val pm = context.packageManager
+        pm.getApplicationInfo(pkg, 0).loadLabel(pm).toString()
+    } catch (_: PackageManager.NameNotFoundException) {
+        pkg
+    }
+
+    /** Opens what [Config.startup] names: [Config.PHOTOS] or a flattened component. */
+    fun openTarget(context: Context, target: String): Boolean =
+        if (target == Config.PHOTOS) {
+            openPhotos(context)
+        } else {
+            ComponentName.unflattenFromString(target)?.let { openComponent(context, it) } == true
+        }
+
+    /** A name for [Config.startup], or null when it no longer exists (the app was removed). */
+    fun targetLabel(context: Context, target: String?): String? = when (target) {
+        null -> null
+        Config.PHOTOS -> if (isInstalled(context, FRAMEO)) "Photos" else null
+        else -> ComponentName.unflattenFromString(target)?.takeIf { isInstalled(context, it.packageName) }?.let { label(context, it.packageName) }
+    }
+
+    fun openComponent(context: Context, component: ComponentName) = launch(
+        context,
+        component.packageName,
+        Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setComponent(component),
+    )
+
+    /** Android's own page for the app: storage, permissions, Force stop, Uninstall. */
+    fun openInfo(context: Context, pkg: String) = startSafely(
+        context,
+        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", pkg, null)),
+    )
+
+    /** Android's confirmation dialog, so nothing is removed by a stray tap. */
+    fun uninstall(context: Context, pkg: String) = startSafely(context, Intent(Intent.ACTION_DELETE, Uri.fromParts("package", pkg, null)))
+
+    fun openSettings(context: Context, action: String = Settings.ACTION_SETTINGS) = startSafely(context, Intent(action))
+
+    private fun startSafely(context: Context, intent: Intent): Boolean = try {
+        context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        true
+    } catch (e: RuntimeException) {
+        Log.w(TAG, "Could not start $intent", e)
+        false
+    }
+
     private fun parseColor(s: String): Int? = try {
-        android.graphics.Color.parseColor(s.trim())
+        s.trim().toColorInt()
     } catch (_: IllegalArgumentException) {
         null
     }
@@ -106,11 +188,7 @@ object Apps {
     ) || launch(context, FRAMEO) // fallback if Frameo renames its entry activity
 
     /** Exactly the intent a launcher sends: an app already running comes forward as it was. */
-    fun open(context: Context, tile: AppTile) = launch(
-        context,
-        tile.pkg,
-        Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setComponent(tile.component),
-    )
+    fun open(context: Context, tile: AppTile) = openComponent(context, tile.component)
 
     private fun launch(context: Context, pkg: String, explicit: Intent? = null): Boolean {
         val intent = explicit ?: context.packageManager.getLaunchIntentForPackage(pkg)
