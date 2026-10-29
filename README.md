@@ -4,9 +4,23 @@
 
 **A cheap Android photo frame, turned into a calm, ad-free screen for the things that actually help your day.**
 
+🖼️ **The frame I use:** [Veidoo F10 Frameo photo frame on Amazon](https://link.amazon/B0iuSehw6)<br>
+<sub>I'm trying affiliate so support me by using this link: as an Amazon Associate I earn from qualifying purchases, at no extra cost to you.</sub>
+
 <img src="docs/screenshots/home.jpg" alt="Framio launcher on the frame" width="720">
 
 *Focus timer · prayer times · learning for kids · a hardware lab · and still your family photos.*
+
+<table>
+  <tr>
+    <td><img src="docs/screenshots/frame1.jpg" alt="The real frame on a desk, showing framio's All apps screen" width="420"></td>
+    <td><img src="docs/screenshots/frame0.jpg" alt="The real frame on a desk, showing a Pomodoro break: Stand up and move" width="420"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>All apps, on the real frame</sub></td>
+    <td align="center"><sub>A Pomodoro break: stand up and move</sub></td>
+  </tr>
+</table>
 
 </div>
 
