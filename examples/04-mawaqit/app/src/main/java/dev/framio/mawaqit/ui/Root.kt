@@ -49,6 +49,10 @@ class Actions(
     val patch: (JSONObject) -> Unit,
     val testAdhan: () -> Unit,
     val stopAudio: () -> Unit,
+    /** The adhan's controls: a volume 0–100 (null keeps it) and / or mute (null keeps it). */
+    val adhanVolume: (Int?, Boolean?) -> Unit = { _, _ -> },
+    /** Stops the adhan and ends its screen. */
+    val skipAdhan: () -> Unit = {},
     val openPhotos: (() -> Unit)?,
     val refresh: () -> Unit,
     val remoteLink: () -> String?,
@@ -93,6 +97,11 @@ fun MawaqitRoot(st: DisplayState, settingsOpen: Boolean, onSettings: (Boolean) -
                         else -> MainPages(st, onSettings = { onSettings(true) }) {
                             MainScreen(st, onHideFlash = { actions.patch(JSONObject().put("display", JSONObject().put("showFlash", false))) }) { onSettings(true) }
                         }
+                    }
+                }
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+                    AnimatedVisibility(showsAdhanControls(st) && !settingsOpen, enter = fadeIn(), exit = fadeOut()) {
+                        AdhanControls(st, actions.adhanVolume, actions.skipAdhan, Modifier.padding(bottom = 28.dp))
                     }
                 }
                 AnimatedVisibility(settingsOpen, enter = fadeIn(), exit = fadeOut()) {

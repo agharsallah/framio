@@ -240,6 +240,10 @@ output.rv{min-width:52px;text-align:right;font-weight:650;font-variant-numeric:t
 @media (max-width:519px){#screen-seg{width:100%}#screen-seg label{flex:1}}
 .hero-next .cd small{display:block;font-size:12.5px;font-weight:500;opacity:.75;letter-spacing:0}
 .hero-foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.hero-adhan{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px}
+.hero-adhan button{appearance:none;border:0;border-radius:999px;min-height:40px;min-width:40px;padding:0 14px;font:inherit;font-weight:650;font-size:14px;color:inherit;background:rgba(255,255,255,.16);cursor:pointer;touch-action:manipulation}
+.hero-adhan button.on{background:#E6C77C;color:#1b2a22}
+.hero-adhan .vol{min-width:52px;text-align:center;font-variant-numeric:tabular-nums;font-weight:650}
 .hero-empty{padding:28px 0 8px;text-align:center}
 .hero-empty .btn{margin-top:14px}
 
@@ -519,6 +523,13 @@ details.more[open] summary::before{content:"− "}
               <div class="cd"><span id="h-cd" aria-live="off"></span><small id="h-nt"></small></div>
             </div>
             <div class="hero-foot"><span class="hchip" id="h-phase"></span><span class="hchip" id="h-audio" hidden></span></div>
+            <div class="hero-adhan" id="h-adhan" hidden aria-label="Adhan controls">
+              <button type="button" data-adhan="mute" id="h-mute" aria-pressed="false">Mute</button>
+              <button type="button" data-adhan="down" aria-label="Volume down">−</button>
+              <span class="vol" id="h-vol" aria-live="polite"></span>
+              <button type="button" data-adhan="up" aria-label="Volume up">+</button>
+              <button type="button" data-adhan="skip" class="on">Skip adhan</button>
+            </div>
           </div>
         </div>
         <div id="now-notes"></div>
@@ -748,6 +759,15 @@ function renderAdhkar() {
   box.innerHTML = head + (btns ? `<div class="btns" style="margin:0 0 8px">${btns}</div>` : '') + rows.join('');
   renderAdhkarSchedules(); renderAdhkarLog(); renderLoop();
 }
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-adhan]'); if (!b) return;
+  const au = (S.state && S.state.audio) || {};
+  const ok = b.dataset.adhan === 'skip' ? await act('adhan.skip', {}, 'Adhan skipped')
+    : b.dataset.adhan === 'mute' ? await act('adhan.volume', {muted: !au.muted})
+    : await act('adhan.volume', {delta: b.dataset.adhan === 'up' ? 10 : -10});
+  // the volume is kept as the adhan volume: the settings follow unless being edited
+  if (ok && b.dataset.adhan !== 'skip' && b.dataset.adhan !== 'mute' && !dirtyGroups().length) loadSettings(true);
+});
 document.addEventListener('click', e => {
   const o = e.target.closest('[data-adhkar-open]'), c = e.target.closest('[data-adhkar-cmd]');
   if (o) { const id = o.dataset.adhkarOpen; act('adhkar.open', {category: id}, 'Opened on the frame'); }
@@ -1608,7 +1628,7 @@ function createMockFrame() {
       case 'refresh': await sleep(700); return {};
       case 'adhan.test':
         if (args.voice && !['mosque', 'beep'].includes(args.voice) && !VOICE_IDS.includes(args.voice.replace(/-fajr$/, '')) && !mineList().some(c => 'custom:' + c.id === args.voice)) fail('not_found', 'unknown voice ' + args.voice);
-        clearTimeout(audioTimer); audio = {playing: true, what: args.voice ? 'test:' + args.voice : 'test:' + (args.prayer || 'dhuhr')}; audioTimer = setTimeout(() => { audio = {playing: false, what: null}; }, 20000); return {};
+        clearTimeout(audioTimer); audio = {playing: true, what: args.voice ? 'test:' + args.voice : 'test:' + (args.prayer || 'dhuhr'), volume: settings.adhan.volume, muted: false}; audioTimer = setTimeout(() => { audio = {playing: false, what: null}; }, 20000); return {};
       case 'adhan.list': return adhanList();
       case 'adhan.rename': mineOf(args.id).name = cleanAdhanName(args.name); return adhanList();
       case 'adhan.delete': {
@@ -1625,6 +1645,13 @@ function createMockFrame() {
         return addMine(args.name || decodeURIComponent(u.split('?')[0].split('/').pop()), 186, u);
       }
       case 'audio.stop': clearTimeout(audioTimer); audio = {playing: false, what: null}; return {};
+      case 'adhan.skip': { const was = audio.playing; clearTimeout(audioTimer); audio = {playing: false, what: null}; return {skipped: was}; }
+      case 'adhan.volume': {
+        const v = args.volume != null ? args.volume : args.delta != null ? (audio.volume ?? settings.adhan.volume) + args.delta : null;
+        if (v != null) { settings.adhan.volume = clamp(v, 0, 100); if (audio.playing) audio = {...audio, volume: settings.adhan.volume, muted: false}; }
+        if (args.muted != null && audio.playing) audio = {...audio, muted: !!args.muted};
+        return {playing: !!audio.playing, volume: audio.volume ?? settings.adhan.volume};
+      }
       case 'message.show': if (!args.text) fail('bad_request'); return {};
       case 'phase.preview': if (!PREVIEW_KINDS.includes(args.kind)) fail('bad_request'); preview = {kind: args.kind, until: Date.now() + (args.seconds || 20) * 1000}; return {};
       case 'screen': if (!['on', 'off', 'auto'].includes(args.mode)) fail('bad_request'); screenMode = args.mode; return {};
@@ -2144,6 +2171,15 @@ function renderState() {
   const au = st.audio || {}; const ha = $('#h-audio');
   if (au.playing) { ha.hidden = false; ha.innerHTML = icon('adhan', 'i', 'width:15px;height:15px') + esc('Playing' + (au.what ? ' · ' + au.what : '')); } else ha.hidden = true;
   $('#tile-stop').classList.toggle('on', !!au.playing);
+  // the adhan's controls, as on its screen: while an adhan (or a test) plays, or its screen is up
+  const adh = ph.kind === 'adhan' || (au.playing && /^(adhan|test):/.test(au.what || ''));
+  $('#h-adhan').hidden = !adh;
+  if (adh) {
+    $('#h-vol').textContent = au.playing ? (au.muted ? 'muted' : (au.volume ?? '') + ' %') : '';
+    $('#h-mute').hidden = !au.playing; $('#h-mute').textContent = au.muted ? 'Unmute' : 'Mute';
+    $('#h-mute').classList.toggle('on', !!au.muted); $('#h-mute').setAttribute('aria-pressed', String(!!au.muted));
+    document.querySelectorAll('#h-adhan [data-adhan="up"], #h-adhan [data-adhan="down"]').forEach(b => { b.hidden = !au.playing; });
+  }
   const nx = st.next;
   if (nx) {
     $('#h-np').innerHTML = `${esc(pname(nx.prayer))}${parabic(nx.prayer) ? ` <span class="ar" lang="ar" dir="rtl">${parabic(nx.prayer)}</span>` : ''}`;

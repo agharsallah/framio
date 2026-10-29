@@ -106,6 +106,21 @@ class Rpc(
             adhanList()
         }
         "audio.stop" -> ok { engine.player.stop() }
+        // the adhan's controls (as on its screen): skip it, its volume now (kept for the next ones), mute it
+        "adhan.skip" -> kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+            JSONObject().put("skipped", engine.skipAdhan())
+        }
+        "adhan.volume" -> {
+            val volume = if (args.has("volume")) args.optInt("volume", -1).takeIf { it in 0..100 } ?: throw Failure("bad_request", "volume is 0–100")
+            else if (args.has("delta")) (engine.player.playing.value?.volume ?: store.current.adhan.volume) + args.optInt("delta")
+            else null
+            val muted = if (args.has("muted")) args.optBoolean("muted") else null
+            if (volume == null && muted == null) throw Failure("bad_request", "give volume, delta or muted")
+            val playing = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) { engine.adhanVolume(volume, muted) }
+            // nothing playing: a volume is still the adhan volume for the next ones
+            if (!playing && volume != null) store.patch(JSONObject().put("adhan", JSONObject().put("volume", volume.coerceIn(0, 100))))
+            JSONObject().put("playing", playing).put("volume", engine.player.playing.value?.volume ?: store.current.adhan.volume)
+        }
         "message.show" -> {
             val text = args.optString("text").trim()
             if (text.isEmpty()) throw Failure("bad_request", "text is empty")
@@ -229,7 +244,10 @@ class Rpc(
             .put("screen", JSONObject().put("mode", st.screen.mode).put("state", st.screen.state))
             .put("foreground", if (engine.displayVisible) "display" else "other")
             .put("weather", st.weather?.let { JSONObject().put("temp", it.temperature).put("unit", it.unit) } ?: JSONObject.NULL)
-            .put("audio", JSONObject().put("playing", st.audioPlaying).put("what", engine.player.playing.value?.what ?: JSONObject.NULL))
+            .put("audio", engine.player.playing.value.let { a ->
+                JSONObject().put("playing", a != null).put("what", a?.what ?: JSONObject.NULL)
+                    .put("volume", a?.volume ?: s.adhan.volume).put("muted", a?.muted == true)
+            })
             .put("adhkar", engine.adhkar.stateJson())
             .put("page", engine.loop.page.value.id)
             .put("presence", engine.presence.stateJson(st, engine.adhkar.nextReminder()?.at))

@@ -95,6 +95,8 @@ class MawaqitActivity : ComponentActivity() {
             patch = { frame.store.patch(it) },
             testAdhan = { frame.engine.testAdhan(PrayerKey.DHUHR) },
             stopAudio = { frame.player.stop() },
+            adhanVolume = { v, m -> frame.engine.adhanVolume(v, m) },
+            skipAdhan = { frame.engine.skipAdhan() },
             openPhotos = if (Device.frameoInstalled(this)) ({ settingsOpen = false; frame.engine.openPhotos() }) else null,
             refresh = { frame.repo.refresh() },
             remoteLink = { frame.rpc.remoteInfo().optString("link") },
@@ -175,7 +177,16 @@ class MawaqitActivity : ComponentActivity() {
         if (!settingsOpen && frame.engine.adhkar.onKey(keyCode)) return true // the adhkar reader's keys first
         when (keyCode) {
             KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_MENU -> settingsOpen = !settingsOpen
-            KeyEvent.KEYCODE_MEDIA_STOP, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> frame.player.stop()
+            // the adhan's controls on the remote: stop skips it, volume and mute act on it while it plays
+            KeyEvent.KEYCODE_MEDIA_STOP, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_MEDIA_NEXT -> frame.engine.skipAdhan()
+            KeyEvent.KEYCODE_VOLUME_UP, KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                val a = frame.player.playing.value ?: return super.onKeyDown(keyCode, event)
+                frame.engine.adhanVolume(a.volume + if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) 10 else -10)
+            }
+            KeyEvent.KEYCODE_VOLUME_MUTE -> {
+                val a = frame.player.playing.value ?: return super.onKeyDown(keyCode, event)
+                frame.engine.adhanVolume(null, !a.muted)
+            }
             else -> return super.onKeyDown(keyCode, event)
         }
         return true

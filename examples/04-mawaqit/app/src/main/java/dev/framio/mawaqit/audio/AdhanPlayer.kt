@@ -30,7 +30,8 @@ import kotlin.math.sin
  */
 class AdhanPlayer(private val context: Context, private val scope: CoroutineScope) {
 
-    data class Playing(val what: String)
+    /** [volume] 0–100 as it sounds now (changed live by [setVolumeNow]); [muted] keeps playing silently. */
+    data class Playing(val what: String, val volume: Int, val muted: Boolean = false)
 
     private val _playing = MutableStateFlow<Playing?>(null)
     val playing: StateFlow<Playing?> = _playing.asStateFlow()
@@ -77,7 +78,7 @@ class AdhanPlayer(private val context: Context, private val scope: CoroutineScop
             }
             setVolume(volume)
             Log.i(TAG, "playing ${file?.name ?: "chime"} ($label, volume $volume)")
-            _playing.value = Playing(label)
+            _playing.value = Playing(label, volume)
             requestFocus()
             try {
                 if (file != null) playFile(file) else Chime.play()
@@ -97,6 +98,25 @@ class AdhanPlayer(private val context: Context, private val scope: CoroutineScop
         job?.cancel()
         job = null
         release()
+    }
+
+    /** The volume of what is playing now, 0–100; the stream volume is still restored afterwards. False when silent. */
+    fun setVolumeNow(percent: Int): Boolean {
+        val now = _playing.value ?: return false
+        val v = percent.coerceIn(0, 100)
+        setVolume(v)
+        _playing.value = now.copy(volume = v, muted = false)
+        Log.i(TAG, "volume $v (${now.what})")
+        return true
+    }
+
+    /** Silences what is playing without stopping it (the adhan screen goes on). False when silent. */
+    fun setMuted(muted: Boolean): Boolean {
+        val now = _playing.value ?: return false
+        setVolume(if (muted) 0 else now.volume)
+        _playing.value = now.copy(muted = muted)
+        Log.i(TAG, if (muted) "muted (${now.what})" else "unmuted (${now.what})")
+        return true
     }
 
     private suspend fun playFile(file: File) {

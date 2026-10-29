@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.json.JSONObject
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
@@ -86,6 +87,8 @@ data class DisplayState(
     val weather: Weather?,
     val screen: ScreenState,
     val audioPlaying: Boolean,
+    /** What is playing, its live volume and mute (the adhan controls). */
+    val audio: AdhanPlayer.Playing? = null,
     val panelUrl: String?,
     /** The secondary mosques, display only (see [SecondaryMosques]). */
     val secondary: List<SecondaryEntry> = emptyList(),
@@ -111,6 +114,8 @@ class Engine(
     private var overlay: Overlay? = null
     private var lastPhase: Phase? = null
     private var firedAdhan: Instant? = null
+    /** The adhan whose screen was skipped: its ADHAN phase gives way to what follows it. */
+    private var skippedAdhan: Instant? = null
     private var backlightIsOff = false
     private val backlight = Mutex()
 
@@ -223,6 +228,37 @@ class Engine(
         player.play(Effective.adhanSound(s, repo.state.value.mosque, prayer), s.adhan.volume, "test:${prayer.id}")
     }
 
+    /**
+     * "Skip" on the adhan: the audio stops and the adhan screen gives way to what follows it (dua, iqama countdown…).
+     * A previewed adhan screen just closes. True when there was something to skip.
+     */
+    fun skipAdhan(): Boolean {
+        val st = _state.value
+        val playing = player.playing.value?.what?.let { it.startsWith("adhan:") || it.startsWith("test:") } == true
+        if (playing) player.stop()
+        val onScreen = st.phase.kind == PhaseKind.ADHAN
+        if (onScreen) {
+            if (preview?.first == PhaseKind.ADHAN) preview = null else skippedAdhan = st.phase.prayer?.adhan?.toInstant()
+        }
+        Log.i(TAG, "adhan skipped (audio $playing, screen $onScreen)")
+        post()
+        return playing || onScreen
+    }
+
+    /**
+     * The adhan's volume from its controls: applied now and kept as the adhan volume for the next ones. Null keeps
+     * it; [muted] silences this adhan only. False when nothing plays.
+     */
+    fun adhanVolume(percent: Int?, muted: Boolean? = null): Boolean {
+        val ok = when {
+            muted != null && percent == null -> player.setMuted(muted)
+            percent != null -> player.setVolumeNow(percent).also { if (it) store.patch(JSONObject().put("adhan", JSONObject().put("volume", percent.coerceIn(0, 100)))) }
+            else -> player.playing.value != null
+        }
+        post()
+        return ok
+    }
+
     fun openPhotos() {
         Device.openPhotos(context)
     }
@@ -300,6 +336,10 @@ class Engine(
         val next = times?.let { Timeline.nextPrayer(now, it) }
         var phase = times?.let { Timeline.phaseAt(now, it, behavior) } ?: Phase(PhaseKind.NORMAL, null, null, null)
 
+        // skipped: what follows the adhan screen, from now (the times are exact, only its start moves)
+        if (phase.kind == PhaseKind.ADHAN && phase.prayer?.adhan?.toInstant() == skippedAdhan && times != null) {
+            phase.end?.let { end -> phase = Timeline.phaseAt(end, times, behavior).copy(start = now) }
+        }
         preview?.let { (kind, until) ->
             if (nowMs < until) phase = Phase(kind, next ?: phase.prayer, now, Instant.ofEpochMilli(until).atZone(zone))
             else preview = null
@@ -329,6 +369,7 @@ class Engine(
             weather = repo.weather.value.takeIf { s.display.showWeather },
             screen = screen(s, behavior, phase),
             audioPlaying = player.playing.value != null,
+            audio = player.playing.value,
             panelUrl = Device.ipAddress()?.let { "http://$it:${s.remote.port}/" },
             secondary = secondary.entries.value,
         )
