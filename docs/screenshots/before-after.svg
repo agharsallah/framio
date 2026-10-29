@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 520" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6b985"/><stop offset="1" stop-color="#7a9fc4"/></linearGradient>
+  </defs>
+  <rect width="1280" height="520" fill="#0d1117"/>
+  <text x="320" y="40" fill="#8b949e" font-size="20" text-anchor="middle" letter-spacing="3">BEFORE</text>
+  <text x="960" y="40" fill="#e6edf3" font-size="20" text-anchor="middle" letter-spacing="3">NOW</text>
+  <!-- before: stock frame -->
+  <rect x="60" y="62" width="520" height="325" rx="14" fill="#1b1f27" stroke="#30363d" stroke-width="4"/>
+  <rect x="76" y="78" width="488" height="293" rx="4" fill="url(#sky)"/>
+  <polygon points="76,371 220,210 330,320 410,250 564,371" fill="#3b5a7a" opacity=".85"/>
+  <circle cx="470" cy="140" r="30" fill="#fff3c4"/>
+  <text x="320" y="425" fill="#c9d1d9" font-size="20" text-anchor="middle">A slideshow of photos sent by the family</text>
+  <text x="320" y="455" fill="#8b949e" font-size="16" text-anchor="middle">one app, one purpose, nothing else to do with 1 GB of RAM</text>
+  <text x="320" y="480" fill="#8b949e" font-size="14" text-anchor="middle">(illustration: the real photos are private)</text>
+  <!-- arrow -->
+  <path d="M600 225 H680 M660 205 L682 225 L660 245" stroke="#58a6ff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- after -->
+  <rect x="700" y="62" width="520" height="325" rx="14" fill="#1b1f27" stroke="#30363d" stroke-width="4"/>
+  <rect x="716" y="78" width="488" height="293" rx="4" fill="#101319"/>
+  <text x="736" y="150" fill="#f4efe6" font-size="64" font-weight="200">14:35</text>
+  <text x="738" y="180" fill="#9a968d" font-size="16">Thursday, October 29</text>
+  <g font-size="13" fill="#e6edf3">
+    <rect x="736" y="230" width="100" height="120" rx="12" fill="#3a3023"/><text x="748" y="332">Photos</text>
+    <rect x="846" y="230" width="100" height="120" rx="12" fill="#1f3b3b"/><text x="858" y="332">Pomodoro</text>
+    <rect x="956" y="230" width="100" height="120" rx="12" fill="#0f3d33"/><text x="968" y="332">Mawaqit</text>
+    <rect x="1066" y="230" width="100" height="120" rx="12" fill="#c9e3b7"/><text x="1078" y="332" fill="#2b2b3a">Meadow</text>
+  </g>
+  <circle cx="780" cy="280" r="14" fill="#e8a14a"/><circle cx="890" cy="280" r="14" fill="#e8745e"/><circle cx="1000" cy="280" r="14" fill="#e0b45c"/><circle cx="1110" cy="280" r="14" fill="#f6b985"/>
+  <text x="960" y="425" fill="#e6edf3" font-size="20" text-anchor="middle">Photos <tspan fill="#58a6ff">and</tspan> a shelf of calm, useful apps</text>
+  <text x="960" y="455" fill="#8b949e" font-size="16" text-anchor="middle">launcher, focus timer, prayer times, learning, hardware lab</text>
+  <text x="960" y="480" fill="#8b949e" font-size="14" text-anchor="middle">no feed, no ads, no notifications, no accounts</text>
+</svg>
